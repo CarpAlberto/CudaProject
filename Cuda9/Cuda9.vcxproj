@@ -87,6 +87,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="matrix.cu" />
     <CudaCompile Include="vector.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +102,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="includes.h" />
     <ClInclude Include="INetworkLayer.h" />
     <ClInclude Include="LoggingPolicy.h" />
+    <ClInclude Include="matrix.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="MemoryAllocationException.h" />
     <ClInclude Include="NonCopyableObject.h" />

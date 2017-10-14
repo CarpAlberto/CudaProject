@@ -37,6 +37,9 @@ enum class SeverityType;
 typedef unsigned char byte;
 
 
+#define RC2IDX(R,C,COLS) (((R)*(COLS))+(C))
+
+
 
  
 

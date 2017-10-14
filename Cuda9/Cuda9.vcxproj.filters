@@ -5,6 +5,9 @@
     <CudaCompile Include="vector.cu">
       <Filter>data_structure</Filter>
     </CudaCompile>
+    <CudaCompile Include="matrix.cu">
+      <Filter>data_structure</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="config">
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="Memory.h">
       <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix.h">
+      <Filter>data_structure</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
