@@ -8,17 +8,26 @@ namespace gpuNN {
 	class ApplicationLogger
 	{
 	protected:
-		unsigned int log_line_number;
+		/// <summary>
+		/// The current log line number
+		/// </summary>
+		unsigned int m_logLine;
+		/// <summary>
+		/// The logger stream
+		/// </summary>
 		std::stringstream logStream;
+		/// <summary>
+		/// The logging policy
+		/// </summary>
 		log_policy* policy;
+
 		std::mutex mutex;
 		SeverityType loggingLevel;
-		std::vector< std::string > log_buffer;
-
+		std::vector< std::string > m_LogBuffer;
 		void print_impl(std::stringstream&&);
-
 		template<typename First, typename...Rest>
 		void print_impl(std::stringstream&&, First&& parm1, Rest&&...parm);
+
 	public:
 		ApplicationLogger() {}
 		ApplicationLogger(const std::string& name, SeverityType severity = SeverityType::DEBUG);
@@ -32,7 +41,7 @@ namespace gpuNN {
 
 	template<typename log_policy>
 	ApplicationLogger<log_policy>::ApplicationLogger(const std::string& name, SeverityType severity)
-		:log_line_number(0),
+		:m_logLine(0),
 		loggingLevel(severity)
 	{
 		this->policy->open_out_stream(name);
@@ -42,7 +51,7 @@ namespace gpuNN {
 	template< typename log_policy>
 	void ApplicationLogger< log_policy >::print_impl(std::stringstream&& log_stream)
 	{
-		log_buffer.push_back(log_stream.str());
+		m_LogBuffer.push_back(log_stream.str());
 	}
 
 	template<typename log_policy>
@@ -74,7 +83,7 @@ namespace gpuNN {
 		header.str("");
 		header.fill('0');
 		header.width(7);
-		header << log_line_number++ << " < " << get_time() << " - ";
+		header << this->m_logLine++ << " < " << get_time() << " - ";
 
 		header.fill('0');
 		header.width(7);
@@ -104,7 +113,7 @@ namespace gpuNN {
 
 		std::stringstream log_stream;
 		auto now = std::chrono::system_clock::now();
-		log_stream << log_line_number++ << " " << getTime() << " ";
+		log_stream << this->m_logLine++ << " " << getTime() << " ";
 		switch (severity)
 		{
 			case SeverityType::DEBUG:

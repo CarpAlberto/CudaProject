@@ -18,7 +18,7 @@ void* GpuAllocator::Allocate(const std::size_t size, const std::size_t alignment
 	}
 	else {
 		m_offset += size;
-		this->points[devPtr] = size;
+		this->points[devPtr] = (double)size;
 		return devPtr;
 	}
 }

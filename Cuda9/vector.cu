@@ -274,3 +274,241 @@ VectorFloat& VectorFloat::operator=(const VectorFloat& rhs) {
 	memcpy(this->m_data,rhs.m_data, 3 * sizeof(float));
 	return *this;
 }
+void VectorFloat::Release() {
+
+	if (this->m_data != nullptr)
+	{
+		Memory::instance()->deallocate(this->m_data, Bridge::CPU);
+		this->m_data = nullptr;
+	}
+}
+void VectorFloat::Zeros() {
+	for (int i = 0; i < 3; ++i) {
+		Set(i, 0.0);
+	}
+}
+
+void VectorFloat::Ones() {
+	for (int i = 0; i < 3; ++i) {
+		Set(i, 1.0);
+	}
+}
+
+void VectorFloat::Set(int position, float value) {
+	this->m_data[position] = value;
+}
+
+void VectorFloat::SetAll(float val) {
+	for (int i = 0; i < 3; ++i) {
+		Set(i, val);
+	}
+}
+
+float VectorFloat::Get(int pos) const {
+	return this->m_data[pos];
+}
+
+void VectorFloat::CopyTo(VectorFloat &rhs) const {
+	if (NULL != rhs.m_data) {
+		Memory::instance()->deallocate(rhs.m_data, Bridge::CPU);
+		rhs.m_data = nullptr;
+	}
+	rhs.malloc();
+	memcpy(rhs.m_data, this->m_data, 3 * sizeof(float));
+}
+
+VectorFloat VectorFloat::operator+(const VectorFloat& rhs) const {
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, tmp.Get(i) + rhs.Get(i));
+	}
+	return tmp;
+}
+
+VectorFloat VectorFloat::operator-(const VectorFloat& rhs) const {
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, tmp.Get(i) - rhs.Get(i));
+	}
+	return tmp;
+}
+
+VectorFloat VectorFloat::operator*(const VectorFloat& rhs) const {
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, tmp.Get(i) * rhs.Get(i));
+	}
+	return tmp;
+}
+
+VectorFloat VectorFloat::operator+(float rhs) const {
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, tmp.Get(i) + rhs);
+	}
+	return tmp;
+}
+
+VectorFloat VectorFloat::operator-(float rhs) const {
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, tmp.Get(i) - rhs);
+	}
+	return tmp;
+}
+
+VectorFloat VectorFloat::operator*(float rhs) const {
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, tmp.Get(i) * rhs);
+	}
+	return tmp;
+}
+
+VectorFloat VectorFloat::operator/(float rhs) const {
+	if (rhs == 0) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Determinator is zero");
+	}
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, tmp.Get(i) / rhs);
+	}
+	return tmp;
+}
+
+VectorFloat VectorFloat::operator%(float rhs) const {
+	if (rhs == 0) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Determinator is zero");
+		exit(0);
+	}
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, (float)((int)(tmp.Get(i)) % (int)rhs));
+	}
+	return tmp;
+}
+VectorFloat& VectorFloat::operator+=(const VectorFloat& rhs) {
+	for (int i = 0; i < 3; ++i) {
+		Set(i, Get(i) + rhs.Get(i));
+	}
+	return *this;
+}
+
+VectorFloat& VectorFloat::operator-=(const VectorFloat& rhs) {
+	for (int i = 0; i < 3; ++i) {
+		Set(i, Get(i) - rhs.Get(i));
+	}
+	return *this;
+}
+
+VectorFloat& VectorFloat::operator*=(const VectorFloat& rhs) {
+	for (int i = 0; i < 3; ++i) {
+		Set(i, Get(i) * rhs.Get(i));
+	}
+	return *this;
+}
+
+VectorFloat& VectorFloat::operator+=(const float rhs) {
+	for (int i = 0; i < 3; ++i) {
+		Set(i, Get(i) + rhs);
+	}
+	return *this;
+}
+
+VectorFloat& VectorFloat::operator-=(const float rhs) {
+	for (int i = 0; i < 3; ++i) {
+		Set(i, Get(i) - rhs);
+	}
+	return *this;
+}
+
+VectorFloat& VectorFloat::operator*=(const float rhs) {
+	for (int i = 0; i < 3; ++i) {
+		Set(i, Get(i) * rhs);
+	}
+	return *this;
+}
+
+VectorFloat& VectorFloat::operator/=(const float rhs) {
+	if (rhs == 0) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Determinator is zero");
+		exit(0);
+	}
+	for (int i = 0; i < 3; ++i) {
+		Set(i, Get(i) * rhs);
+	}
+	return *this;
+}
+
+VectorFloat& VectorFloat::operator%=(const float rhs) {
+	if (rhs == 0) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Determinator is zero");
+		exit(0);
+	}
+	for (int i = 0; i < 3; ++i) {
+		Set(i, (float)((int)(Get(i)) % (int)rhs));
+	}
+	return *this;
+}
+
+VectorFloat VectorFloat::mul(const VectorFloat &v) const {
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, tmp.Get(i) * v.Get(i));
+	}
+	return tmp;
+}
+
+VectorFloat VectorFloat::mul(float rhs) const {
+	VectorFloat tmp;
+	CopyTo(tmp);
+	for (int i = 0; i < 3; ++i) {
+		tmp.Set(i, tmp.Get(i) * rhs);
+	}
+	return tmp;
+}
+
+
+
+void VectorFloat::malloc() {
+
+	if (m_data == nullptr)
+	{
+		try
+		{
+			// allocates a vector of two integers
+			this->m_data = (float*)Memory::instance()->allocate(3 * sizeof(int), Bridge::CPU);
+		}
+		catch (MemoryAllocationException exception) {
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+				(exception.what());
+		}
+		catch (...) {
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+				("Unknown Error");
+		}
+		memset(this->m_data, 0, 3 * sizeof(int));
+	}
+}
+
+void VectorFloat::print(const std::string& str) const {
+	std::cout << str << std::endl;
+	std::cout << "VectorFloat: [ ";
+	for (int i = 0; i < 3; ++i) {
+		std::cout << Get(i) << " ";
+	}
+	std::cout << "]" << std::endl;
+}

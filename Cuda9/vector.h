@@ -234,35 +234,131 @@ namespace gpuNN
 		/// <param name="rhs">The target vector</param>
 		void  CopyTo(VectorFloat& rhs) const;
 
-		VectorFloat operator+(const VectorFloat&) const;
-		VectorFloat operator-(const VectorFloat&) const;
-		VectorFloat operator*(const VectorFloat&) const;
-
-		VectorFloat operator+(float) const;
-		VectorFloat operator-(float) const;
-		VectorFloat operator*(float) const;
+		/// <summary>
+		/// Overloading + operator
+		/// </summary>
+		/// <param name="rhs">The Right Hand Side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat operator+(const VectorFloat& rhs) const;
+		/// <summary>
+		/// Overloading - operator
+		/// </summary>
+		/// <param name="rhs">The Right Hand Side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat operator-(const VectorFloat& rhs) const;
+		/// <summary>
+		/// Overloading * operator
+		/// </summary>
+		/// <param name="rhs">The Right Hand Side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat operator*(const VectorFloat& rhs) const;
+		/// <summary>
+		/// Overloading + operator
+		/// </summary>
+		/// <param name="rhs">The Right Hand Side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat operator+(float rhs) const;
+		/// <summary>
+		/// Overloading - operator
+		/// </summary>
+		/// <param name="rhs">The Right Hand Side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat operator-(float rhs) const;
+		/// <summary>
+		/// Overloading * operator
+		/// </summary>
+		/// <param name="rhs">The Right Hand Side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat operator*(float rhs) const;
+		/// <summary>
+		/// Overloading / operator
+		/// </summary>
+		/// <param name="rhs">The Right Hand Side parameter</param>
+		/// <returns>The result of the operation</returns>
 		VectorFloat operator/(float) const;
+		/// <summary>
+		/// Overloading % operator
+		/// </summary>
+		/// <param name="rhs">The Right Hand Side parameter</param>
+		/// <returns>The result of the operation</returns>
 		VectorFloat operator%(float) const;
 
-		VectorFloat& operator+=(const VectorFloat&);
-		VectorFloat& operator-=(const VectorFloat&);
-		VectorFloat& operator*=(const VectorFloat&);
-
+		/// <summary>
+		/// Operator += overloading
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat& operator+=(const VectorFloat& rhs);
+		/// <summary>
+		/// Operator -= overloading
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat& operator-=(const VectorFloat& rhs);
+		/// <summary>
+		/// Operator *= overloading
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat& operator*=(const VectorFloat& rhs);
+		/// <summary>
+		/// Operator += overloading
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
 		VectorFloat& operator+=(const float);
-
+		/// <summary>
+		/// Operator += overloading
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
 		VectorFloat& operator-=(const float);
-
+		/// <summary>
+		/// Operator += overloading
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
 		VectorFloat& operator*=(const float);
 
+		/// <summary>
+		/// Operator += overloading
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
 		VectorFloat& operator/=(const float);
+		/// <summary>
+		/// Operator += overloading
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
 		VectorFloat& operator%=(const float);
 
-		VectorFloat divNoRem(float) const;
+		/// <summary>
+		/// Performs the division of this with rhs parameter
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat divNoRem(float rhs ) const;
+		/// <summary>
+		/// Performs the multiplication of this with the rhs parameter
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
 		VectorFloat mul(const VectorFloat&) const;
-		VectorFloat mul(const float) const;
-
+		/// <summary>
+		/// Performs the multiplication of this with the rhs parameter
+		/// </summary>
+		/// <param name="rhs">The right hand side parameter</param>
+		/// <returns>The result of the operation</returns>
+		VectorFloat mul(const float rhs) const;
+		/// <summary>
+		/// Performs the allocation of the object
+		/// </summary>
 		void malloc();
-
+		/// <summary>
+		/// Print the object to the UI of the application
+		/// </summary>
+		/// <param name=""></param>
 		void print(const std::string&) const;
 
 	protected:
