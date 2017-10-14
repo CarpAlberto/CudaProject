@@ -1,0 +1,41 @@
+#include "GpuAllocator.h"
+
+using namespace gpuNN;
+
+
+GpuAllocator::GpuAllocator(const std::size_t totalSize):
+	BaseAllocator(totalSize)
+{
+}
+
+void* GpuAllocator::Allocate(const std::size_t size, const std::size_t alignment) {
+
+	void* devPtr = 0;
+	cudaError_t error = cudaMalloc(&devPtr, size);
+	if (error != cudaError::cudaSuccess) {
+		// TODO handle error properly
+		return devPtr;
+	}
+	else {
+		m_offset += size;
+		this->points[devPtr] = size;
+		return devPtr;
+	}
+}
+
+void GpuAllocator::Free(void* ptr)
+{
+	cudaFree(&ptr);
+}
+void GpuAllocator::Reset()
+{
+
+}
+void GpuAllocator::Init()
+{
+
+}
+
+GpuAllocator::~GpuAllocator()
+{
+}
