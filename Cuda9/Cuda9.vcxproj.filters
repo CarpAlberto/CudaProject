@@ -84,12 +84,6 @@
     <ClInclude Include="Allocator.h">
       <Filter>memory</Filter>
     </ClInclude>
-    <ClInclude Include="CNeuralNetwork.h">
-      <Filter>ml</Filter>
-    </ClInclude>
-    <ClInclude Include="INetworkLayer.h">
-      <Filter>ml\neural_network</Filter>
-    </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>interfaces</Filter>
     </ClInclude>
@@ -114,6 +108,12 @@
     <ClInclude Include="matrix.h">
       <Filter>data_structure</Filter>
     </ClInclude>
+    <ClInclude Include="InputLayer.h">
+      <Filter>ml\neural_network</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkLayer.h">
+      <Filter>ml\neural_network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -131,9 +131,6 @@
     <ClCompile Include="GpuAllocator.cu">
       <Filter>memory</Filter>
     </ClCompile>
-    <ClCompile Include="CNeuralNetwork.cpp">
-      <Filter>ml</Filter>
-    </ClCompile>
     <ClCompile Include="GUIConsole.cpp">
       <Filter>gui</Filter>
     </ClCompile>
@@ -148,6 +145,12 @@
     </ClCompile>
     <ClCompile Include="Memory.cpp">
       <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayer.cpp">
+      <Filter>ml\neural_network</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkLayer.cpp">
+      <Filter>ml\neural_network</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

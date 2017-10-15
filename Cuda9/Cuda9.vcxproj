@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -17,7 +17,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
@@ -94,13 +94,13 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Allocator.h" />
     <ClInclude Include="ApplicationContext.h" />
     <ClInclude Include="ApplicationLogger.h" />
-    <ClInclude Include="CNeuralNetwork.h" />
     <ClInclude Include="enums.h" />
     <ClInclude Include="error.h" />
     <ClInclude Include="GpuAllocator.h" />
     <ClInclude Include="GUIConsole.h" />
     <ClInclude Include="includes.h" />
-    <ClInclude Include="INetworkLayer.h" />
+    <ClInclude Include="InputLayer.h" />
+    <ClInclude Include="NetworkLayer.h" />
     <ClInclude Include="LoggingPolicy.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="Memory.h" />
@@ -116,12 +116,13 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   <ItemGroup>
     <ClCompile Include="Allocator.cpp" />
     <ClCompile Include="ApplicationContext.cpp" />
-    <ClCompile Include="CNeuralNetwork.cpp" />
     <ClCompile Include="GpuAllocator.cu" />
     <ClCompile Include="GUIConsole.cpp" />
+    <ClCompile Include="InputLayer.cpp" />
     <ClCompile Include="LoggingPolicy.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="MemoryAllocationException.cpp" />
+    <ClCompile Include="NetworkLayer.cpp" />
     <ClCompile Include="PoolAllocator.cpp" />
     <ClCompile Include="StackAllocator.cpp" />
     <ClCompile Include="Utils.cpp" />

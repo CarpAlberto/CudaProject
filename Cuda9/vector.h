@@ -3,7 +3,8 @@
 namespace gpuNN
 {
 	/// <summary>
-	/// An vector for two integers
+	/// An vector for two integers.Similar with a tuple but have more
+	/// overloads
 	/// </summary>
 	class VectorInteger {
 	
@@ -162,6 +163,18 @@ namespace gpuNN
 		/// </summary>
 		/// <param name="rhs">The rhs parameter</param>
 		void Print(const std::string& rhs) const;
+		/// <summary>
+		/// Returns a const pointer to a const vector of objects 
+		/// </summary>
+		/// <returns>The const pointer</returns>
+		const int* const getData();
+		/// <summary>
+		/// Overloading operator []
+		/// </summary>
+		/// <param name="rhs">The index of the vector</param>
+		/// <returns>The element from position <code>rhs</code></returns>
+		/// <remarks>	Throw std::exception if the index is out of range</remarks>
+		int operator[](int rhs);
 
 	protected:
 		int* m_data;
@@ -360,7 +373,6 @@ namespace gpuNN
 		/// </summary>
 		/// <param name=""></param>
 		void print(const std::string&) const;
-
 	protected:
 		float *m_data;
 

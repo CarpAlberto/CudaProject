@@ -36,6 +36,8 @@ VectorInteger::VectorInteger(int a , int b)
 	Set(0, a);
 	Set(1, b);
 }
+
+
 VectorInteger::VectorInteger()
 {
 	this->m_data = nullptr;
@@ -77,6 +79,7 @@ void VectorInteger::Zeros()
 		Set(i, 0);
 	}
 }
+
 void VectorInteger::Ones()
 {
 	for (auto i = 0; i < 2; ++i) {
@@ -237,10 +240,22 @@ void VectorInteger::Print(const std::string& rhs) const {
 	std::cout << "]" << std::endl;
 }
 
+const int* const VectorInteger::getData() {
+	return this->m_data;
+}
+
+int VectorInteger::operator[](int rhs) {
+	if (rhs > 1) {
+		throw std::exception("Index out of bounds");
+	}
+	return m_data[rhs];
+}
+
 VectorFloat::VectorFloat() {
 	this->m_data = nullptr;
 	this->malloc();
 }
+
 
 VectorFloat::VectorFloat(float a, float b, float c)
 {

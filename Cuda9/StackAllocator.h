@@ -16,12 +16,11 @@ namespace gpuNN {
 		/// </summary>
 		std::size_t m_offset;
 	public: 
-		StackAllocator() {};
 		/// <summary>
 		/// The constructor
 		/// </summary>
 		/// <param name="totalSize">Total Size of memory</param>
-		StackAllocator(const std::size_t totalSize);
+		StackAllocator(const std::size_t totalSize = 1024);
 		/// <summary>
 		/// The destructor of the memory
 		/// </summary>
@@ -32,7 +31,7 @@ namespace gpuNN {
 		/// <param name="size">The size to be allocated</param>
 		/// <param name="alignment">The memory alignament</param>
 		/// <returns>A pointer to the newly allocated memory</returns>
-		virtual void* Allocate(const std::size_t size, const std::size_t alignment = 0) override;
+		virtual void* Allocate(const std::size_t size, const std::size_t alignment = 4) override;
 		/// <summary>
 		/// Free up the memorygiven by the <code>ptr</code> parameters
 		/// </summary>

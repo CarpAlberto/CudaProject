@@ -4,6 +4,7 @@ using namespace gpuNN;
 
 StackAllocator::StackAllocator(const std::size_t totalSize) :
 	BaseAllocator(totalSize) {
+	Init();
 }
 
 void StackAllocator::Init() {

@@ -67,6 +67,7 @@ void GenericMatrix::SetSize(int rows, int cols, int channels) {
 	Malloc();
 	Zeros();
 }
+
 int GenericMatrix::getLength() const {
 	return this->m_cols * this->m_rows * this->m_channels;
 }
@@ -74,12 +75,56 @@ int GenericMatrix::getLength() const {
 void GenericMatrix::Zeros() {
 	SetAll(0.0);
 }
+
 void GenericMatrix::Ones() {
 	SetAll(1.0);
 }
 
 float* GenericMatrix::getData() {
 	return this->m_data;
+}
+
+float  GenericMatrix::Get(int y, int x, int channel)const {
+	if (this->m_data == nullptr) {
+		if (x >= this->m_cols || y >= this->m_rows || channel >= this->m_channels) {
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+				("Invalid position");
+			throw new std::exception("Invalid position");
+		}
+	}
+	return this->m_data[RC2IDX(y,x, this->m_cols) + channel * (this->m_rows * this->m_cols)];
+}
+
+VectorFloat		GenericMatrix::Get(int y, int x)const {
+	if (this->m_data == nullptr) {
+		if (x >= this->m_cols || y >= this->m_rows || 3 > this->m_channels) {
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+				("Invalid position");
+			throw new std::exception("Invalid position");
+		}
+	}
+	VectorFloat response;
+	for (int i = 0; i < 3; ++i) {
+		response.Set(i, this->m_data[RC2IDX(y, x, this->m_cols) + i * (this->m_rows * this->m_cols)]);
+	}
+	return response;
+}
+
+VectorFloat		GenericMatrix::Get(int)const {
+
+}
+
+GenericMatrix& GenericMatrix::operator+(const GenericMatrix& rhs) const {
+
+	if (this->m_data == nullptr || rhs.m_data == nullptr || getLength() != rhs.getLength()) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+}
+
+GenericMatrix& GenericMatrix::operator-(const GenericMatrix&) const {
+
 }
 
 // Cpu Matrix Implementation
@@ -158,4 +203,11 @@ void CpuMatrix::Malloc() {
 
 void CpuMatrix::Memcpy(GenericMatrix& rhs) {
 	memcpy(this->m_data,rhs.getData(), getLength() * sizeof(float));
+}
+
+void CpuMatrix::Free() {
+	if (this->m_data != nullptr) {
+		Memory::instance()->deallocate(this->m_data, Bridge::CPU);
+	}
+
 }

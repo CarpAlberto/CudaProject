@@ -11,7 +11,7 @@ namespace gpuNN {
 		GenericMatrix();
 		GenericMatrix(const GenericMatrix&);
 		GenericMatrix(int, int, int);
-		GenericMatrix();
+
 		void			Release();
 		GenericMatrix&  operator=(const GenericMatrix&);
 		GenericMatrix&  operator<<=(GenericMatrix&);
@@ -28,12 +28,22 @@ namespace gpuNN {
 		virtual void	Set(int, int, int, float)=0;
 		virtual void	Set(int, int, const VectorFloat&)=0;
 		virtual void	Set(int, int, float)=0;
+		virtual float	Get(int, int, int)const;
+		VectorFloat		Get(int, int)const;
+		VectorFloat		Get(int)const;
 		float*			getData();
+
+		// TODO rethink that
+
+		GenericMatrix& operator+(const GenericMatrix&) const;
+
+		GenericMatrix& operator-(const GenericMatrix&) const;
+
 	protected:
-		int		m_cols;
-		int		m_rows;
-		int		m_channels;
-		float	*m_data;
+		int				m_cols;
+		int				m_rows;
+		int				m_channels;
+		float*			m_data;
 	};
 
 	class CpuMatrix : public GenericMatrix
