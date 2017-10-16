@@ -19,9 +19,10 @@ namespace gpuNN {
 
 	protected:
 		std::unique_ptr<GenericMatrix> m_output_matrix;
+		std::unique_ptr<GenericMatrix> m_delta_matrix;
 		std::vector<Layer>			   m_output_layer;
-		Bridge mode;
-
+		Bridge						   m_mode;
+		std::string                    m_layer_name;
 
 	};
 }

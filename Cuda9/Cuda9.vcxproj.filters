@@ -114,6 +114,7 @@
     <ClInclude Include="NetworkLayer.h">
       <Filter>ml\neural_network</Filter>
     </ClInclude>
+    <ClInclude Include="NeuralNetwork.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -152,5 +153,6 @@
     <ClCompile Include="NetworkLayer.cpp">
       <Filter>ml\neural_network</Filter>
     </ClCompile>
+    <ClCompile Include="NeuralNetwork.cpp" />
   </ItemGroup>
 </Project>

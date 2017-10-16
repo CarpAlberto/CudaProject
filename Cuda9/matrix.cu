@@ -80,7 +80,7 @@ void GenericMatrix::Ones() {
 	SetAll(1.0);
 }
 
-float* GenericMatrix::getData() {
+float* GenericMatrix::getData() const {
 	return this->m_data;
 }
 
@@ -114,21 +114,14 @@ VectorFloat		GenericMatrix::Get(int)const {
 
 }
 
-GenericMatrix& GenericMatrix::operator+(const GenericMatrix& rhs) const {
 
-	if (this->m_data == nullptr || rhs.m_data == nullptr || getLength() != rhs.getLength()) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-			("Invalid arguments");
-		throw new std::exception("Invalid arguments");
-	}
-}
-
-GenericMatrix& GenericMatrix::operator-(const GenericMatrix&) const {
-
-}
 
 // Cpu Matrix Implementation
 
+CpuMatrix::CpuMatrix(int height, int width, int channels)  
+	: GenericMatrix(height,width,channels) {
+
+}
 void CpuMatrix::Set(int y, int x, int channel, float val) {
 	if (this->m_data == nullptr) {
 		Zeros();
@@ -210,4 +203,165 @@ void CpuMatrix::Free() {
 		Memory::instance()->deallocate(this->m_data, Bridge::CPU);
 	}
 
+}
+
+GenericMatrix& CpuMatrix::operator+(const GenericMatrix& rhs) const {
+
+	if (this->m_data == nullptr || rhs.getData() == nullptr || getLength() != rhs.getLength()) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int length = getLength();
+	CpuMatrix* cpuMatrix = new CpuMatrix(rhs);
+	for (int i = 0; i < length; ++i) {
+		cpuMatrix->m_data[i] = rhs.getData()[i] + m_data[i];
+	}
+	return *cpuMatrix;
+}
+
+GenericMatrix& CpuMatrix::operator+(float val) const {
+
+	if (this->m_data == nullptr) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int length = getLength();
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows,this->m_cols,this->m_channels);
+	for (int i = 0; i < length; ++i) {
+		cpuMatrix->m_data[i] =  m_data[i] + val;
+	}
+	return *cpuMatrix;
+}
+
+GenericMatrix& CpuMatrix::operator+(const VectorFloat& rhs) const {
+	if (this->m_data == nullptr) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int n = this->m_cols * this->m_rows;
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
+	for (auto ch = 0; ch < this->m_channels; ch++) {
+		for (auto i = 0; i < n; ++i) {
+			cpuMatrix->m_data[i + n * ch] = this->m_data[i + n * ch] + rhs.Get(ch);
+		}
+	}
+	return *cpuMatrix;
+}
+
+GenericMatrix& CpuMatrix::operator-(const GenericMatrix& rhs) const {
+
+	if (this->m_data == nullptr || rhs.getData() == nullptr || getLength() != rhs.getLength()) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int length = getLength();
+	CpuMatrix* cpuMatrix = new CpuMatrix(rhs);
+	for (int i = 0; i < length; ++i) {
+		cpuMatrix->m_data[i] = rhs.getData()[i] - m_data[i];
+	}
+	return *cpuMatrix;
+}
+
+GenericMatrix& CpuMatrix::operator-(float val) const {
+
+	if (this->m_data == nullptr) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int length = getLength();
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
+	for (int i = 0; i < length; ++i) {
+		cpuMatrix->m_data[i] = m_data[i] - val;
+	}
+	return *cpuMatrix;
+}
+
+GenericMatrix& CpuMatrix::operator-(const VectorFloat& rhs) const {
+	if (this->m_data == nullptr) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int n = this->m_cols * this->m_rows;
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
+	for (auto ch = 0; ch < this->m_channels; ch++) {
+		for (auto i = 0; i < n; ++i) {
+			cpuMatrix->m_data[i + n * ch] = this->m_data[i + n * ch] - rhs.Get(ch);
+		}
+	}
+	return *cpuMatrix;
+}
+
+
+GenericMatrix& CpuMatrix::operator*(const GenericMatrix& rhs) const {
+
+	if (this->m_data == nullptr || rhs.getData() == nullptr || getLength() != rhs.getLength()) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int length = getLength();
+	CpuMatrix* cpuMatrix = new CpuMatrix(rhs);
+	for (int i = 0; i < length; ++i) {
+		cpuMatrix->m_data[i] = rhs.getData()[i] * m_data[i];
+	}
+	return *cpuMatrix;
+}
+
+GenericMatrix& CpuMatrix::operator*(float val) const {
+
+	if (this->m_data == nullptr) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int length = getLength();
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
+	for (int i = 0; i < length; ++i) {
+		cpuMatrix->m_data[i] = m_data[i] * val;
+	}
+	return *cpuMatrix;
+}
+
+GenericMatrix& CpuMatrix::operator*(const VectorFloat& rhs) const {
+	if (this->m_data == nullptr) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int n = this->m_cols * this->m_rows;
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
+	for (auto ch = 0; ch < this->m_channels; ch++) {
+		for (auto i = 0; i < n; ++i) {
+			cpuMatrix->m_data[i + n * ch] = this->m_data[i + n * ch] * rhs.Get(ch);
+		}
+	}
+	return *cpuMatrix;
+}
+
+void	CpuMatrix::SetAll(float val) {
+	if (this->m_data == nullptr) {
+		Malloc();
+	}
+	int length = getLength();
+	for (auto iterator = 0; iterator < length; iterator++) {
+		this->m_data[iterator] = val;
+	}
+}
+void	CpuMatrix::SetAll(const VectorFloat& rhs)
+{
+	if (this->m_data == nullptr) {
+		Malloc();
+	}
+	int length = getLength();
+	for (auto ch = 0; ch < this->m_channels; ch++) {
+		for (auto i = 0; i < length; ++i) {
+			this->m_data[i + length * ch] = this->m_data[i + length * ch] * rhs.Get(ch);
+		}
+	}
 }
