@@ -7,10 +7,10 @@ namespace gpuNN
 	{
 	protected:
 		int m_batch_size;
-		std::unique_ptr<GenericMatrix> label;
 	public:
 		InputLayer();
 		~InputLayer();
+
 		void forward();
 	};
 }

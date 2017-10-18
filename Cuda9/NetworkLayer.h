@@ -1,28 +1,18 @@
 #pragma once
-class GenericMatrix;
-class Vector;
 #include "includes.h"
+#include "Neuron.h"
 
 namespace gpuNN {
-	
-	typedef std::vector<std::unique_ptr<GenericMatrix>> Layer;
 
 	class NetworkLayer {
 	
+		typedef std::vector<std::unique_ptr<Neuron>> InternalLayer;
 	public:
-		/// <summary>
-		/// Parameter that specify if the cpu or gpu will be used for operation
-		/// </summary>
-		/// <param name="mode"></param>
-		NetworkLayer(Bridge mode);
+		void Push(Neuron&& neuron);
 		virtual ~NetworkLayer();
-
 	protected:
-		std::unique_ptr<GenericMatrix> m_output_matrix;
-		std::unique_ptr<GenericMatrix> m_delta_matrix;
-		std::vector<Layer>			   m_output_layer;
-		Bridge						   m_mode;
 		std::string                    m_layer_name;
+		InternalLayer				   m_neurons;
 
 	};
 }

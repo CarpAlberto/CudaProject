@@ -105,6 +105,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="matrix.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="MemoryAllocationException.h" />
+    <ClInclude Include="Neuron.h" />
     <ClInclude Include="NonCopyableObject.h" />
     <ClInclude Include="NonMoveableObject.h" />
     <ClInclude Include="NeuralNetwork.h" />
@@ -125,6 +126,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="MemoryAllocationException.cpp" />
     <ClCompile Include="NetworkLayer.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
+    <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="PoolAllocator.cpp" />
     <ClCompile Include="StackAllocator.cpp" />
     <ClCompile Include="Utils.cpp" />

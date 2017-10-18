@@ -1,5 +1,6 @@
 #include "NetworkLayer.h"
+using namespace gpuNN;
 
-NetworkLayer::NetworkLayer(Bridge mode) {
-
+void NetworkLayer::Push(Neuron&& neuron) {
+	this->m_neurons.push_back(std::make_unique<Neuron>(neuron));
 }

@@ -110,8 +110,9 @@ VectorFloat		GenericMatrix::Get(int y, int x)const {
 	return response;
 }
 
-VectorFloat		GenericMatrix::Get(int)const {
-
+VectorFloat		GenericMatrix::Get(int index)const {
+	VectorFloat response;
+	return response;
 }
 
 
