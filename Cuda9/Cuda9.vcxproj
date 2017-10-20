@@ -111,6 +111,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="NeuralNetwork.h" />
     <ClInclude Include="PoolAllocator.h" />
     <ClInclude Include="StackAllocator.h" />
+    <ClInclude Include="TanhTransferFunction.h" />
+    <ClInclude Include="TransferFunction.h" />
+    <ClInclude Include="TransferFunctionFactory.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="vector.h" />
@@ -129,6 +132,8 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="PoolAllocator.cpp" />
     <ClCompile Include="StackAllocator.cpp" />
+    <ClCompile Include="TanhTransferFunction.cpp" />
+    <ClCompile Include="TransferFunctionFactory.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

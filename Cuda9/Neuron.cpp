@@ -2,18 +2,26 @@
 using namespace gpuNN;
 
 
-Neuron::Neuron( size_t numOutputs)
+Neuron::Neuron( double value)
 {
-	/* Creates the number of connections */
-	for (size_t i = 0; i < numOutputs; i++) {
-		/*Add a new connection*/
-		this->m_outputWeights.push_back(Connection());
-		/*Associate a random weight*/
-		this->m_outputWeights.back().weight = randomWeights();
-	}
+	this->m_outputValue = value;
+	this->index = index;
 }
-
+   
 
 Neuron::~Neuron()
 {
+	m_outputWeights.clear();
+}
+
+double Neuron::randomWeights() {
+	return rand() % RAND_MAX;
+}
+
+void Neuron::SetOutputValue(double mValue) {
+	this->m_outputValue = mValue;
+}
+
+double Neuron::getOutputValue()const {
+	return this->m_outputValue;
 }

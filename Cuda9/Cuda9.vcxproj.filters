@@ -49,6 +49,9 @@
     <Filter Include="exceptions">
       <UniqueIdentifier>{509c53ca-91d1-4e08-aa54-ea8d35cecdb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ml\functions">
+      <UniqueIdentifier>{73192254-6dea-4088-a865-1fe289ca5dec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vector.h">
@@ -120,6 +123,15 @@
     <ClInclude Include="NeuralNetwork.h">
       <Filter>ml\neural_network</Filter>
     </ClInclude>
+    <ClInclude Include="TransferFunctionFactory.h">
+      <Filter>ml\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="TransferFunction.h">
+      <Filter>ml\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="TanhTransferFunction.h">
+      <Filter>ml\functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -163,6 +175,12 @@
     </ClCompile>
     <ClCompile Include="NeuralNetwork.cpp">
       <Filter>ml\neural_network</Filter>
+    </ClCompile>
+    <ClCompile Include="TransferFunctionFactory.cpp">
+      <Filter>ml\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="TanhTransferFunction.cpp">
+      <Filter>ml\functions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

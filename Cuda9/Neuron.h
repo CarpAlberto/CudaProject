@@ -1,7 +1,11 @@
 #pragma once
 #include "vector.h"
 #include <vector>
+#include "TransferFunction.h"
+
 namespace gpuNN {
+
+	class NetworkLayer;
 
 	/// <summary>
 	/// Typedefs the connection as an vector of two integers
@@ -17,7 +21,7 @@ namespace gpuNN {
 		/// </summary>
 		double deltaWeight;
 
-	}Connection;
+	} Connection;
 
 	class Neuron
 	{
@@ -32,19 +36,38 @@ namespace gpuNN {
 			/// </summary>
 			double m_outputValue;
 			/// <summary>
-			/// The output wieghts and the diference between the weights (delta)
+			/// The index inside the layer
 			/// </summary>
-			std::vector<Connection> m_outputWeights;
+			size_t index;
+			/// <summary>
+			/// The transfer function
+			/// </summary>
+			TransferFunction* transferFunction;
 		public:
 			/// <summary>
 			/// Initiate a new Neuron with the whole number of outputs
 			/// </summary>
 			/// <param name="numOutputs"></param>
-			Neuron(size_t numOutputs);
+			Neuron(double value);
 			/// <summary>
 			/// Destroy the neuron
 			/// </summary>
 			~Neuron();
+			/// <summary>
+			/// Sets the value of the value element
+			/// </summary>
+			/// <param name="mValue">The value to be setted</param>
+			void SetOutputValue(double mValue);
+			/// <summary>
+			/// Feeds the data inside the NN based on the previous layer data
+			/// </summary>
+			/// <param name="previousLayer">The previous layer data</param>
+			void FeedForward(const NetworkLayer& previousLayer);
+			/// <summary>
+			/// Returns the output value
+			/// </summary>
+			/// <returns>The output value</returns>
+			double getOutputValue()const;
 	};
 }
 

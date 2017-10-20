@@ -31,7 +31,9 @@ namespace gpuNN {
 		ERROR
 	};
 	
-
+	enum class TransferFunctionType {
+		TANH
+	};
 
 	
 }
