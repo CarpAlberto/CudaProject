@@ -17,6 +17,7 @@
 #include <memory>
 #include <fstream>
 #include <sstream>
+
 #include "Allocator.h"
 #include "GpuAllocator.h"
 #include "StackAllocator.h"
@@ -33,11 +34,17 @@ using namespace gpuNN;
 enum class ErrorSurce;
 enum class CpuError;
 enum class SeverityType;
-
 typedef unsigned char byte;
 
 
 #define RC2IDX(R,C,COLS) (((R)*(COLS))+(C))
+
+/// <summary>
+/// Typedef the vectore of integers for toplogy
+/// </summary>
+typedef std::vector<size_t>			   Topology;
+typedef std::vector<double>			   vDouble;
+
 
 
 

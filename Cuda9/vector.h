@@ -1,5 +1,6 @@
 #pragma once
 #include "memory.h"
+
 namespace gpuNN
 {
 	/// <summary>
@@ -377,6 +378,5 @@ namespace gpuNN
 		float *m_data;
 
 	};
-
 
 }

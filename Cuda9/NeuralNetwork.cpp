@@ -8,11 +8,11 @@ NeuralNetwork::NeuralNetwork(Topology& topology, TransferFunctionType transferFu
 	auto size = topology.size();
 	for (auto i = 0; i < size; i++) {
 		/*Add a new layer*/
-		this->m_layers.push_back(std::make_unique<NetworkLayer>());
+		auto layer = std::make_shared<NetworkLayer>(topology[i]);
+		this->m_layers.push_back(layer);
 	}
 	for (auto i = 0; i < topology.size() - 1; i++) {
-		this->m_weights.push_back(std::make_unique<GenericMatrix>
-			(new CpuMatrix(topology[i], topology[i + 1], 1)));
+		this->m_weights.push_back((new CpuMatrix(topology[i], topology[i + 1], 1)));
 	}
 }
 
@@ -21,24 +21,55 @@ NeuralNetwork::~NeuralNetwork()
 
 }
 
-void Neuron::FeedForward(const NetworkLayer& previousLayer) {
-	
-	double sum = 0.0;
-
-	for (size_t n = 0; n < previousLayer.Size(); ++n) {
-		sum += previousLayer[n]->getOutputValue() * previousLayer[n]->m_outputWeights[0].weight;
-	}
-	this->m_outputValue = this->transferFunction->getValue(sum);
+PtrMatrix NeuralNetwork::getNeuronAsMatrix(size_t index) const {
+	return this->m_layers[index].get()->toMatrix();
 }
 
-void NeuralNetwork::feedForward(const std::vector<double>& inputValue) {
-	for (auto i = 0; i < inputValue.size(); i++) {
-		(*this->m_layers[0])[i]->SetOutputValue(inputValue[i]);
-	}
-	//Forward propagation
-	for (auto i = 1; i < this->m_layers.size(); ++i) {
-		for (auto n = 0; n < (m_layers[i]).get()->Size(); ++n) {
-			(*this->m_layers[i])[n]->
+PtrMatrix NeuralNetwork::getNeuronActivatedValueAsMatrix(size_t index) const {
+	return this->m_layers[index].get()->toMatrixActivated();
+}
+
+PtrMatrix NeuralNetwork::getNeuronDerivedValueAsMatrix(size_t index) const {
+	return this->m_layers[index].get()->toMatrixDerived();
+}
+
+PtrMatrix NeuralNetwork::getWeightsMatrix(size_t index) const {
+	return this->m_weights[index];
+}
+
+void NeuralNetwork::setNeuronValue(size_t indexLayer, size_t indexNeuron, double value) {
+	this->m_layers[indexLayer]->SetValue(indexNeuron, value);
+}
+
+void NeuralNetwork::feedForward() {
+	
+	
+	for (auto i = 0; i < this->m_layers.size() - 1; ++i) {
+		auto neuronMatrix = this->getNeuronAsMatrix(i);
+		auto weightsMatrix = this->getWeightsMatrix(i);
+
+		if (i != 0) {
+			neuronMatrix = this->getNeuronActivatedValueAsMatrix(i);
 		}
+		//Perform the multiplication
+	  CpuMatrix multipliedMatrix = (*neuronMatrix) * (*weightsMatrix);
+
+	  for (auto index = 0; index < multipliedMatrix.getCols(); index++) {
+		  if (this->m_layers.size() - 2 == index) {
+			  this->setNeuronValue(i + 1, index, multipliedMatrix.Get(0, index,0));
+		  }
+		  else {
+			  this->setNeuronValue(i + 1, index, multipliedMatrix.Get(0, index, 0));
+		  }
+	  }
 	}
- }
+			
+}
+
+void NeuralNetwork::SetCurrentInput(const vDouble& input) {
+	this->m_input = input;
+
+	for (auto i = 0; i < input.size(); i++) {
+		this->m_layers[0]->SetValue(i, input[i]);
+	}
+}

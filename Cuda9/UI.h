@@ -6,6 +6,7 @@
 /// A generic interface for any GUI interface
 /// </summary>
 class UIInterface {
+public:
 	/// <summary>
 	/// Display an message to the screen
 	/// </summary>
@@ -17,4 +18,8 @@ class UIInterface {
 	/// </summary>
 	/// <param name="errorMessage">The error message to be displayed</param>
 	virtual void showErrorMessage(const std::string& errorMessage)=0;
+	/// <summary>
+	/// Shows a double to the screen
+	/// </summary>
+	virtual void Show(double value)=0;
 };

@@ -7,22 +7,6 @@ namespace gpuNN {
 
 	class NetworkLayer;
 
-	/// <summary>
-	/// Typedefs the connection as an vector of two integers
-	/// </summary>
-	typedef struct
-	{
-		/// <summary>
-		/// The internal weights
-		/// </summary>
-		double weight;
-		/// <summary>
-		/// The difference between the current neuron and the next one
-		/// </summary>
-		double deltaWeight;
-
-	} Connection;
-
 	class Neuron
 	{
 		private:
@@ -36,8 +20,17 @@ namespace gpuNN {
 			/// </summary>
 			double m_outputValue;
 			/// <summary>
+			/// The activated value
+			/// </summary>
+			double m_activatedValue;
+			/// <summary>
+			/// The derived value
+			/// </summary>
+			double m_derivedValue;
+			/// <summary>
 			/// The index inside the layer
 			/// </summary>
+			/// <summary>
 			size_t index;
 			/// <summary>
 			/// The transfer function
@@ -59,15 +52,30 @@ namespace gpuNN {
 			/// <param name="mValue">The value to be setted</param>
 			void SetOutputValue(double mValue);
 			/// <summary>
-			/// Feeds the data inside the NN based on the previous layer data
-			/// </summary>
-			/// <param name="previousLayer">The previous layer data</param>
-			void FeedForward(const NetworkLayer& previousLayer);
-			/// <summary>
 			/// Returns the output value
 			/// </summary>
 			/// <returns>The output value</returns>
 			double getOutputValue()const;
+			/// <summary>
+			/// Activate the current value
+			/// </summary>
+			void Activate();
+			/// <summary>
+			/// Derive the value
+			/// </summary>
+			void Derive();
+			/// <summary>
+			/// Returns the activated value
+			/// </summary>
+			/// <returns>The activated value</returns>
+			double getActivatedValue() const;
+			/// <summary>
+			/// Returns the derived value
+			/// </summary>
+			/// <returns>The derived value</returns>
+			double getDerivedValue() const;
+
+
 	};
 }
 

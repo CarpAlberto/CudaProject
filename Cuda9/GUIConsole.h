@@ -26,5 +26,12 @@ namespace gpuNN {
 		/// </summary>
 		/// <param name="errorMessage">The error message</param>
 		virtual void showErrorMessage(const std::string& errorMessage);
+
+		/// <summary>
+		/// Show a specific message to the console
+		/// </summary>
+		virtual void Show( double value) {
+			std::cout << value;
+		}
 	};
 }

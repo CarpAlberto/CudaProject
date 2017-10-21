@@ -11,13 +11,7 @@ GenericMatrix::GenericMatrix() {
 }
 
 GenericMatrix::GenericMatrix(const GenericMatrix& rhs) {
-	this->m_cols = rhs.m_cols;
-	this->m_rows = rhs.m_rows;
-	this->m_channels = rhs.m_channels;
-
-	this->m_data = nullptr;
-	this->Malloc();
-
+	Clone(rhs);
 }
 
 GenericMatrix::GenericMatrix(int height, int width, int channels) {
@@ -25,7 +19,7 @@ GenericMatrix::GenericMatrix(int height, int width, int channels) {
 	this->m_rows = height;
 	this->m_channels = channels;
 	this->m_data = nullptr;
-	Malloc();
+	this->Malloc();
 }
 
 void GenericMatrix::Release() {
@@ -115,7 +109,29 @@ VectorFloat		GenericMatrix::Get(int index)const {
 	return response;
 }
 
+int GenericMatrix::getCols() const {
+	return this->m_cols;
+}
 
+int GenericMatrix::getRows() const {
+	return this->m_rows;
+}
+
+int GenericMatrix::getChannels() const {
+	return this->m_channels;
+}
+
+void GenericMatrix::Print() const {
+	
+	UIInterface* guiInterface = ApplicationContext::instance()->getGUI().get();
+
+	for (auto i = 0; i < this->getRows(); i++) {
+		for (auto j = 0; j < this->getCols(); j++) {
+			double value = this->Get(i, j, 0);
+			guiInterface->Show(value);
+		}
+	}
+}
 
 // Cpu Matrix Implementation
 
@@ -354,6 +370,7 @@ void	CpuMatrix::SetAll(float val) {
 		this->m_data[iterator] = val;
 	}
 }
+
 void	CpuMatrix::SetAll(const VectorFloat& rhs)
 {
 	if (this->m_data == nullptr) {
@@ -365,4 +382,12 @@ void	CpuMatrix::SetAll(const VectorFloat& rhs)
 			this->m_data[i + length * ch] = this->m_data[i + length * ch] * rhs.Get(ch);
 		}
 	}
+}
+
+void CpuMatrix::Clone(const GenericMatrix& rhs) {
+	this->m_cols = rhs.getCols();
+	this->m_rows = rhs.getRows();
+	this->m_channels = rhs.getChannels();
+	this->Malloc();
+	memcpy(this->m_data ,rhs.getData(),rhs.getLength());
 }

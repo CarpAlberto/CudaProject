@@ -1,6 +1,4 @@
 #pragma once
-#include "Memory.h"
-#include "includes.h"
 #include "vector.h"
 
 namespace gpuNN {
@@ -20,7 +18,7 @@ namespace gpuNN {
 		int				getLength()const;
 		virtual void	Randu()=0;
 		virtual void	Randn()=0;
-		virtual void	Malloc()=0;
+		virtual void	Malloc() {};
 		virtual void	Free() = 0;
 		virtual void	Memcpy(GenericMatrix& rhs) = 0;
 		virtual void	SetAll(float val)=0;
@@ -32,18 +30,20 @@ namespace gpuNN {
 		VectorFloat		Get(int, int)const;
 		VectorFloat		Get(int)const;
 		float*			getData() const;
-
 		virtual GenericMatrix& operator+(const GenericMatrix&) const = 0;
 		virtual GenericMatrix& operator+(float val) const = 0;
 		virtual GenericMatrix& operator+(const VectorFloat&) const = 0;
-
-		virtual GenericMatrix& operator-(const GenericMatrix&) const = 0;
+	    virtual GenericMatrix& operator-(const GenericMatrix&) const = 0;
 		virtual GenericMatrix& operator-(float val) const = 0;
 		virtual GenericMatrix& operator-(const VectorFloat&) const = 0;
-
 		virtual GenericMatrix& operator*(const GenericMatrix&) const = 0;
 		virtual GenericMatrix& operator*(float val) const = 0;
 		virtual GenericMatrix& operator*(const VectorFloat&) const = 0;
+		virtual void Clone(const GenericMatrix&) {};
+		int getCols() const ;
+		int getRows() const ;
+		int getChannels() const;
+		virtual void Print() const;
 
 	protected:
 		int				m_cols;
@@ -68,8 +68,8 @@ namespace gpuNN {
 			 void	Set(int, int, int, float);
 			 void	Set(int, int, const VectorFloat&);
 			 void	Set(int, int, float);
-			 virtual void	Randu();
-			 virtual void	Randn();
+			 virtual void	Randu() {};
+			 virtual void	Randn() {};
 
 			 virtual GenericMatrix& operator+(const GenericMatrix&) const;
 			 virtual GenericMatrix& operator+(float val) const;
@@ -82,10 +82,12 @@ namespace gpuNN {
 			 virtual GenericMatrix& operator*(const GenericMatrix&) const;
 			 virtual GenericMatrix& operator*(float val) const;
 			 virtual GenericMatrix& operator*(const VectorFloat&) const;
+			 virtual void Clone(const GenericMatrix&) override;
 	};
 	class GpuMatrix : public GenericMatrix {
-		public:
-			void Malloc();
-			void Free();
+	public:
+		void Malloc() override {};
+		void Free() override {};
+		virtual void Clone(const GenericMatrix&) override {};
 	};
 }

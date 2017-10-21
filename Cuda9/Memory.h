@@ -1,5 +1,6 @@
 #pragma once
 #include "includes.h"
+
 namespace gpuNN{
 	
 	class Memory {

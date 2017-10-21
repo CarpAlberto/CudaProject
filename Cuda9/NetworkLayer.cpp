@@ -1,6 +1,12 @@
 #include "NetworkLayer.h"
 using namespace gpuNN;
 
+NetworkLayer::NetworkLayer() {
+
+}
+NetworkLayer::~NetworkLayer() {
+
+}
 void NetworkLayer::Push(Neuron&& neuron) {
 	this->m_neurons.push_back(std::make_shared<Neuron>(neuron));
 }
@@ -21,4 +27,41 @@ NetworkLayer::NetworkLayer(int numOutputs) {
 
 void NetworkLayer::SetValue(int index, double value) {
 	this->m_neurons[index].get()->SetOutputValue(value);
+}
+
+vDouble NetworkLayer::toVector() {
+	vDouble returnVector;
+	for (auto i = 0; i < this->m_neurons.size(); ++i) {
+		auto activatedValue = this->m_neurons[i].get()->getActivatedValue();
+		returnVector.push_back(activatedValue);
+	}
+	return returnVector;
+}
+
+PtrMatrix NetworkLayer::toMatrix() {
+	auto m  = new CpuMatrix(1, this->m_neurons.size(), 1);
+	for (auto i = 0; i < this->m_neurons.size(); ++i) {
+		auto value = this->m_neurons[i]->getOutputValue();
+		m->Set(0, i, value);
+	}
+	return m;
+}
+
+
+PtrMatrix NetworkLayer::toMatrixActivated() {
+	auto m = new CpuMatrix(1, this->m_neurons.size(), 1);
+	for (auto i = 0; i < this->m_neurons.size(); ++i) {
+		auto value = this->m_neurons[i]->getActivatedValue();
+		m->Set(0, i, value);
+	}
+	return m;
+}
+
+PtrMatrix NetworkLayer::toMatrixDerived() {
+	auto m = new CpuMatrix(1, this->m_neurons.size(), 1);
+	for (auto i = 0; i < this->m_neurons.size(); ++i) {
+		auto value = this->m_neurons[i]->getDerivedValue();
+		m->Set(0, i, value);
+	}
+	return m;
 }

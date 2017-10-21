@@ -1,13 +1,20 @@
 #pragma once
 #include "includes.h"
 #include "Neuron.h"
+#include "matrix.h"
 
 namespace gpuNN {
+	typedef GenericMatrix* PtrMatrix;
+	typedef std::vector<PtrMatrix>   VectorPtrMatrix;
 
 	class NetworkLayer {
 
 		typedef std::vector<std::shared_ptr<Neuron>> InternalLayer;
 	public:
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		NetworkLayer();
 		/// <summary>
 		/// Creates a new layer
 		/// </summary>
@@ -39,6 +46,27 @@ namespace gpuNN {
 		/// <param name="index">The index of the neuron</param>
 		/// <param name="value">The value to be setted</param>
 		void SetValue(int index, double value);
+		/// <summary>
+		/// Returns a vector based on a neuron vector
+		/// </summary>
+		/// <returns>The vector</returns>
+		vDouble toVector();
+		/// <summary>
+		/// Returns the matrix based on the neurons
+		/// </summary>
+		/// <returns></returns>
+		PtrMatrix toMatrix();
+		/// <summary>
+		/// Returns a matrix from the activated value
+		/// </summary>
+		/// <returns></returns>
+		PtrMatrix toMatrixActivated();
+		/// <summary>
+		/// Returns a matrix from derivde value
+		/// </summary>
+		/// <returns></returns>
+		PtrMatrix toMatrixDerived();
+
 	protected:
 		std::string                    m_layer_name;
 		InternalLayer				   m_neurons;
