@@ -12,7 +12,9 @@ NeuralNetwork::NeuralNetwork(Topology& topology, TransferFunctionType transferFu
 		this->m_layers.push_back(layer);
 	}
 	for (auto i = 0; i < topology.size() - 1; i++) {
-		this->m_weights.push_back((new CpuMatrix(topology[i], topology[i + 1], 1)));
+		auto matrix = new CpuMatrix(topology[i], topology[i + 1], 1);
+		matrix->SetRandom();
+		this->m_weights.push_back(matrix);
 	}
 }
 
@@ -52,15 +54,13 @@ void NeuralNetwork::feedForward() {
 			neuronMatrix = this->getNeuronActivatedValueAsMatrix(i);
 		}
 		//Perform the multiplication
+		(*neuronMatrix).Print();
+		(*weightsMatrix).Print();
 	  CpuMatrix multipliedMatrix = (*neuronMatrix) * (*weightsMatrix);
-
-	  for (auto index = 0; index < multipliedMatrix.getCols(); index++) {
-		  if (this->m_layers.size() - 2 == index) {
-			  this->setNeuronValue(i + 1, index, multipliedMatrix.Get(0, index,0));
-		  }
-		  else {
-			  this->setNeuronValue(i + 1, index, multipliedMatrix.Get(0, index, 0));
-		  }
+	  multipliedMatrix.Print();
+	  for (auto index = 0; index < multipliedMatrix.getCols(); index++) 
+	  {
+			this->setNeuronValue(i + 1, index, multipliedMatrix.Get(0, index, 0));
 	  }
 	}
 			
@@ -72,4 +72,23 @@ void NeuralNetwork::SetCurrentInput(const vDouble& input) {
 	for (auto i = 0; i < input.size(); i++) {
 		this->m_layers[0]->SetValue(i, input[i]);
 	}
+}
+
+void NeuralNetwork::Print() {
+	for (int i = 0; i < this->m_layers.size(); i++) {
+		std::cout << "Layer:" << i << std::endl;
+		if (i == 0) {
+			auto m = this->m_layers[i].get()->toMatrix();
+			m->Print();
+		}
+		else {
+			auto m = this->m_layers[i].get()->toMatrixActivated();
+			m->Print();
+		}
+		if (i < this->m_layers.size() - 1) {
+			std::cout << "Weight Matrix" << i << std::endl;
+			this->getWeightsMatrix(i)->Print();
+		}
+		std::cout << "================" << std::endl;
+	} 
 }

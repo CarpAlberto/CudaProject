@@ -4,17 +4,14 @@
 #include "matrix.h"
 
 namespace gpuNN {
-	typedef GenericMatrix* PtrMatrix;
+
+	typedef GenericMatrix*			 PtrMatrix;
 	typedef std::vector<PtrMatrix>   VectorPtrMatrix;
 
 	class NetworkLayer {
 
-		typedef std::vector<std::shared_ptr<Neuron>> InternalLayer;
+		typedef std::vector<Neuron*> InternalLayer;
 	public:
-		/// <summary>
-		/// Default Constructor
-		/// </summary>
-		NetworkLayer();
 		/// <summary>
 		/// Creates a new layer
 		/// </summary>
@@ -24,7 +21,7 @@ namespace gpuNN {
 		/// Add a new neuron in the layer
 		/// </summary>
 		/// <param name="neuron"></param>
-		void Push(Neuron&& neuron);
+		void Push(Neuron* neuron);
 		/// <summary>
 		/// Returns the @code index entry from the vector
 		/// </summary>

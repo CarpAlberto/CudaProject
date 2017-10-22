@@ -9,13 +9,14 @@ class TestNeuralNetwork :
 	public BaseTest {
 	
 public:
-	void TestConstructor() {
+	static void TestConstructor() {
 
 		std::vector<size_t> topology = {3,2,1};
-		std::vector<double> data = { 2,3,2 };
+		std::vector<double> data = { 1,0,1 };
 
 		gpuNN::NeuralNetwork network(topology);
 		network.SetCurrentInput(data);
 		network.feedForward();
+		network.Print();
 	}
 };

@@ -86,6 +86,10 @@ namespace gpuNN {
 		/// </summary>
 		/// <param name="input">The input value</param>
 		void SetCurrentInput(const vDouble& input);
+		/// <summary>
+		/// Prints the NN to the Screen
+		/// </summary>
+		void Print();
 	};
 }
 

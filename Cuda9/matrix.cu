@@ -129,21 +129,30 @@ void GenericMatrix::Print() const {
 		for (auto j = 0; j < this->getCols(); j++) {
 			double value = this->Get(i, j, 0);
 			guiInterface->Show(value);
+			std::cout << " ";
 		}
+		guiInterface->showMessage("\n");
 	}
 }
 
+void GenericMatrix::SetRandom() {
+	auto length = getLength();
+	for (auto i = 0; i < length; i++) {
+		this->m_data[i] = Utils::generateRandom();
+	}
+}
 // Cpu Matrix Implementation
 
 CpuMatrix::CpuMatrix(int height, int width, int channels)  
 	: GenericMatrix(height,width,channels) {
 
+	this->Malloc();
 }
 void CpuMatrix::Set(int y, int x, int channel, float val) {
 	if (this->m_data == nullptr) {
 		Zeros();
 	}
-	if (y >= this->m_cols || x >= this->m_rows || channel >= this->m_channels) {
+	if (y >= this->m_rows || x >= this->m_cols || channel >= this->m_channels) {
 		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 			("Invalid position");
 		return;
@@ -155,7 +164,7 @@ void CpuMatrix::Set(int y, int x, const VectorFloat& rhs) {
 	if (this->m_data == nullptr) {
 		Zeros();
 	}
-	if (y >= this->m_cols || x >= this->m_rows) {
+	if (y >= this->m_rows || x >= this->m_cols) {
 		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 			("Invalid position");
 		return;
@@ -186,7 +195,8 @@ CpuMatrix::CpuMatrix() :
 CpuMatrix::CpuMatrix(const GenericMatrix& rhs) :
 	GenericMatrix(rhs)
 {
-
+	this->m_data = nullptr;
+	this->Clone(rhs);
 }
 
 void CpuMatrix::Malloc() {
@@ -207,7 +217,7 @@ void CpuMatrix::Malloc() {
 			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 				("Unknown Error");
 		}
-		memset(this->m_data, m_cols * m_rows * m_channels, sizeof(float));
+		memset(this->m_data, 0 ,m_cols * m_rows * m_channels * sizeof(float));
 	}
 }
 
@@ -317,15 +327,17 @@ GenericMatrix& CpuMatrix::operator-(const VectorFloat& rhs) const {
 
 GenericMatrix& CpuMatrix::operator*(const GenericMatrix& rhs) const {
 
-	if (this->m_data == nullptr || rhs.getData() == nullptr || getLength() != rhs.getLength()) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-			("Invalid arguments");
-		throw new std::exception("Invalid arguments");
-	}
-	int length = getLength();
-	CpuMatrix* cpuMatrix = new CpuMatrix(rhs);
-	for (int i = 0; i < length; ++i) {
-		cpuMatrix->m_data[i] = rhs.getData()[i] * m_data[i];
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->getRows(),rhs.getCols(),1);
+	for (int i = 0; i < this->getRows(); ++i) 
+	{
+		for (auto j = 0; j < rhs.getCols(); j++) {
+			auto sum = 0.0;
+			for (auto k = 0; k < rhs.getRows(); k++) {
+				sum += this->getData()[i*this->getCols() + k] * rhs.getData()[k*rhs.getCols() + j];
+			}
+			cpuMatrix->getData()[i*this->getCols() + j] = sum;
+		}
+		
 	}
 	return *cpuMatrix;
 }
@@ -389,5 +401,5 @@ void CpuMatrix::Clone(const GenericMatrix& rhs) {
 	this->m_rows = rhs.getRows();
 	this->m_channels = rhs.getChannels();
 	this->Malloc();
-	memcpy(this->m_data ,rhs.getData(),rhs.getLength());
+	this->Memcpy(const_cast<GenericMatrix&>(rhs));
 }

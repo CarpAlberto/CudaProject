@@ -19,6 +19,17 @@ namespace gpuNN {
 		/// <param name="headerSize">The size of the header </param>
 		/// <returns></returns>
 		static std::size_t CalculatePaddingWithHeader(const std::size_t baseAddress, const std::size_t alignment, const std::size_t headerSize);
+
+		/// <summary>
+		/// Generate random number
+		/// </summary>
+		/// <returns></returns>
+		static double generateRandom() {
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_real_distribution<> dis(0,1);
+			return dis(gen);
+		}
 	};
 }
 

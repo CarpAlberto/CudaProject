@@ -1,7 +1,7 @@
 #pragma once
 #include "vector.h"
 #include <vector>
-#include "TransferFunction.h"
+#include "TransferFunctionFactory.h"
 
 namespace gpuNN {
 
@@ -27,11 +27,6 @@ namespace gpuNN {
 			/// The derived value
 			/// </summary>
 			double m_derivedValue;
-			/// <summary>
-			/// The index inside the layer
-			/// </summary>
-			/// <summary>
-			size_t index;
 			/// <summary>
 			/// The transfer function
 			/// </summary>

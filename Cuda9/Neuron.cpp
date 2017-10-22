@@ -5,7 +5,10 @@ using namespace gpuNN;
 Neuron::Neuron( double value)
 {
 	this->m_outputValue = value;
-	this->index = index;
+	this->transferFunction = TransferFunctionFactory::instance()->
+		getTransferFunction(TransferFunctionType::TANH);
+	Activate();
+	Derive();
 }
    
 Neuron::~Neuron()
@@ -19,6 +22,8 @@ double Neuron::randomWeights() {
 
 void Neuron::SetOutputValue(double mValue) {
 	this->m_outputValue = mValue;
+	Activate();
+	Derive();
 }
 
 double Neuron::getOutputValue()const {
