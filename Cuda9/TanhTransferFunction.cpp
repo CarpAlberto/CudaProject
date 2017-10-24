@@ -9,5 +9,5 @@ double TanhTransferFunction::getValue(double input)
 
 double TanhTransferFunction::getDerivative(double input) {
 
-	return 1 - tanh(input) * tanh(input);
+	return 1 - (tanh(input) * tanh(input));
 }

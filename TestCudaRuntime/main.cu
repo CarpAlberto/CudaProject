@@ -10,7 +10,8 @@ int main() {
 	t.add(&TestMatrix::TestConstructor_Int);
 	t.add(&TestMatrix::TestConstuctor_Set);
 	t.add(&TestMatrix::TestCopyConstructor);
-	t.add(&TestNeuralNetwork::TestConstructor);
+	//t.add(&TestNeuralNetwork::TestNetwork);
+	t.add(&TestNeuralNetwork::TestIterativeNetwork);
 
 	t.run();
 

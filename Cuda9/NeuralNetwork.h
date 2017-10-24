@@ -20,6 +20,10 @@ namespace gpuNN {
 		/// </summary>
 		VectorPtrMatrix m_weights;
 		/// <summary>
+		/// The matrix of gradients
+		/// </summary>
+		VectorPtrMatrix m_gradients;
+		/// <summary>
 		/// The topology of the network
 		/// </summary>
 		Topology m_topology;
@@ -28,14 +32,29 @@ namespace gpuNN {
 		/// </summary>
 		vDouble m_input;
 		/// <summary>
+		/// The input of the Neural Network
+		/// </summary>
+		vDouble m_target;
+		/// <summary>
 		/// The learning rate
 		/// </summary>
-		double learningRate;
+		double m_learningRate;
 		/// <summary>
 		/// The Bias of the NN
 		/// </summary>
-		double bias;
-
+		double m_bias;
+		/// <summary>
+		/// The error of the NN
+		/// </summary>
+		double m_error;
+		/// <summary>
+		/// All the errors
+		/// </summary>
+		vDouble m_errors;
+		/// <summary>
+		/// The historical errors
+		/// </summary>
+		vDouble m_historicalErrors;
 	public:
 		/// <summary>
 		/// Init a new neural network with a specific topology
@@ -87,9 +106,34 @@ namespace gpuNN {
 		/// <param name="input">The input value</param>
 		void SetCurrentInput(const vDouble& input);
 		/// <summary>
+		/// Sets the target of the neural network
+		/// </summary>
+		/// <param name="target">The target of the neural network</param>
+		void SetCurrentTarget(const vDouble& target);
+		/// <summary>
 		/// Prints the NN to the Screen
 		/// </summary>
 		void Print();
+		/// <summary>
+		/// Returns the total error
+		/// </summary>
+		/// <returns>Returns the total error</returns>
+		double getTotalError() const;
+		/// <summary>
+		/// Returns the total errors
+		/// </summary>
+		/// <returns></returns>
+		vDouble getTotalErrors() const;
+		/// <summary>
+		/// Build the errors
+		/// </summary>
+		void setErrors();
+		/// <summary>
+		/// Perform the back propagation
+		/// </summary>
+		void BackPropagation();
+
+
 	};
 }
 

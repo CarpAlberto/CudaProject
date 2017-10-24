@@ -327,6 +327,9 @@ GenericMatrix& CpuMatrix::operator-(const VectorFloat& rhs) const {
 
 GenericMatrix& CpuMatrix::operator*(const GenericMatrix& rhs) const {
 
+	if (this->m_cols != rhs.getRows()) {
+		throw new std::exception("Invalid arguments");
+	}
 	CpuMatrix* cpuMatrix = new CpuMatrix(this->getRows(),rhs.getCols(),1);
 	for (int i = 0; i < this->getRows(); ++i) 
 	{
@@ -402,4 +405,19 @@ void CpuMatrix::Clone(const GenericMatrix& rhs) {
 	this->m_channels = rhs.getChannels();
 	this->Malloc();
 	this->Memcpy(const_cast<GenericMatrix&>(rhs));
+}
+
+GenericMatrix& CpuMatrix::Transpose() const {
+	
+	auto rows = this->getRows();
+	auto columns = this->getCols();
+
+	CpuMatrix * matrix = new CpuMatrix(columns,rows,1);
+
+	for (int i = 0; i < columns; i++) {
+		for (int j = 0; j < rows; j++) {
+			matrix->Set(i, j, 0, this->Get(j,i,0));
+		}
+	}
+	return *matrix;
 }

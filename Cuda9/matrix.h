@@ -39,6 +39,7 @@ namespace gpuNN {
 		virtual GenericMatrix& operator*(const GenericMatrix&) const = 0;
 		virtual GenericMatrix& operator*(float val) const = 0;
 		virtual GenericMatrix& operator*(const VectorFloat&) const = 0;
+		virtual GenericMatrix& Transpose() const = 0;
 		virtual void Clone(const GenericMatrix&) {};
 		int getCols() const ;
 		int getRows() const ;
@@ -74,19 +75,17 @@ namespace gpuNN {
 			 void	Set(int, int, float);
 			 virtual void	Randu() {};
 			 virtual void	Randn() {};
-
 			 virtual GenericMatrix& operator+(const GenericMatrix&) const;
 			 virtual GenericMatrix& operator+(float val) const;
 			 virtual GenericMatrix& operator+(const VectorFloat&) const;
-
 			 virtual GenericMatrix& operator-(const GenericMatrix&) const;
 			 virtual GenericMatrix& operator-(float val) const;
 			 virtual GenericMatrix& operator-(const VectorFloat&) const ;
-
 			 virtual GenericMatrix& operator*(const GenericMatrix&) const;
 			 virtual GenericMatrix& operator*(float val) const;
 			 virtual GenericMatrix& operator*(const VectorFloat&) const;
 			 virtual void Clone(const GenericMatrix&) override;
+			 virtual GenericMatrix& Transpose() const;
 	};
 	class GpuMatrix : public GenericMatrix {
 	public:
