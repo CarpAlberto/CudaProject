@@ -24,15 +24,25 @@ namespace gpuNN {
 		CPU,
 		GPU
 	};
-
+	/// <summary>
+	/// Logging severity
+	/// </summary>
 	enum class SeverityType {
 		DEBUG,
 		WARNING,
 		ERROR
 	};
-	
+	/// <summary>
+	/// Transfer Functions
+	/// </summary>
 	enum class TransferFunctionType {
 		TANH
+	};
+	/// <summary>
+	/// Type of Error
+	/// </summary>
+	enum class FunctionErrorType {
+		MSE
 	};
 
 	

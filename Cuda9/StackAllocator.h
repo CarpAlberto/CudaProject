@@ -20,7 +20,7 @@ namespace gpuNN {
 		/// The constructor
 		/// </summary>
 		/// <param name="totalSize">Total Size of memory</param>
-		StackAllocator(const std::size_t totalSize = 4096);
+		StackAllocator(const std::size_t totalSize = 40960);
 		/// <summary>
 		/// The destructor of the memory
 		/// </summary>
@@ -45,6 +45,17 @@ namespace gpuNN {
 		/// Reset the data
 		/// </summary>
 		virtual void Reset();
+		/// <summary>
+		/// Returns the total memory
+		/// </summary>
+		/// <returns></returns>
+		size_t getTotalMemory();
+		/// <summary>
+		/// Display the memory
+		/// </summary>
+		void PrintMemory();
+
+		size_t getUnusedMemory();
 	private:
 		struct AllocationHeader {
 			char padding;

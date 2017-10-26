@@ -27,7 +27,7 @@ namespace gpuNN {
 		static double generateRandom() {
 			std::random_device rd;
 			std::mt19937 gen(rd());
-			std::uniform_real_distribution<> dis(0,1);
+			std::uniform_real_distribution<> dis(-0.3 , 1);
 			return dis(gen);
 		}
 	};

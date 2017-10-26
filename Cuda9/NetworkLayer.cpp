@@ -16,10 +16,10 @@ size_t NetworkLayer::Size() const {
 	return this->m_neurons.size();
 }
 
-NetworkLayer::NetworkLayer(int numOutputs) {
+NetworkLayer::NetworkLayer(int numOutputs, TransferFunction* transfer) {
 
 	for (int i = 0; i < numOutputs; i++) {
-		this->m_neurons.push_back(new Neuron(numOutputs));
+		this->m_neurons.push_back(new Neuron(numOutputs,transfer));
 	}
 }
 

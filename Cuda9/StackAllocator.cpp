@@ -44,7 +44,7 @@ void StackAllocator::Free(void *ptr) {
 
 	const std::size_t currentAddress = (std::size_t) ptr;
 	const std::size_t headerAddress = currentAddress - sizeof(AllocationHeader);
-	const AllocationHeader * allocationHeader{ (AllocationHeader *)headerAddress };
+	AllocationHeader * allocationHeader{ (AllocationHeader *)headerAddress };
 	m_offset = currentAddress - allocationHeader->padding - (std::size_t) m_start_ptr;
 	m_used = m_offset;
 }
@@ -54,4 +54,15 @@ void StackAllocator::Reset() {
 	m_used = 0;
 	this->m_peek = 0;
 
+}
+
+size_t StackAllocator::getTotalMemory() {
+	return this->m_offset;
+}
+
+void StackAllocator::PrintMemory() {
+	for (size_t i = 0; i < this->m_offset; i++) {
+		char* ptr = (char*)this->m_start_ptr;
+		printf("%p = %d\n",&ptr[i],ptr[i]);
+	}
 }

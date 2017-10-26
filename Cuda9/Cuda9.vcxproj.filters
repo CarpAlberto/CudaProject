@@ -111,9 +111,6 @@
     <ClInclude Include="matrix.h">
       <Filter>data_structure</Filter>
     </ClInclude>
-    <ClInclude Include="InputLayer.h">
-      <Filter>ml\neural_network</Filter>
-    </ClInclude>
     <ClInclude Include="NetworkLayer.h">
       <Filter>ml\neural_network</Filter>
     </ClInclude>
@@ -123,13 +120,19 @@
     <ClInclude Include="NeuralNetwork.h">
       <Filter>ml\neural_network</Filter>
     </ClInclude>
-    <ClInclude Include="TransferFunctionFactory.h">
-      <Filter>ml\functions</Filter>
-    </ClInclude>
     <ClInclude Include="TransferFunction.h">
       <Filter>ml\functions</Filter>
     </ClInclude>
     <ClInclude Include="TanhTransferFunction.h">
+      <Filter>ml\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorFunction.h">
+      <Filter>ml\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionFactory.h">
+      <Filter>ml\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="MSEErrorFunction.h">
       <Filter>ml\functions</Filter>
     </ClInclude>
   </ItemGroup>
@@ -164,9 +167,6 @@
     <ClCompile Include="Memory.cpp">
       <Filter>memory</Filter>
     </ClCompile>
-    <ClCompile Include="InputLayer.cpp">
-      <Filter>ml\neural_network</Filter>
-    </ClCompile>
     <ClCompile Include="NetworkLayer.cpp">
       <Filter>ml\neural_network</Filter>
     </ClCompile>
@@ -176,10 +176,13 @@
     <ClCompile Include="NeuralNetwork.cpp">
       <Filter>ml\neural_network</Filter>
     </ClCompile>
-    <ClCompile Include="TransferFunctionFactory.cpp">
+    <ClCompile Include="TanhTransferFunction.cpp">
       <Filter>ml\functions</Filter>
     </ClCompile>
-    <ClCompile Include="TanhTransferFunction.cpp">
+    <ClCompile Include="FunctionFactory.cpp">
+      <Filter>ml\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="MSEErrorFunction.cpp">
       <Filter>ml\functions</Filter>
     </ClCompile>
   </ItemGroup>

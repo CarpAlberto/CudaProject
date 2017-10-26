@@ -1,7 +1,6 @@
 #pragma once
 #include "memory.h"
 #include "NetworkLayer.h"
-#include "InputLayer.h"
 #include "matrix.h"
 #include "includes.h"
 
@@ -44,6 +43,10 @@ namespace gpuNN {
 		/// </summary>
 		double m_bias;
 		/// <summary>
+		/// The momentum of the NN
+		/// </summary>
+		double m_momentum;
+		/// <summary>
 		/// The error of the NN
 		/// </summary>
 		double m_error;
@@ -55,12 +58,25 @@ namespace gpuNN {
 		/// The historical errors
 		/// </summary>
 		vDouble m_historicalErrors;
+		/// <summary>
+		/// The transfer function used in NN
+		/// </summary>
+		TransferFunction* m_TransferFunction;
+		/// <summary>
+		/// The error function
+		/// </summary>
+		ErrorFunction* m_ErrorFunction;
 	public:
 		/// <summary>
 		/// Init a new neural network with a specific topology
 		/// </summary>
 		/// <param name="rhs">The righ hand side topology</param>
-		NeuralNetwork(Topology& rhs,TransferFunctionType type = TransferFunctionType::TANH);
+		NeuralNetwork(Topology& rhs,
+			double bias,
+			double learningRate,
+			double momentum,
+			TransferFunctionType type = TransferFunctionType::TANH,
+			FunctionErrorType errorType = FunctionErrorType::MSE);
 		/// <summary>
 		/// Destroy the Neural network
 		/// </summary>
@@ -69,7 +85,7 @@ namespace gpuNN {
 		/// Forward a vector of inputs inside the Neural Network
 		/// </summary>
 		/// <param name="inputValue">The input vector</param>
-		void feedForward();
+		void FeedForward();
 		/// <summary>
 		/// Returns a matrix from the output value stored in neurons
 		/// <param name="index">The index of the layers</param>
@@ -132,6 +148,19 @@ namespace gpuNN {
 		/// Perform the back propagation
 		/// </summary>
 		void BackPropagation();
+		/// <summary>
+		/// Prints the output of the Neural Network
+		/// </summary>
+		void PrintOutput();
+		/// <summary>
+		/// Prints the target of the Neural Network
+		/// </summary>
+		void PrintTarget();
+
+
+
+		void Train(int noEpock,int momentum,int learningRate);
+
 
 
 	};

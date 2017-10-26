@@ -138,7 +138,7 @@ void GenericMatrix::Print() const {
 void GenericMatrix::SetRandom() {
 	auto length = getLength();
 	for (auto i = 0; i < length; i++) {
-		this->m_data[i] = Utils::generateRandom();
+		this->m_data[i] = (float)Utils::generateRandom();
 	}
 }
 // Cpu Matrix Implementation
@@ -155,7 +155,7 @@ void CpuMatrix::Set(int y, int x, int channel, float val) {
 	if (y >= this->m_rows || x >= this->m_cols || channel >= this->m_channels) {
 		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 			("Invalid position");
-		return;
+		throw new std::exception("invalid");
 	}
 	this->m_data[RC2IDX(y,x,this->m_cols) + channel * (this->m_rows * this->m_cols)] = val;
 }
@@ -167,7 +167,7 @@ void CpuMatrix::Set(int y, int x, const VectorFloat& rhs) {
 	if (y >= this->m_rows || x >= this->m_cols) {
 		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 			("Invalid position");
-		return;
+		throw new std::exception("invalid");
 	}
 	for (int i = 0; i < this->m_channels; ++i) {
 		Set(y, x, i, rhs.Get(i));
@@ -331,14 +331,14 @@ GenericMatrix& CpuMatrix::operator*(const GenericMatrix& rhs) const {
 		throw new std::exception("Invalid arguments");
 	}
 	CpuMatrix* cpuMatrix = new CpuMatrix(this->getRows(),rhs.getCols(),1);
-	for (int i = 0; i < this->getRows(); ++i) 
-	{
+	for (int i = 0; i < this->getRows(); i++) {
 		for (auto j = 0; j < rhs.getCols(); j++) {
-			auto sum = 0.0;
 			for (auto k = 0; k < rhs.getRows(); k++) {
-				sum += this->getData()[i*this->getCols() + k] * rhs.getData()[k*rhs.getCols() + j];
+				float p = this->Get(i, k, 0) * rhs.Get(k,j,0);
+				float newValue = cpuMatrix->Get(i, j, 0) + p;
+				cpuMatrix->Set(i, j, 0, newValue);
 			}
-			cpuMatrix->getData()[i*this->getCols() + j] = sum;
+			cpuMatrix->Set(i, j, 0,cpuMatrix->Get(i, j, 0));
 		}
 		
 	}
@@ -414,10 +414,15 @@ GenericMatrix& CpuMatrix::Transpose() const {
 
 	CpuMatrix * matrix = new CpuMatrix(columns,rows,1);
 
-	for (int i = 0; i < columns; i++) {
-		for (int j = 0; j < rows; j++) {
-			matrix->Set(i, j, 0, this->Get(j,i,0));
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+   			matrix->Set(j, i, 0, this->Get(i,j,0));
 		}
 	}
 	return *matrix;
+}
+
+CpuMatrix::~CpuMatrix() {
+	if(this->m_data != nullptr)
+		Memory::instance()->deallocate(this->m_data, Bridge::CPU);
 }

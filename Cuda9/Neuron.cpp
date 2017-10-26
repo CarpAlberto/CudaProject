@@ -2,11 +2,10 @@
 using namespace gpuNN;
 
 
-Neuron::Neuron( double value)
+Neuron::Neuron( double value, TransferFunction* transfer)
 {
 	this->m_outputValue = value;
-	this->transferFunction = TransferFunctionFactory::instance()->
-		getTransferFunction(TransferFunctionType::TANH);
+	this->transferFunction = transfer;
 	Activate();
 	Derive();
 }

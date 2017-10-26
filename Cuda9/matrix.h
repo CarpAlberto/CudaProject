@@ -49,6 +49,10 @@ namespace gpuNN {
 		/// Populates the matrix with some random data
 		/// </summary>
 		void SetRandom();
+		/// <summary>
+		/// The virtual destructor
+		/// </summary>
+		virtual ~GenericMatrix() {};
 
 	protected:
 		int				m_cols;
@@ -86,6 +90,7 @@ namespace gpuNN {
 			 virtual GenericMatrix& operator*(const VectorFloat&) const;
 			 virtual void Clone(const GenericMatrix&) override;
 			 virtual GenericMatrix& Transpose() const;
+			 virtual ~CpuMatrix();
 	};
 	class GpuMatrix : public GenericMatrix {
 	public:

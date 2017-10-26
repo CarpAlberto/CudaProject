@@ -1,7 +1,7 @@
 #pragma once
 #include "vector.h"
 #include <vector>
-#include "TransferFunctionFactory.h"
+#include "FunctionFactory.h"
 
 namespace gpuNN {
 
@@ -36,7 +36,7 @@ namespace gpuNN {
 			/// Initiate a new Neuron with the whole number of outputs
 			/// </summary>
 			/// <param name="numOutputs"></param>
-			Neuron(double value);
+			Neuron(double value,TransferFunction*);
 			/// <summary>
 			/// Destroy the neuron
 			/// </summary>

@@ -26,3 +26,13 @@ void Memory::deallocate(void* ptr, Bridge strategy) {
 			throw new MemoryAllocationException("Invalid strategy on memory management");
 	}
 }
+
+void Memory::PrintMemoryUsage() {
+
+	std::cout << "---Cpu Memory usage---" << std::endl;
+	std::cout << this->cpuAllocator.getTotalMemory() << " Bytes " << std::endl;
+}
+
+void Memory::PrintLayoutMemory() {
+	this->cpuAllocator.PrintMemory();
+}

@@ -14,32 +14,45 @@ public:
 		std::vector<size_t> topology = {3,2,3};
 		std::vector<double> data = { 1,0,1 };
 
-		gpuNN::NeuralNetwork network(topology);
+		gpuNN::NeuralNetwork network(topology,1,0.05,1);
 		network.SetCurrentInput(data);
 		network.SetCurrentTarget(data);
-		network.feedForward();
+		network.FeedForward();
 		network.setErrors();
 		network.BackPropagation();
 		std::cout << "Total Error: "  << network.getTotalError() << std::endl;
-		network.feedForward();
+		network.FeedForward();
 		network.setErrors();
 		network.BackPropagation();
 	}
+
 	static void TestIterativeNetwork() {
 
 		std::vector<size_t> topology = { 3,2,3 };
 		std::vector<double> data = { 1,0,1 };
 
-		gpuNN::NeuralNetwork network(topology);
+		gpuNN::NeuralNetwork network(topology, 1, 0.1, 1);
 		network.SetCurrentInput(data);
 		network.SetCurrentTarget(data);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 280; i++) {
 			std::cout << "Epock:" << i << std::endl;
-			network.feedForward();
+			network.FeedForward();
 			network.setErrors();
 			std::cout << "Total Error: " << network.getTotalError() << std::endl;
 			network.BackPropagation();
-		
+
+			std::cout << "===========" << std::endl;
+			std::cout << "Output" << std::endl;
+			network.PrintOutput();
+
+			std::cout << "===========" << std::endl;
+			std::cout << "Target" << std::endl;
+			network.PrintTarget();
+
+			std::cout << "===============" << std::endl;
 		}
+		Memory::instance()->PrintMemoryUsage();
+		//Memory::instance()->PrintLayoutMemory();
 	}
+
 };

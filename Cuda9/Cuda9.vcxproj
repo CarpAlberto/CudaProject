@@ -96,10 +96,11 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="ApplicationLogger.h" />
     <ClInclude Include="enums.h" />
     <ClInclude Include="error.h" />
+    <ClInclude Include="ErrorFunction.h" />
     <ClInclude Include="GpuAllocator.h" />
     <ClInclude Include="GUIConsole.h" />
     <ClInclude Include="includes.h" />
-    <ClInclude Include="InputLayer.h" />
+    <ClInclude Include="MSEErrorFunction.h" />
     <ClInclude Include="NetworkLayer.h" />
     <ClInclude Include="LoggingPolicy.h" />
     <ClInclude Include="matrix.h" />
@@ -113,7 +114,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="TanhTransferFunction.h" />
     <ClInclude Include="TransferFunction.h" />
-    <ClInclude Include="TransferFunctionFactory.h" />
+    <ClInclude Include="FunctionFactory.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="vector.h" />
@@ -123,17 +124,17 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="ApplicationContext.cpp" />
     <ClCompile Include="GpuAllocator.cu" />
     <ClCompile Include="GUIConsole.cpp" />
-    <ClCompile Include="InputLayer.cpp" />
     <ClCompile Include="LoggingPolicy.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="MemoryAllocationException.cpp" />
+    <ClCompile Include="MSEErrorFunction.cpp" />
     <ClCompile Include="NetworkLayer.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="Neuron.cpp" />
     <ClCompile Include="PoolAllocator.cpp" />
     <ClCompile Include="StackAllocator.cpp" />
     <ClCompile Include="TanhTransferFunction.cpp" />
-    <ClCompile Include="TransferFunctionFactory.cpp" />
+    <ClCompile Include="FunctionFactory.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

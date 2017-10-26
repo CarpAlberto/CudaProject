@@ -16,7 +16,7 @@ namespace gpuNN {
 		/// Creates a new layer
 		/// </summary>
 		/// <param name="numOutputs">The number of outputs</param>
-		NetworkLayer(int numOutputs);
+		NetworkLayer(int numOutputs,TransferFunction* transfer);
 		/// <summary>
 		/// Add a new neuron in the layer
 		/// </summary>
