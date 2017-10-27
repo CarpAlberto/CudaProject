@@ -40,7 +40,6 @@ namespace gpuNN {
 		~ApplicationContext();
 
 	public:
-
 		/// <summary>
 		/// Returns the unique instance of the application context
 		/// </summary>

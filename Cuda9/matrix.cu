@@ -121,15 +121,13 @@ int GenericMatrix::getChannels() const {
 	return this->m_channels;
 }
 
-void GenericMatrix::Print() const {
+void GenericMatrix::Print(UIInterface * guiInterface) const {
 	
-	UIInterface* guiInterface = ApplicationContext::instance()->getGUI().get();
-
 	for (auto i = 0; i < this->getRows(); i++) {
 		for (auto j = 0; j < this->getCols(); j++) {
 			double value = this->Get(i, j, 0);
 			guiInterface->Show(value);
-			std::cout << " ";
+			guiInterface->showMessage(" ");
 		}
 		guiInterface->showMessage("\n");
 	}
@@ -148,6 +146,7 @@ CpuMatrix::CpuMatrix(int height, int width, int channels)
 
 	this->Malloc();
 }
+
 void CpuMatrix::Set(int y, int x, int channel, float val) {
 	if (this->m_data == nullptr) {
 		Zeros();
@@ -425,4 +424,18 @@ GenericMatrix& CpuMatrix::Transpose() const {
 CpuMatrix::~CpuMatrix() {
 	if(this->m_data != nullptr)
 		Memory::instance()->deallocate(this->m_data, Bridge::CPU);
+}
+
+mDouble CpuMatrix::getAsMatrix() {
+	
+	mDouble matrix;
+	for (int i = 0; i < this->m_rows; ++i) {
+		vDouble v;
+		for (int j = 0; j < this->m_cols; ++j) {
+			double value = this->Get(i, j, 0);
+			v.push_back(value);
+		}
+		matrix.push_back(v);
+	}
+	return matrix;
 }

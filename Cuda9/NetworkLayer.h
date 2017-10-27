@@ -11,6 +11,7 @@ namespace gpuNN {
 	class NetworkLayer {
 
 		typedef std::vector<Neuron*> InternalLayer;
+	
 	public:
 		/// <summary>
 		/// Creates a new layer

@@ -52,6 +52,9 @@
     <Filter Include="ml\functions">
       <UniqueIdentifier>{73192254-6dea-4088-a865-1fe289ca5dec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{ab1e799b-e83d-486f-88ad-0e87d2a4cb23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vector.h">
@@ -61,9 +64,6 @@
       <Filter>enums</Filter>
     </ClInclude>
     <ClInclude Include="includes.h">
-      <Filter>config</Filter>
-    </ClInclude>
-    <ClInclude Include="error.h">
       <Filter>config</Filter>
     </ClInclude>
     <ClInclude Include="StackAllocator.h">
@@ -134,6 +134,12 @@
     </ClInclude>
     <ClInclude Include="MSEErrorFunction.h">
       <Filter>ml\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintableObject.h">
+      <Filter>interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\json.hpp">
+      <Filter>assets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

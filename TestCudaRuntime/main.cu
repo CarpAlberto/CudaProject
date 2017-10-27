@@ -11,9 +11,10 @@ int main() {
 	t.add(&TestMatrix::TestConstuctor_Set);
 	t.add(&TestMatrix::TestCopyConstructor);
 	//t.add(&TestNeuralNetwork::TestNetwork);
-	t.add(&TestNeuralNetwork::TestIterativeNetwork);
+//	t.add(&TestNeuralNetwork::TestIterativeNetwork);
+	t.add(&TestNeuralNetwork::TestTrain);
 
-	t.run();
+	t.run(LaunchWithBenchmark::WithClock);
 
 	system("pause");
 

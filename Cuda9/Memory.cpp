@@ -1,6 +1,15 @@
 #include "memory.h"
 using namespace gpuNN;
 
+Memory::Memory()
+{
+
+}
+Memory* Memory::instance()
+{
+	static Memory* monitor = new Memory();
+	return monitor;
+}
 void* Memory::allocate(size_t size, Bridge strategy)
 {
 	switch (strategy)

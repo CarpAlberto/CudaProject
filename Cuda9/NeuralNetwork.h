@@ -6,9 +6,11 @@
 
 namespace gpuNN {
 
-	class NeuralNetwork
+	class NeuralNetwork : public IPrintableObject
 	{
 	
+	
+
 	protected:
 		/// <summary>
 		/// Internals layers
@@ -66,6 +68,7 @@ namespace gpuNN {
 		/// The error function
 		/// </summary>
 		ErrorFunction* m_ErrorFunction;
+
 	public:
 		/// <summary>
 		/// Init a new neural network with a specific topology
@@ -127,9 +130,9 @@ namespace gpuNN {
 		/// <param name="target">The target of the neural network</param>
 		void SetCurrentTarget(const vDouble& target);
 		/// <summary>
-		/// Prints the NN to the Screen
+		/// Prints the UI interface
 		/// </summary>
-		void Print();
+		void Print(UIInterface*) const override;
 		/// <summary>
 		/// Returns the total error
 		/// </summary>
@@ -156,11 +159,15 @@ namespace gpuNN {
 		/// Prints the target of the Neural Network
 		/// </summary>
 		void PrintTarget();
-
-
-
-		void Train(int noEpock,int momentum,int learningRate);
-
+		/// <summary>
+		/// Train the neural network
+		/// </summary>
+		/// <param name="noEpock"></param>
+		void Train(int noEpock);
+		/// <summary>
+		/// Save the Object
+		/// </summary>
+		void Save(const std::string&,IOStrategy strategy);
 
 
 	};

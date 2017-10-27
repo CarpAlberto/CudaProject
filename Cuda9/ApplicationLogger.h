@@ -4,6 +4,9 @@
 
 namespace gpuNN {
 
+	/// <summary>
+	/// The main logging class
+	/// </summary>
 	template< typename log_policy>
 	class ApplicationLogger
 	{
@@ -20,21 +23,59 @@ namespace gpuNN {
 		/// The logging policy
 		/// </summary>
 		log_policy* policy;
-
+		/// <summary>
+		/// Internal mutex
+		/// </summary>
 		std::mutex mutex;
+		/// <summary>
+		/// The level logging
+		/// </summary>
 		SeverityType loggingLevel;
+		/// <summary>
+		/// Internal Buffer
+		/// </summary>
 		std::vector< std::string > m_LogBuffer;
-		void print_impl(std::stringstream&&);
+
+		/// <summary>
+		/// Base Print Implementation
+		/// </summary>
+		/// <param name="rhs">The value to be logged</param>
+		void print_impl(std::stringstream&& rhs);
+		/// <summary>
+		/// Recursive Print Implementation
+		/// </summary>
 		template<typename First, typename...Rest>
 		void print_impl(std::stringstream&&, First&& parm1, Rest&&...parm);
 
 	public:
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
 		ApplicationLogger() {}
+		/// <summary>
+		/// Construt the object based on the name and severity
+		/// </summary>
+		/// <param name="name">The name</param>
+		/// <param name="severity">The severity</param>
 		ApplicationLogger(const std::string& name, SeverityType severity = SeverityType::DEBUG);
+		/// <summary>
+		/// Gets the Time
+		/// </summary>
+		/// <returns></returns>
 		std::string getTime();
+		/// <summary>
+		/// Gets the Header of the log
+		/// </summary>
+		/// <returns></returns>
 		std::string getLoglineHeader();
+		/// <summary>
+		/// Public Print function
+		/// </summary>
 		template< SeverityType severity, typename...Args >
 		void print(Args...args);
+		/// <summary>
+		/// The Destructor of the object
+		/// </summary>
 		~ApplicationLogger();
 	};
 
@@ -44,7 +85,7 @@ namespace gpuNN {
 		:m_logLine(0),
 		loggingLevel(severity)
 	{
-		this->policy->open_out_stream(name);
+		this->policy->open_ostream(name);
 	}
 
 

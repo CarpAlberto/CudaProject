@@ -55,4 +55,16 @@ public:
 		//Memory::instance()->PrintLayoutMemory();
 	}
 
+	static void  TestTrain() 
+	{
+		std::vector<size_t> topology = { 6,2,3,6 };
+		std::vector<double> data = { 1,0,1,0,0,1 };
+
+		gpuNN::NeuralNetwork network(topology, 1, 0.1, 1);
+		network.SetCurrentInput(data);
+		network.SetCurrentTarget(data);
+
+		network.Train(400);
+	}
+
 };

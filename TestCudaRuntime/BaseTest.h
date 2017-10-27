@@ -4,6 +4,9 @@
 #include <iostream>
 #include <functional>
 #include <vector>
+#include <chrono>
+
+using namespace std::chrono;
 
 
 
@@ -18,6 +21,10 @@ namespace TestProject {
 		}
 	};
 	
+	enum class LaunchWithBenchmark {
+		WithClock,
+		NoClock
+	};
 	class BaseTest {
 
 	protected:
@@ -40,17 +47,28 @@ namespace TestProject {
 		
 	protected:
 		std::vector<std::function<void()>> functions;
-
 	public:
 		template<typename Function>
 		void add(Function && function) {
 			functions.push_back(std::forward<Function>(function));
 		}
-		virtual void run() {
+		virtual void run(LaunchWithBenchmark clock = LaunchWithBenchmark::NoClock) {
 			try
 			{
 				for (auto && fn : this->functions) {
-					fn();
+					if (clock == LaunchWithBenchmark::WithClock) {
+						auto start = std::chrono::high_resolution_clock::now();
+						fn();
+						auto end = std::chrono::high_resolution_clock::now();
+
+						duration<double> time_span = duration_cast<duration<double>>(end- start);
+
+
+						std::cout << "\nTime Elapsed : " << (time_span).count() << "\n";
+					}
+					else {
+						fn();
+					}
 					std::cout << "Test succeeded" << std::endl;
 				}
 			}

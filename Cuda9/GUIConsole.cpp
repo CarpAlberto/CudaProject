@@ -12,3 +12,15 @@ void GUIConsole::showErrorMessage(const std::string& errorMessage) {
 	std::cout << "ERROR:" << errorMessage << std::endl;
 	m_mutex.unlock();
 }
+
+void GUIConsole::Show(double value) {
+	m_mutex.lock();
+	std::cout << value;
+	m_mutex.unlock();
+}
+
+void GUIConsole::Show(int value) {
+	m_mutex.lock();
+	std::cout << value;
+	m_mutex.unlock();
+}

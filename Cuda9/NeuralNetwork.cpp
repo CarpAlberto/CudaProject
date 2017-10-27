@@ -78,24 +78,26 @@ void NeuralNetwork::SetCurrentInput(const vDouble& input) {
 	}
 }
 
-void NeuralNetwork::Print() {
+void NeuralNetwork::Print( UIInterface* rhs) const
+{
 	for (int i = 0; i < this->m_layers.size(); i++) {
-		std::cout << "Layer:" << i << std::endl;
+		rhs->showMessage("Layer : " + i);
 		if (i == 0) {
 			auto m = this->m_layers[i].get()->toMatrix();
-			m->Print();
+			m->Print(rhs);
 		}
 		else {
 			auto m = this->m_layers[i].get()->toMatrixActivated();
-			m->Print();
+			m->Print(rhs);
 		}
 		if (i < this->m_layers.size() - 1) {
-			std::cout << "Weight Matrix" << i << std::endl;
-			this->getWeightsMatrix(i)->Print();
+			rhs->showMessage("Weight Matrix : " + i);
+			this->getWeightsMatrix(i)->Print(rhs);
 		}
-		std::cout << "================" << std::endl;
+		rhs->showMessage("=======================");
 	} 
-	std::cout << "Totral Error:" << this->m_error;
+	rhs->showMessage("Total Error : ");
+	rhs->Show(this->m_error);
 }
 
 double NeuralNetwork::getTotalError() const {
@@ -255,6 +257,7 @@ void NeuralNetwork::PrintOutput() {
 	for (int c = 0; c < outputValues->getCols(); c++) {
 		std::cout << outputValues->Get(0, c, 0) << "\t";
 	}
+	delete outputValues;
 	std::cout << std::endl;
 }
 
@@ -263,4 +266,30 @@ void NeuralNetwork::PrintTarget() {
 		std::cout << this->m_target[c]<< "\t";
 	}
 	std::cout << std::endl;
+}
+
+void NeuralNetwork::Train(int noEpock) {
+
+	for (auto i = 0; i < noEpock; i++) {
+
+		this->FeedForward();
+		this->setErrors();
+		this->BackPropagation();
+	}
+}
+
+void NeuralNetwork::Save(const std::string& filename,IOStrategy strategy) {
+	
+	
+	//json j = {};
+	 std::vector<mDouble> weightSet; 
+	for (int i = 0; i < this->m_weights.size(); i++) {
+
+		auto ptrMatrix = this->m_weights[i];
+		weightSet.push_back(ptrMatrix->getAsMatrix());
+
+	}
+	//j["weights"] = weightSet;
+	//std::ofstream o(filename);
+	//o << std::setw(4) << j << std::endl;* /
 }

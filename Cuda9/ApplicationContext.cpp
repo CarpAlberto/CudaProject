@@ -5,7 +5,7 @@ using namespace gpuNN;
 ApplicationContext::ApplicationContext()
 {
 	m_gui_interface = std::make_shared<GUIConsole>();
-	applicationLogging = std::make_shared<FileLogging>();
+	applicationLogging = std::make_shared<FileLogging>("application.log",SeverityType::DEBUG);
 }
 
 ApplicationContext::~ApplicationContext()

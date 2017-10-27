@@ -45,5 +45,15 @@ namespace gpuNN {
 		MSE
 	};
 
+	/// <summary>
+	/// Strategy usef for saving the object
+	/// </summary>
+	enum class IOStrategy {
+		XML,
+		JSON,
+		ASCII,
+		BINARY
+	};
+
 	
 }

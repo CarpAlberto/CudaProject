@@ -6,17 +6,16 @@ namespace gpuNN{
 	class Memory {
 	
 	public:
-		Memory() {}
+		/// <summary>
+		/// Default Constructor
+		/// </summary>
+		Memory();
 	public:
 		/// <summary>
 		/// The unique instance of the memory object
 		/// </summary>
 		/// <returns></returns>
-		static Memory* instance()
-		{
-			static Memory* monitor = new Memory();
-			return monitor;
-		}
+		static Memory* instance();
 		/// /// <summary>
 		/// Abstraction of malloc and cudaMalloc.
 		/// </summary>
@@ -42,7 +41,7 @@ namespace gpuNN{
 		/// <summary>
 		/// Custom allocator for cpu
 		/// </summary>
-		StackAllocator cpuAllocator;
+		PoolAllocator cpuAllocator;
 		/// <summary>
 		/// Custom allocator for gpu
 		/// </summary>

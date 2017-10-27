@@ -6,6 +6,7 @@
 /// A generic interface for any GUI interface
 /// </summary>
 class UIInterface {
+
 public:
 	/// <summary>
 	/// Display an message to the screen
@@ -22,4 +23,9 @@ public:
 	/// Shows a double to the screen
 	/// </summary>
 	virtual void Show(double value)=0;
+	/// <summary>
+	/// Shows an Integer to the 
+	/// </summary>
+	/// <param name="value">The value to be printed</param>
+	virtual void Show(int value) = 0;
 };

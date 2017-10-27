@@ -3,59 +3,63 @@
 #include "NonCopyableObject.h"
 #include "NonMoveableObject.h"
 
-template<typename T>
-union PoolChunk 
-{
-	T value;
-	PoolChunk<T>* nextPoolChunk;
-	PoolChunk() {}
-	~PoolChunk() {};
-};
+namespace gpuNN {
 
-template<typename T>
-class PoolAllocator : public NonCopyableObject,
-							 NonMoveableObject
-{
-private:
-	static const size_t POOL_SIZE = 1024;
-	size_t m_size = 0;
-	PoolChunk<T>* m_data=nullptr;
-	PoolChunk<T>* m_head = nullptr;
-public:
-	explicit PoolAllocator(size_t size = POOL_SIZE) 
-	: m_size(size)
-	{
-		m_data = new PoolChunk<T>[size];
-		m_head = m_data;
-		for (size_t i = 0; i < m_size-1; i++) {
-			m_data[i].nextPoolChunk = std::addressof(m_data[i + 1]);
-		}
-		m_data[m_size - 1].nextPoolChunk = nullptr;
-	}
+	template <class T>
+	class StackLinkedList {
+	public:
+		struct Node {
+			T data;
+			Node* next;
+		};
+		Node* head;
+	public:
+		StackLinkedList();
+		void push(Node * newNode);
+		Node* pop();
+	private:
+		StackLinkedList(StackLinkedList &stackLinkedList);
+	};
 	
-	~PoolAllocator()
-	{
-		delete[] m_data;
-		m_data = nullptr;
-		m_head = nullptr;
-	}
-	
-	template<typename... arguments>
-	T* allocate(arguments&& ... args) {
-		if (m_head == nullptr)
-			return nullptr;
-		PoolChunk<T>* poolChunk = m_head;
-		m_head = m_head->nextPoolChunk;
-		T* retVal = new (std::addressof(poolChunk->value)) 
-			T(std::forward<arguments>(args)...);
-		return retVal;
+	class PoolAllocator : public BaseAllocator {
+
+	private:
+		struct  FreeHeader {
+		};
+		typedef StackLinkedList<FreeHeader>::Node Node;
+		StackLinkedList<FreeHeader> m_freeList;
+		void * m_start_ptr = nullptr;
+		std::size_t m_chunkSize;
+	public:
+		PoolAllocator(const std::size_t totalSize = 16777216,
+			const std::size_t chunkSize = 64);
+		virtual ~PoolAllocator();
+		virtual void* Allocate(const std::size_t size, const std::size_t alignment = 0) override;
+		virtual void Free(void* ptr) override;
+		virtual void Init() override;
+		virtual void Reset();
+		size_t getTotalMemory();
+		void PrintMemory();
+		    
+	private:
+		PoolAllocator(PoolAllocator &poolAllocator);
+	};
+
+	template <class T>
+	StackLinkedList<T>::StackLinkedList() {
 	}
 
-	void deallocate(T* data) {
-		data->~T();
-		PoolChunk<T>* poolChunk = reinterpret_cast<PoolChunk<T>*>(data);
-		poolChunk->nextPoolChunk = m_head;
-		m_head = poolChunk;
+	template <class T>
+	void StackLinkedList<T>::push(Node * newNode) {
+		newNode->next = head;
+		head = newNode;
 	}
-};
 
+	template <class T>
+	typename StackLinkedList<T>::Node* StackLinkedList<T>::pop() {
+		Node * top = head;
+		head = head->next;
+		return top;
+	}
+
+}
