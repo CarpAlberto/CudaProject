@@ -9,8 +9,6 @@ namespace gpuNN {
 	class NeuralNetwork : public IPrintableObject
 	{
 	
-	
-
 	protected:
 		/// <summary>
 		/// Internals layers

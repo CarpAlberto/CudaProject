@@ -4,10 +4,12 @@
 #include "GUIConsole.h"
 #include "ApplicationLogger.h"
 #include "LoggingPolicy.h"
+#include "Configuration.h"
 
 namespace gpuNN {
 	
 	typedef ApplicationLogger<FileLoggingPolicy> FileLogging;
+	typedef Configuration<std::string>			 StringConfiguration;
 
 	/// <summary>
 	/// The main application context
@@ -24,6 +26,11 @@ namespace gpuNN {
 		/// The global application logging
 		/// </summary>
 		std::shared_ptr<FileLogging> applicationLogging;
+
+		/// <summary>
+		/// The configuration File
+		/// </summary>
+		std::shared_ptr<StringConfiguration>			 configProperties;
 
 		/// <summary>
 		/// Destroy the unique instance
@@ -58,5 +65,10 @@ namespace gpuNN {
 		/// </summary>
 		/// <returns></returns>
 		std::shared_ptr<FileLogging> getLog() const;
+		/// <summary>
+		/// Returns the configuration
+		/// </summary>
+		/// <returns>The configuration</returns>
+		std::shared_ptr<StringConfiguration> getConfiguration() const;
 	};
 }

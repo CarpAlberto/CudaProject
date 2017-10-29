@@ -20,7 +20,7 @@ namespace gpuNN {
 		/// The constructor
 		/// </summary>
 		/// <param name="totalSize">Total Size of memory</param>
-		StackAllocator(const std::size_t totalSize = 40960);
+		StackAllocator(const std::size_t totalSize = 100000);
 		/// <summary>
 		/// The destructor of the memory
 		/// </summary>

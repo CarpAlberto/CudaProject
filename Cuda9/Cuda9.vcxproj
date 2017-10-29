@@ -14,6 +14,7 @@
     <ProjectGuid>{845FAF66-A3C3-46CF-8A67-75D02F179949}</ProjectGuid>
     <RootNamespace>Cuda9</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <ProjectName>CudaMachineLearning</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -95,12 +96,14 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="Allocator.h" />
     <ClInclude Include="ApplicationContext.h" />
     <ClInclude Include="ApplicationLogger.h" />
+    <ClInclude Include="Configuration.h" />
     <ClInclude Include="enums.h" />
     <ClInclude Include="ErrorFunction.h" />
     <ClInclude Include="GpuAllocator.h" />
     <ClInclude Include="GUIConsole.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="include\json.hpp" />
+    <ClInclude Include="MatrixFactory.h" />
     <ClInclude Include="MSEErrorFunction.h" />
     <ClInclude Include="NetworkLayer.h" />
     <ClInclude Include="LoggingPolicy.h" />
@@ -127,6 +130,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="GpuAllocator.cu" />
     <ClCompile Include="GUIConsole.cpp" />
     <ClCompile Include="LoggingPolicy.cpp" />
+    <ClCompile Include="MatrixFactory.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="MemoryAllocationException.cpp" />
     <ClCompile Include="MSEErrorFunction.cpp" />
@@ -138,6 +142,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="TanhTransferFunction.cpp" />
     <ClCompile Include="FunctionFactory.cpp" />
     <ClCompile Include="Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.cfg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

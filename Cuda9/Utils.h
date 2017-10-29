@@ -21,6 +21,15 @@ namespace gpuNN {
 		static std::size_t CalculatePaddingWithHeader(const std::size_t baseAddress, const std::size_t alignment, const std::size_t headerSize);
 
 		/// <summary>
+		/// Given a string this method trims the data and returns the trimed 
+		/// string
+		/// </summary>
+		/// <param name="source">The given string</param>
+		/// <param name="delims">The given delims</param>
+		/// <returns>The returned string</returns>
+		static std::string Trim(std::string const& source, char const* delims = " \t\r\n");
+
+		/// <summary>
 		/// Generate random number
 		/// </summary>
 		/// <returns></returns>

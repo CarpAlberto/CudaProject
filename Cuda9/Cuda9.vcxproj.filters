@@ -55,6 +55,12 @@
     <Filter Include="assets">
       <UniqueIdentifier>{ab1e799b-e83d-486f-88ad-0e87d2a4cb23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="io">
+      <UniqueIdentifier>{5d4c80cf-9c60-43c2-b273-192003b3f895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bridge">
+      <UniqueIdentifier>{b7515227-c061-484a-afc3-4d9cc3761882}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vector.h">
@@ -141,6 +147,12 @@
     <ClInclude Include="include\json.hpp">
       <Filter>assets</Filter>
     </ClInclude>
+    <ClInclude Include="Configuration.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixFactory.h">
+      <Filter>bridge</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -191,5 +203,13 @@
     <ClCompile Include="MSEErrorFunction.cpp">
       <Filter>ml\functions</Filter>
     </ClCompile>
+    <ClCompile Include="MatrixFactory.cpp">
+      <Filter>bridge</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.cfg">
+      <Filter>io</Filter>
+    </None>
   </ItemGroup>
 </Project>

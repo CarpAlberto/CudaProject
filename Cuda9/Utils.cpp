@@ -25,3 +25,18 @@ std::size_t Utils::CalculatePaddingWithHeader(const std::size_t baseAddress, con
 	}
 	return padding;
 }
+
+std::string Utils::Trim(std::string const& source, char const* delims) {
+	std::string result(source);
+	std::string::size_type index = result.find_last_not_of(delims);
+	if (index != std::string::npos)
+		result.erase(++index);
+
+	index = result.find_first_not_of(delims);
+	if (index != std::string::npos)
+		result.erase(0, index);
+	else
+		result.erase();
+	return result;
+
+}

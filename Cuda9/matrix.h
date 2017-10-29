@@ -25,32 +25,70 @@ namespace gpuNN {
 		/// <param name="rows">The number of rows</param>
 		/// <param name="cols">The number of column</param>
 		/// <param name="channels">The number of channels</param>
-		GenericMatrix(int rows, int cols, int channels);
+		GenericMatrix(int rows, int cols, int channels=1);
+		/// <summary>
+		/// Release the object
+		/// </summary>
 		void				   Release();
-		GenericMatrix&		   operator=(const GenericMatrix&);
-		GenericMatrix&		   operator<<=(GenericMatrix&);
-		void				   SetSize(int, int, int);
+		/// <summary>
+		/// Overriding The operator =
+		/// </summary>
+		/// <param name="rhs">The rhs paramater</param>
+		/// <returns>The New object</returns>
+		GenericMatrix&		   operator=(const GenericMatrix& rhs);
+		/// <summary>
+		/// Sets the parameters
+		/// </summary>
+		/// <param name="rows">The rows</param>
+		/// <param name="columns">The columns</param>
+		/// <param name="channels">The channels</param>
+		void				   SetSize(int rows, int columns, int channels=1);
+		/// <summary>
+		/// Sets the zeros on th evalue of the matrix
+		/// </summary>
 		void				   Zeros();
+		/// <summary>
+		/// Sets the matrix with ones values
+		/// </summary>
 		void				   Ones();
-		int					   getLength()const;
+		/// <summary>
+		/// Returns the length of the matrix
+		/// </summary>
+		/// <returns>The length of the matrix</returns>
+		int					   getLength() const;
+
 		virtual void		   Randu()=0;
 		virtual void		   Randn()=0;
+		/// <summary>
+		/// Perform the matrix allocation
+		/// </summary>
 		virtual void		   Malloc() {};
+		/// <summary>
+		/// Free the matrix
+		/// </summary>
 		virtual void		   Free() = 0;
+		/// <summary>
+		/// Copy the object into the <code>rhs</code> parameters
+		/// </summary>
+		/// <param name="rhs">The rhs parameter</param>
 		virtual void		   Memcpy(GenericMatrix& rhs) = 0;
+		/// <summary>
+		/// Sets all the data with the <code>val</code>
+		/// </summary>
+		/// <param name="val">The value to be setted</param>
 		virtual void		   SetAll(float val)=0;
 		virtual void		   SetAll(const VectorFloat& rhs) = 0;
 		virtual void		   Set(int, int, int, float)=0;
 		virtual void		   Set(int, int, const VectorFloat&)=0;
 		virtual void		   Set(int, int, float)=0;
-		virtual float		   Get(int, int, int)const;
-		VectorFloat			   Get(int, int)const;
 		/// <summary>
-		/// Returns the element from position <code>Position</code>
+		/// Gets the value from the given position
 		/// </summary>
-		/// <param name="position">The position</param>
-		/// <returns>A Vecor Float Object</returns>
-		VectorFloat			   Get(int position)const;
+		/// <param name="rows">The rows value</param>
+		/// <param name="cols">The cols value</param>
+		/// <param name="channels">The channels value</param>
+		/// <returns>The float value</returns>
+		virtual float		   Get(int rows, int cols, int channels = 0)const;
 		/// <summary>
 		/// Returns the Raw Data
 		/// </summary>
@@ -166,14 +204,16 @@ namespace gpuNN {
 		int				m_channels;
 		float*			m_data;
 	};
-
+	/// <summary>
+	/// Cpu Matrix Managed
+	/// </summary>
 	class CpuMatrix : public GenericMatrix
 	{
 		
 		public:
 			CpuMatrix();
-			CpuMatrix(const GenericMatrix&);
-			CpuMatrix(int, int, int);
+			CpuMatrix(const GenericMatrix& rhs);
+			CpuMatrix(int rows, int columns, int channel = 1);
 		public:
 			 void   Malloc() override;
 			 void   Memcpy(GenericMatrix& rhs) override;
@@ -199,10 +239,47 @@ namespace gpuNN {
 			 virtual ~CpuMatrix();
 			 virtual mDouble getAsMatrix();
 	};
+	/// <summary>
+	/// Gpu Managed Matrix
+	/// </summary>
 	class GpuMatrix : public GenericMatrix {
+
 	public:
-		void Malloc() override {};
-		void Free() override {};
-		virtual void Clone(const GenericMatrix&) override {};
+#pragma region Constructors
+		GpuMatrix(int rows, int columns, int channel = 1);
+		GpuMatrix(const GenericMatrix& rhs);
+		GpuMatrix();
+#pragma endregion
+	public:
+		void Malloc() override;
+		void Free() override;
+		virtual void Clone(const GenericMatrix&) override ;
+		virtual void		   Memcpy(GenericMatrix& rhs);
+		virtual float		   Get(int, int, int)const override;
+
+		virtual GenericMatrix& operator+(const GenericMatrix&) const { return *new GpuMatrix(); }
+		virtual GenericMatrix& operator+(float val) const { return *new GpuMatrix(); }
+		virtual GenericMatrix& operator+(const VectorFloat&) const { return *new GpuMatrix(); };
+
+		virtual GenericMatrix& operator-(const GenericMatrix&) const { return *new GpuMatrix(); }
+		virtual GenericMatrix& operator-(float val) const { return *new GpuMatrix(); }
+		virtual GenericMatrix& operator-(const VectorFloat&) const { return *new GpuMatrix(); };
+
+		virtual GenericMatrix& operator*(const GenericMatrix& rhs) const { return *new GpuMatrix(); };
+		virtual GenericMatrix& operator*(float val) const { return *new GpuMatrix(); };
+		virtual GenericMatrix& operator*(const VectorFloat&) { return *new GpuMatrix(); };
+
+		virtual GenericMatrix& Transpose() const { return *new GpuMatrix(); };
+
+		virtual void		   SetAll(float val) {};
+		virtual void		   SetAll(const VectorFloat& rhs) {};
+		virtual void		   Set(int, int, int, float);
+		void				   Set(int position, const VectorFloat & rhs);
+		virtual void		   Set(int, int, const VectorFloat&)override;
+		virtual void		   Set(int, int, float) {};
+
+		virtual void		   Randu() {};
+		virtual void		   Randn() {};
+		virtual mDouble getAsMatrix() { return mDouble(); };
 	};
 }

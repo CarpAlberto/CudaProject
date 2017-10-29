@@ -41,18 +41,6 @@ GenericMatrix& GenericMatrix::operator=(const GenericMatrix& rhs)
 	return *this;
 }
 
-GenericMatrix& GenericMatrix::operator<<=(GenericMatrix& rhs)
-{
-	this->Free();
-	this->m_cols = rhs.m_cols;
-	this->m_rows = rhs.m_rows;
-	this->m_channels = rhs.m_channels;
-	this->Malloc();
-	this->Memcpy(const_cast<GenericMatrix&>(rhs));
-	rhs.Release();
-	return *this;
-}
-
 void GenericMatrix::SetSize(int rows, int cols, int channels) {
 	this->Free();
 	this->m_cols = cols;
@@ -89,25 +77,6 @@ float  GenericMatrix::Get(int y, int x, int channel)const {
 	return this->m_data[RC2IDX(y,x, this->m_cols) + channel * (this->m_rows * this->m_cols)];
 }
 
-VectorFloat		GenericMatrix::Get(int y, int x)const {
-	if (this->m_data == nullptr) {
-		if (x >= this->m_cols || y >= this->m_rows || 3 > this->m_channels) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-				("Invalid position");
-			throw new std::exception("Invalid position");
-		}
-	}
-	VectorFloat response;
-	for (int i = 0; i < 3; ++i) {
-		response.Set(i, this->m_data[RC2IDX(y, x, this->m_cols) + i * (this->m_rows * this->m_cols)]);
-	}
-	return response;
-}
-
-VectorFloat		GenericMatrix::Get(int index)const {
-	VectorFloat response;
-	return response;
-}
 
 int GenericMatrix::getCols() const {
 	return this->m_cols;
@@ -323,7 +292,6 @@ GenericMatrix& CpuMatrix::operator-(const VectorFloat& rhs) const {
 	return *cpuMatrix;
 }
 
-
 GenericMatrix& CpuMatrix::operator*(const GenericMatrix& rhs) const {
 
 	if (this->m_cols != rhs.getRows()) {
@@ -438,4 +406,130 @@ mDouble CpuMatrix::getAsMatrix() {
 		matrix.push_back(v);
 	}
 	return matrix;
+}
+
+
+// Gpu Matrix Implementation
+void GpuMatrix::Malloc()
+{
+	if (this->m_data == nullptr) {
+
+		try
+		{
+			// allocates a vector of two integers
+			this->m_data = (float*)Memory::instance()->allocate(this->m_cols * this->m_rows * this->m_channels *
+				sizeof(float), Bridge::GPU);
+		}
+		catch (MemoryAllocationException exception) {
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+				(exception.what());
+		}
+		catch (...) {
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+				("Unknown Error");
+		}
+		cudaMemset(this->m_data, 0, m_cols * m_rows * m_channels * sizeof(float));
+	}
+}
+
+GpuMatrix::GpuMatrix(int height, int width, int channels)
+	: GenericMatrix(height, width, channels) {
+
+	this->Malloc();
+}
+
+GpuMatrix::GpuMatrix() : GenericMatrix() {
+
+}
+
+void GpuMatrix::Free() {
+	Memory::instance()->deallocate(this->m_data, Bridge::GPU);
+
+}
+
+void GpuMatrix::Memcpy(GenericMatrix& rhs) {
+	cudaMemcpy(this->m_data, rhs.getData(), getLength(),cudaMemcpyKind::cudaMemcpyDeviceToDevice);
+}
+
+void GpuMatrix::Set(int y, int x, int channel, float val) {
+	if (this->m_data == nullptr) {
+		this->Malloc();
+	}
+	if (y >= this->m_rows || x >= this->m_cols || channel >= this->m_channels) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid position Gpu");
+		throw new std::exception("invalid");
+	}
+	/*Need to store the float value inside a pointer*/
+	float *pData = (float*)malloc(sizeof(float));
+	pData = &val;
+	cudaError status =  cudaMemcpy(this->m_data + RC2IDX(y, x, this->m_cols) + channel *
+		(this->m_rows * this->m_cols), pData, sizeof(float),
+		cudaMemcpyKind::cudaMemcpyHostToDevice);
+
+	if (status != cudaError::cudaSuccess) {
+		throw new std::exception("Error cudaMemcpy\n");
+	}
+}
+
+void GpuMatrix::Set(int position, const VectorFloat& rhs) {
+	if (this->m_data == nullptr) {
+		this->Malloc();
+	}
+	if (position >= this->m_cols * this->m_rows) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid position Gpu");
+		throw new std::exception("invalid");
+	}
+	float pData;
+	for (int i = 0; i < this->m_channels; i++) {
+		pData = rhs.Get(i);
+		cudaMemcpy(this->m_data + position + i *
+			(this->m_rows * this->m_cols), &pData, sizeof(float), cudaMemcpyKind::cudaMemcpyHostToDevice);
+	}
+}
+
+void GpuMatrix::Set(int position,int channel, const VectorFloat& rhs) {
+	if (this->m_data == nullptr) {
+		this->Malloc();
+	}
+	if (position >= this->m_cols * this->m_rows) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid position Gpu");
+		throw new std::exception("invalid");
+	}
+	/*Need to store the float value inside a pointer*/
+	float *pData = (float*)malloc(sizeof(float));
+	cudaMemcpy(this->m_data +  position + channel *
+		(this->m_rows * this->m_cols), pData, sizeof(float), cudaMemcpyKind::cudaMemcpyHostToDevice);
+}
+
+float GpuMatrix::Get(int y, int x, int channel) const {
+
+	if (this->m_data == nullptr || y >= this->m_rows || x >= this->m_cols || channel >= this->m_channels) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid position Gpu");
+		throw new std::exception("invalid");
+	}
+	float host_data = 0;
+	auto error = cudaMemcpy(&host_data, this->m_data + 
+		RC2IDX(y, x, this->m_cols) + channel * (this->m_rows * this->m_cols),
+		sizeof(float), cudaMemcpyDeviceToHost);
+	if (error != cudaError::cudaSuccess) {
+		throw new std::exception("CudaMemcpy error");
+	}
+	return host_data;
+}
+
+GpuMatrix::GpuMatrix(const GenericMatrix& rhs) : GenericMatrix(rhs) {
+	this->m_data = nullptr;
+	this->Clone(rhs);
+}
+
+void GpuMatrix::Clone(const GenericMatrix& rhs)  {
+	this->m_cols = rhs.getCols();
+	this->m_rows = rhs.getRows();
+	this->m_channels = rhs.getChannels();
+	this->Malloc();
+	this->Memcpy(const_cast<GenericMatrix&>(rhs));
 }

@@ -37,7 +37,7 @@ vDouble NetworkLayer::toVector() {
 }
 
 PtrMatrix NetworkLayer::toMatrix() {
-	auto m  = new CpuMatrix(1, this->m_neurons.size(), 1);
+	auto m  = new CpuMatrix(1, this->m_neurons.size());
 	for (auto i = 0; i < this->m_neurons.size(); ++i) {
 		auto value = this->m_neurons[i]->getOutputValue();
 		m->Set(0,i,0, value);
@@ -46,7 +46,7 @@ PtrMatrix NetworkLayer::toMatrix() {
 }
 
 PtrMatrix NetworkLayer::toMatrixActivated() {
-	auto m = new CpuMatrix(1, this->m_neurons.size(), 1);
+	auto m = new CpuMatrix(1, this->m_neurons.size());
 	for (auto i = 0; i < this->m_neurons.size(); ++i) {
 		auto value = this->m_neurons[i]->getActivatedValue();
 		m->Set(0, i,0, value);
@@ -55,7 +55,7 @@ PtrMatrix NetworkLayer::toMatrixActivated() {
 }
 
 PtrMatrix NetworkLayer::toMatrixDerived() {
-	auto m = new CpuMatrix(1, this->m_neurons.size(), 1);
+	auto m = new CpuMatrix(1, this->m_neurons.size());
 	for (auto i = 0; i < this->m_neurons.size(); ++i) {
 		auto value = this->m_neurons[i]->getDerivedValue();
 		m->Set(0, i,0,value);
