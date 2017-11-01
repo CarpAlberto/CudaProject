@@ -62,6 +62,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
+      <CodeGeneration>compute_53,sm_53;%(CodeGeneration)</CodeGeneration>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -88,7 +89,6 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
     <CudaCompile Include="matrix.cu" />
     <CudaCompile Include="vector.cu" />
   </ItemGroup>
@@ -104,6 +104,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="includes.h" />
     <ClInclude Include="include\json.hpp" />
     <ClInclude Include="MatrixFactory.h" />
+    <ClInclude Include="matrix_kernels.h" />
     <ClInclude Include="MSEErrorFunction.h" />
     <ClInclude Include="NetworkLayer.h" />
     <ClInclude Include="LoggingPolicy.h" />
@@ -131,6 +132,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="GUIConsole.cpp" />
     <ClCompile Include="LoggingPolicy.cpp" />
     <ClCompile Include="MatrixFactory.cpp" />
+    <ClCompile Include="matrix_kernels.cu" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="MemoryAllocationException.cpp" />
     <ClCompile Include="MSEErrorFunction.cpp" />

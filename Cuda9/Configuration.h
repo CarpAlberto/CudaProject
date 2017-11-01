@@ -8,11 +8,11 @@ namespace gpuNN
 	{
 		std::map<std::string, Object> m_content;
 	public:
+		Configuration() = delete;
 		Configuration(const std::string& fileName);
 		Object Value(const std::string& section, const std::string& entry);
 		~Configuration();
 	};
-
 
 	template<typename Object>
 	Configuration<Object>
@@ -50,5 +50,10 @@ namespace gpuNN
 			throw new std::exception("configuration entry not found");
 		}
 		return iterator->second;
+	}
+
+	template<typename Object>
+	Configuration<Object>::~Configuration() {
+
 	}
 }

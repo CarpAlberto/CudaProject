@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cuda9", "Cuda9\Cuda9.vcxproj", "{845FAF66-A3C3-46CF-8A67-75D02F179949}"
 EndProject
@@ -12,34 +12,56 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestCudaRuntime", "TestCuda
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NeuralNetworkProject", "NeuralNetworkProject\NeuralNetworkProject.vcxproj", "{027DF51B-A191-4FF8-9348-0FFAA65B99C5}"
 EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "NodeJSInterface", "NodeJSInterface\NodeJSInterface.njsproj", "{8E853E1E-0189-49FF-A839-AF92B8111263}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{845FAF66-A3C3-46CF-8A67-75D02F179949}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{845FAF66-A3C3-46CF-8A67-75D02F179949}.Debug|x64.ActiveCfg = Debug|x64
 		{845FAF66-A3C3-46CF-8A67-75D02F179949}.Debug|x64.Build.0 = Debug|x64
 		{845FAF66-A3C3-46CF-8A67-75D02F179949}.Debug|x86.ActiveCfg = Debug|x64
+		{845FAF66-A3C3-46CF-8A67-75D02F179949}.Release|Any CPU.ActiveCfg = Release|x64
 		{845FAF66-A3C3-46CF-8A67-75D02F179949}.Release|x64.ActiveCfg = Release|x64
 		{845FAF66-A3C3-46CF-8A67-75D02F179949}.Release|x64.Build.0 = Release|x64
 		{845FAF66-A3C3-46CF-8A67-75D02F179949}.Release|x86.ActiveCfg = Release|x64
+		{D93AA4FA-6AF5-4070-BAF6-F28E9A08C41B}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{D93AA4FA-6AF5-4070-BAF6-F28E9A08C41B}.Debug|x64.ActiveCfg = Debug|x64
 		{D93AA4FA-6AF5-4070-BAF6-F28E9A08C41B}.Debug|x64.Build.0 = Debug|x64
 		{D93AA4FA-6AF5-4070-BAF6-F28E9A08C41B}.Debug|x86.ActiveCfg = Debug|x64
+		{D93AA4FA-6AF5-4070-BAF6-F28E9A08C41B}.Release|Any CPU.ActiveCfg = Release|x64
 		{D93AA4FA-6AF5-4070-BAF6-F28E9A08C41B}.Release|x64.ActiveCfg = Release|x64
 		{D93AA4FA-6AF5-4070-BAF6-F28E9A08C41B}.Release|x64.Build.0 = Release|x64
 		{D93AA4FA-6AF5-4070-BAF6-F28E9A08C41B}.Release|x86.ActiveCfg = Release|x64
+		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Debug|x64.ActiveCfg = Debug|x64
 		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Debug|x64.Build.0 = Debug|x64
 		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Debug|x86.ActiveCfg = Debug|Win32
 		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Debug|x86.Build.0 = Debug|Win32
+		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Release|Any CPU.ActiveCfg = Release|Win32
 		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Release|x64.ActiveCfg = Release|x64
 		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Release|x64.Build.0 = Release|x64
 		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Release|x86.ActiveCfg = Release|Win32
 		{027DF51B-A191-4FF8-9348-0FFAA65B99C5}.Release|x86.Build.0 = Release|Win32
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Debug|x64.Build.0 = Debug|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Debug|x86.Build.0 = Debug|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Release|x64.ActiveCfg = Release|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Release|x64.Build.0 = Release|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Release|x86.ActiveCfg = Release|Any CPU
+		{8E853E1E-0189-49FF-A839-AF92B8111263}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

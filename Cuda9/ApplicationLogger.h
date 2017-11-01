@@ -85,6 +85,7 @@ namespace gpuNN {
 		:m_logLine(0),
 		loggingLevel(severity)
 	{
+		this->policy = new log_policy();
 		this->policy->open_ostream(name);
 	}
 

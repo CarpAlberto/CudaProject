@@ -2,7 +2,9 @@
 #include "includes.h"
 #include "matrix.h"
 namespace gpuNN {
-	class MatrixFactory
+
+	class MatrixFactory : NonCopyableObject,
+						  NonMoveableObject
 	{
 	public:
 		/// <summary>
@@ -11,10 +13,17 @@ namespace gpuNN {
 		/// <param name="rows">The rows number</param>
 		/// <param name="columns">The column numbers</param>
 		/// <returns>The matrix</returns>
-		GenericMatrix* getMatrix(int rows, int columns);
+		static GenericMatrix* getMatrix(int rows, int columns);
+		/// <summary>
+		/// Returns an matrix based on the the rhs parameter
+		/// </summary>
+		/// <param name="rhs">The rhs parameter</param>
+		/// <returns>A pointer to the new Created matrix</returns>
+		static GenericMatrix* getMatrix(const GenericMatrix&);
 	public:
-		MatrixFactory() = default;
-		~MatrixFactory() = default;
+		MatrixFactory() = delete;
+		~MatrixFactory() = delete;
+
 
 
 	};

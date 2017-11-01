@@ -1,5 +1,5 @@
 #include "vector.h"
-
+#include "Memory.h"
 using namespace gpuNN;
 
 

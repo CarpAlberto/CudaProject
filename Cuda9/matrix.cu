@@ -1,5 +1,6 @@
 #pragma once
 #include "matrix.h"
+#include "Memory.h"
 
 using namespace gpuNN;
 
@@ -208,7 +209,7 @@ GenericMatrix& CpuMatrix::operator+(const GenericMatrix& rhs) const {
 		throw new std::exception("Invalid arguments");
 	}
 	int length = getLength();
-	CpuMatrix* cpuMatrix = new CpuMatrix(rhs);
+	auto cpuMatrix = new CpuMatrix(rhs);
 	for (int i = 0; i < length; ++i) {
 		cpuMatrix->m_data[i] = rhs.getData()[i] + m_data[i];
 	}
@@ -485,7 +486,8 @@ void GpuMatrix::Set(int position, const VectorFloat& rhs) {
 	for (int i = 0; i < this->m_channels; i++) {
 		pData = rhs.Get(i);
 		cudaMemcpy(this->m_data + position + i *
-			(this->m_rows * this->m_cols), &pData, sizeof(float), cudaMemcpyKind::cudaMemcpyHostToDevice);
+			(this->m_rows * this->m_cols), &pData, sizeof(float),
+			cudaMemcpyKind::cudaMemcpyHostToDevice);
 	}
 }
 
@@ -532,4 +534,20 @@ void GpuMatrix::Clone(const GenericMatrix& rhs)  {
 	this->m_channels = rhs.getChannels();
 	this->Malloc();
 	this->Memcpy(const_cast<GenericMatrix&>(rhs));
+}
+
+
+GenericMatrix& GpuMatrix::operator+(const GenericMatrix& rhs) const {
+
+	if (this->m_data == nullptr || rhs.getData() == nullptr || getLength() != rhs.getLength()) {
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			("Invalid arguments");
+		throw new std::exception("Invalid arguments");
+	}
+	int length = getLength();
+	auto gpuMatrix = new GpuMatrix(rhs);
+	for (int i = 0; i < length; ++i) {
+		gpuMatrix->m_data[i] = rhs.getData()[i] + m_data[i];
+	}
+	return *gpuMatrix;
 }

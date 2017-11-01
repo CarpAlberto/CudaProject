@@ -11,9 +11,21 @@
 #include <chrono>
 //#include "include/json.hpp"
 
-/*Cuda imports*/
 #include <cuda_runtime.h>
-#include <cuda.h>
+#include <device_launch_parameters.h>
+#include <immintrin.h>
+
+/*Cuda imports*/
+
+#ifndef __CUDACC_RTC__ 
+#define __CUDACC_RTC__
+#endif 
+#ifndef __CUDACC__
+#define __CUDACC__
+#endif
+
+
+
 #include "enums.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -34,7 +46,6 @@
 #include "ApplicationContext.h"
 #include "UI.h"
 
-
 /*Forward declaration*/
 using namespace gpuNN;
 using namespace std::chrono;
@@ -51,9 +62,10 @@ typedef unsigned char byte;
 /// <summary>
 /// Typedef the vectore of integers for toplogy
 /// </summary>
-typedef std::vector<size_t>			   Topology;	
+typedef std::vector<size_t>			   Topology;
 typedef std::vector<double>			   vDouble;
 typedef std::vector<vDouble>		   mDouble;
+
 
 //using json = nlohmann::json;
 

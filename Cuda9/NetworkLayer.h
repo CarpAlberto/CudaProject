@@ -6,6 +6,7 @@
 namespace gpuNN {
 
 	typedef GenericMatrix*			 PtrMatrix;
+
 	typedef std::vector<PtrMatrix>   VectorPtrMatrix;
 
 	class NetworkLayer {

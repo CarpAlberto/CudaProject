@@ -2,7 +2,6 @@
 #include "vector.h"
 
 namespace gpuNN {
-
 	/// <summary>
 	/// Generic Matrix 
 	/// </summary>
@@ -245,7 +244,7 @@ namespace gpuNN {
 	class GpuMatrix : public GenericMatrix {
 
 	public:
-#pragma region Constructors
+		#pragma region Constructors
 		GpuMatrix(int rows, int columns, int channel = 1);
 		GpuMatrix(const GenericMatrix& rhs);
 		GpuMatrix();
@@ -257,7 +256,7 @@ namespace gpuNN {
 		virtual void		   Memcpy(GenericMatrix& rhs);
 		virtual float		   Get(int, int, int)const override;
 
-		virtual GenericMatrix& operator+(const GenericMatrix&) const { return *new GpuMatrix(); }
+		virtual GenericMatrix& operator+(const GenericMatrix&) const;
 		virtual GenericMatrix& operator+(float val) const { return *new GpuMatrix(); }
 		virtual GenericMatrix& operator+(const VectorFloat&) const { return *new GpuMatrix(); };
 

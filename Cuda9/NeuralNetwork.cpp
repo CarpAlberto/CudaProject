@@ -1,4 +1,5 @@
 #include "NeuralNetwork.h"
+#include "MatrixFactory.h"
 using namespace gpuNN;
 
 
@@ -22,7 +23,7 @@ NeuralNetwork::NeuralNetwork(Topology& topology,
 		this->m_layers.push_back(layer);
 	}
 	for (auto i = 0; i < topology.size() - 1; i++) {
-		auto matrix = new CpuMatrix(topology[i], topology[i + 1], 1);
+		auto matrix = MatrixFactory::getMatrix(topology[i], topology[i + 1]);
 		matrix->SetRandom();
 		this->m_weights.push_back(std::move(matrix));
 	}

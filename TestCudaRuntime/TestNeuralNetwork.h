@@ -65,6 +65,7 @@ public:
 		network.SetCurrentTarget(data);
 
 		network.Train(400);
+		Memory::instance()->PrintMemoryUsage();
 	}
 
 };

@@ -1,6 +1,4 @@
 #pragma once
-#include "includes.h"
-
 #include "GUIConsole.h"
 #include "ApplicationLogger.h"
 #include "LoggingPolicy.h"

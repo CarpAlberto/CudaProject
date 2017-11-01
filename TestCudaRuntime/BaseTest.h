@@ -5,6 +5,8 @@
 #include <functional>
 #include <vector>
 #include <chrono>
+#include <string>
+#include <map>
 
 using namespace std::chrono;
 
@@ -25,6 +27,7 @@ namespace TestProject {
 		WithClock,
 		NoClock
 	};
+	
 	class BaseTest {
 
 	protected:
@@ -46,30 +49,34 @@ namespace TestProject {
 	class TestContainer {
 		
 	protected:
-		std::vector<std::function<void()>> functions;
+		std::map<std::string,std::function<void()>> functions;
 	public:
 		template<typename Function>
 		void add(Function && function) {
-			functions.push_back(std::forward<Function>(function));
+			functions.insert(std::make_pair<>("",std::forward<Function>(function)));
+		}
+		template<typename Function>
+		void add(std::string description, Function  && function) {
+			functions.insert(std::make_pair<>(description, std::forward<Function>(function)));
 		}
 		virtual void run(LaunchWithBenchmark clock = LaunchWithBenchmark::NoClock) {
 			try
 			{
-				for (auto && fn : this->functions) {
+				for (auto && fnMap : this->functions) {
+					std::string description = fnMap.first;
+					auto fn = fnMap.second;
 					if (clock == LaunchWithBenchmark::WithClock) {
+						std::cout << "Running Test " << description << std::endl;
 						auto start = std::chrono::high_resolution_clock::now();
 						fn();
 						auto end = std::chrono::high_resolution_clock::now();
-
 						duration<double> time_span = duration_cast<duration<double>>(end- start);
-
-
-						std::cout << "\nTime Elapsed : " << (time_span).count() << "\n";
+						std::cout << "Time Elapsed : " << (time_span).count() << "\n";
 					}
 					else {
 						fn();
 					}
-					std::cout << "Test succeeded" << std::endl;
+					std::cout << "Test succeeded\n" << std::endl;
 				}
 			}
 			catch (TestException* exc) {

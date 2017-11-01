@@ -1,9 +1,7 @@
 #include "NetworkLayer.h"
+#include "MatrixFactory.h"
 using namespace gpuNN;
 
-NetworkLayer::~NetworkLayer() {
-
-}
 void NetworkLayer::Push(Neuron* neuron) {
 	this->m_neurons.push_back(neuron);
 }
@@ -18,6 +16,7 @@ size_t NetworkLayer::Size() const {
 
 NetworkLayer::NetworkLayer(int numOutputs, TransferFunction* transfer) {
 
+	//TODO may cause memory leaks
 	for (int i = 0; i < numOutputs; i++) {
 		this->m_neurons.push_back(new Neuron(numOutputs,transfer));
 	}
@@ -37,7 +36,7 @@ vDouble NetworkLayer::toVector() {
 }
 
 PtrMatrix NetworkLayer::toMatrix() {
-	auto m  = new CpuMatrix(1, this->m_neurons.size());
+	auto m = MatrixFactory::getMatrix(1, this->m_neurons.size());
 	for (auto i = 0; i < this->m_neurons.size(); ++i) {
 		auto value = this->m_neurons[i]->getOutputValue();
 		m->Set(0,i,0, value);
@@ -46,7 +45,7 @@ PtrMatrix NetworkLayer::toMatrix() {
 }
 
 PtrMatrix NetworkLayer::toMatrixActivated() {
-	auto m = new CpuMatrix(1, this->m_neurons.size());
+	auto m = MatrixFactory::getMatrix(1, this->m_neurons.size());
 	for (auto i = 0; i < this->m_neurons.size(); ++i) {
 		auto value = this->m_neurons[i]->getActivatedValue();
 		m->Set(0, i,0, value);
@@ -55,10 +54,16 @@ PtrMatrix NetworkLayer::toMatrixActivated() {
 }
 
 PtrMatrix NetworkLayer::toMatrixDerived() {
-	auto m = new CpuMatrix(1, this->m_neurons.size());
+	auto m = MatrixFactory::getMatrix(1, this->m_neurons.size());
 	for (auto i = 0; i < this->m_neurons.size(); ++i) {
 		auto value = this->m_neurons[i]->getDerivedValue();
-		m->Set(0, i,0,value);
+		m->Set(0, i,0,(float)value);
 	}
 	return m;
+}
+
+NetworkLayer::~NetworkLayer() {
+	for (auto it : this->m_neurons) {
+		delete it;
+	}
 }
