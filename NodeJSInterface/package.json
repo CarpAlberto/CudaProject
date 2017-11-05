@@ -1,23 +1,45 @@
 {
-  "name": "node-jsinterface",
-  "version": "0.0.0",
-  "private": true,
+  "name": "web",
+  "version": "1.0.0",
+  "description": "example web app for using C++ code in a web app",
+  "main": "index.js",
   "scripts": {
-    "start": "node app"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "description": "NodeJSInterface",
-  "author": {
-    "name": "Alberto"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freezer333/cppwebify.git"
   },
+  "keywords": [
+    "c++"
+  ],
+  "author": "Scott Frees <scott.frees@gmail.com> (http://scottfrees.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/freezer333/cppwebify/issues"
+  },
+  "homepage": "https://github.com/freezer333/cppwebify#readme",
   "dependencies": {
-    "body-parser": "^1.15.0",
-    "cookie-parser": "^1.4.0",
-    "debug": "^2.2.0",
-    "express": "^4.14.0",
-    "ffi": "^2.2.0",
-    "morgan": "^1.7.0",
-    "node-gyp": "^3.6.2",
-    "pug": "^2.0.0-beta6",
-    "serve-favicon": "^2.3.0"
+    "bcryptjs": "2.4.3",
+    "body-parser": "^1.14.1",
+    "cors": "2.8.4",
+    "express": "^4.13.3",
+    "ffi": "*",
+    "jade": "^1.11.0",
+    "jsonwebtoken": "8.1.0",
+    "mongo-db": "^1.0.2",
+    "mongoose": "4.13.0",
+    "nodemon": "^1.12.1",
+    "passport": "0.4.0",
+    "passport-jwt": "^3.0.1",
+    "ref": "*",
+    "ref-array": "*",
+    "rmdir": "*",
+    "temp": "*"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-auto-install": "^0.3.0",
+    "grunt-contrib-clean": "^0.7.0"
   }
 }
