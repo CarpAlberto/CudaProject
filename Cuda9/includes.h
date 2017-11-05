@@ -14,6 +14,7 @@
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 #include <immintrin.h>
+#include <curand.h>
 
 /*Cuda imports*/
 
@@ -25,6 +26,7 @@
 #endif
 
 
+#define threadsPerBlock 512
 
 #include "enums.h"
 #include <sys/types.h>
@@ -45,6 +47,7 @@
 #include "Utils.h"
 #include "ApplicationContext.h"
 #include "UI.h"
+#include "matrix_kernels.h"
 
 /*Forward declaration*/
 using namespace gpuNN;

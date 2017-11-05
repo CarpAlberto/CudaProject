@@ -62,8 +62,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
-      <CodeGeneration>compute_53,sm_53;%(CodeGeneration)</CodeGeneration>
     </CudaCompile>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -127,14 +129,16 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Allocator.cpp" />
-    <ClCompile Include="ApplicationContext.cpp" />
+    <ClCompile Include="ApplicationContext.cu" />
     <ClCompile Include="GpuAllocator.cu" />
-    <ClCompile Include="GUIConsole.cpp" />
+    <ClCompile Include="GUIConsole.cu" />
     <ClCompile Include="LoggingPolicy.cpp" />
-    <ClCompile Include="MatrixFactory.cpp" />
-    <ClCompile Include="matrix_kernels.cu" />
+    <ClCompile Include="MatrixFactory.cu" />
+    <CudaCompile Include="matrix_kernels.cu">
+      <FileType>Document</FileType>
+    </CudaCompile>
     <ClCompile Include="Memory.cpp" />
-    <ClCompile Include="MemoryAllocationException.cpp" />
+    <ClCompile Include="MemoryAllocationException.cu" />
     <ClCompile Include="MSEErrorFunction.cpp" />
     <ClCompile Include="NetworkLayer.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />

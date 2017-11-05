@@ -78,7 +78,6 @@ float  GenericMatrix::Get(int y, int x, int channel)const {
 	return this->m_data[RC2IDX(y,x, this->m_cols) + channel * (this->m_rows * this->m_cols)];
 }
 
-
 int GenericMatrix::getCols() const {
 	return this->m_cols;
 }
@@ -449,7 +448,7 @@ void GpuMatrix::Free() {
 }
 
 void GpuMatrix::Memcpy(GenericMatrix& rhs) {
-	cudaMemcpy(this->m_data, rhs.getData(), getLength(),cudaMemcpyKind::cudaMemcpyDeviceToDevice);
+	cudaMemcpy(this->m_data, rhs.getData(), rhs.getLength() * sizeof(float),cudaMemcpyKind::cudaMemcpyDeviceToDevice);
 }
 
 void GpuMatrix::Set(int y, int x, int channel, float val) {
@@ -536,6 +535,16 @@ void GpuMatrix::Clone(const GenericMatrix& rhs)  {
 	this->Memcpy(const_cast<GenericMatrix&>(rhs));
 }
 
+void GpuMatrix::SetRandom() {
+	if (m_data == nullptr)
+		Malloc();
+	int length = this->m_cols*this->m_rows;
+	curandGenerator_t generator;
+	curandCreateGenerator(&generator, CURAND_RNG_PSEUDO_DEFAULT);
+	curandSetPseudoRandomGeneratorSeed(generator, rand() % 3456);
+	curandGenerateUniform(generator, this->m_data, getLength());
+	curandDestroyGenerator(generator);
+}
 
 GenericMatrix& GpuMatrix::operator+(const GenericMatrix& rhs) const {
 
@@ -545,9 +554,11 @@ GenericMatrix& GpuMatrix::operator+(const GenericMatrix& rhs) const {
 		throw new std::exception("Invalid arguments");
 	}
 	int length = getLength();
-	auto gpuMatrix = new GpuMatrix(rhs);
-	for (int i = 0; i < length; ++i) {
-		gpuMatrix->m_data[i] = rhs.getData()[i] + m_data[i];
-	}
+	GenericMatrix* gpuMatrix = new GpuMatrix(rhs);
+
+	const size_t block_size = threadsPerBlock;
+	const size_t num_blocks = (length / block_size) + ((length % block_size) ? 1 : 0);
+
+	gpu_add <<< num_blocks, block_size >>> (gpuMatrix->getData(),this->m_data, length);
 	return *gpuMatrix;
-}
+ }

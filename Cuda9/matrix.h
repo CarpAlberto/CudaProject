@@ -187,7 +187,7 @@ namespace gpuNN {
 		/// <summary>
 		/// Populates the matrix with some random data
 		/// </summary>
-		void SetRandom();
+		virtual void SetRandom();
 		/// <summary>
 		/// The virtual destructor
 		/// </summary>
@@ -254,7 +254,7 @@ namespace gpuNN {
 		void Free() override;
 		virtual void Clone(const GenericMatrix&) override ;
 		virtual void		   Memcpy(GenericMatrix& rhs);
-		virtual float		   Get(int, int, int)const override;
+		virtual float		   Get(int, int, int channel = 0)const override;
 
 		virtual GenericMatrix& operator+(const GenericMatrix&) const;
 		virtual GenericMatrix& operator+(float val) const { return *new GpuMatrix(); }
@@ -280,5 +280,6 @@ namespace gpuNN {
 		virtual void		   Randu() {};
 		virtual void		   Randn() {};
 		virtual mDouble getAsMatrix() { return mDouble(); };
+		virtual void SetRandom();
 	};
 }

@@ -7,6 +7,9 @@
     <CudaCompile Include="matrix.cu">
       <Filter>data_structure</Filter>
     </CudaCompile>
+    <CudaCompile Include="matrix_kernels.cu">
+      <Filter>kernels</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="config">
@@ -172,15 +175,6 @@
     <ClCompile Include="GpuAllocator.cu">
       <Filter>memory</Filter>
     </ClCompile>
-    <ClCompile Include="GUIConsole.cpp">
-      <Filter>gui</Filter>
-    </ClCompile>
-    <ClCompile Include="ApplicationContext.cpp">
-      <Filter>config</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryAllocationException.cpp">
-      <Filter>exceptions</Filter>
-    </ClCompile>
     <ClCompile Include="LoggingPolicy.cpp">
       <Filter>logs</Filter>
     </ClCompile>
@@ -205,11 +199,17 @@
     <ClCompile Include="MSEErrorFunction.cpp">
       <Filter>ml\functions</Filter>
     </ClCompile>
-    <ClCompile Include="MatrixFactory.cpp">
+    <ClCompile Include="MatrixFactory.cu">
       <Filter>bridge</Filter>
     </ClCompile>
-    <ClCompile Include="matrix_kernels.cu">
-      <Filter>kernels</Filter>
+    <ClCompile Include="ApplicationContext.cu">
+      <Filter>config</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryAllocationException.cu">
+      <Filter>exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIConsole.cu">
+      <Filter>gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
