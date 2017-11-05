@@ -13,9 +13,8 @@ public:
 	{
 		auto context = ApplicationContext::instance();
 		auto config = context->getConfiguration();
-
 		auto mode = config->Value("GeneralSettings", "MODE");
-		AssertEqual(mode, "GPU");
+		AssertEqual(mode, "CPU");
 
 	}
 };

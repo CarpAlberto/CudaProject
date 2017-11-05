@@ -1,6 +1,9 @@
 #include "TestMatrix.h"
 #include "TestNeuralNetwork.h"
 #include "TestConfiguration.h"
+#include "settings.h"
+#include "base.h"
+
 
 int main() 
 {
@@ -8,7 +11,7 @@ int main()
 	TestContainer t;
 	
 	/*Add the tests*/
-
+	
 	t.add("Test Constructor Default",&TestMatrix::TestConstructor_Default);
 	t.add("Test Constructor Default Gpu ",&TestMatrix::TestConstructor_Default_Gpu);
 	t.add("Test Constructor Int",&TestMatrix::TestConstructor_Int);
@@ -18,9 +21,8 @@ int main()
 	t.add("Test Constructor Copy Cpu",&TestMatrix::TestCopyConstructor);
 	t.add("Test Constructor Copy Cpu", &TestMatrix::TestCopyConstructor_GPU);
 	t.add("Test Training Network",&TestNeuralNetwork::TestTrain);
-    t.add("Test Load Config", &TestConfiguration::TestLoadConfig);
-
-
+ //   t.add("Test Load Config", &TestConfiguration::TestLoadConfig);
+	t.add("Test sum gpu", &TestMatrix::TestSumMatrixGpu);
 	t.run(LaunchWithBenchmark::WithClock);
 
 	system("pause");

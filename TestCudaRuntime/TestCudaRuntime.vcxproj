@@ -53,7 +53,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;CudaMachineLearning.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;CudaMachineLearning.lib;curand.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Master\CudaProject\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -96,11 +96,14 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile Include="main.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="base.h" />
+    <ClInclude Include="settings.h" />
     <ClInclude Include="TestConfiguration.h" />
     <ClInclude Include="TestMatrix.h" />
     <ClInclude Include="VectorIntegerTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="base.cu" />
     <ClCompile Include="TestNeuralNetwork.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
