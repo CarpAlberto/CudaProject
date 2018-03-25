@@ -7,7 +7,6 @@
 namespace gpuNN {
 	
 	typedef ApplicationLogger<FileLoggingPolicy> FileLogging;
-	typedef Configuration<std::string>			 StringConfiguration;
 
 	/// <summary>
 	/// The main application context
@@ -28,12 +27,7 @@ namespace gpuNN {
 		/// <summary>
 		/// The configuration File
 		/// </summary>
-		std::shared_ptr<StringConfiguration>			 configProperties;
-
-		/// <summary>
-		/// Destroy the unique instance
-		/// </summary>
-		static void destroy();
+		std::shared_ptr<ApplicationConfiguration>			 configProperties;
 
 		/// <summary>
 		/// The constructor of the class
@@ -67,6 +61,11 @@ namespace gpuNN {
 		/// Returns the configuration
 		/// </summary>
 		/// <returns>The configuration</returns>
-		std::shared_ptr<StringConfiguration> getConfiguration() const;
+		std::shared_ptr<ApplicationConfiguration> getConfiguration() const;
+
+		/// <summary>
+		/// Destroy the unique instance
+		/// </summary>
+		static void destroy();
 	};
 }

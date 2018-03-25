@@ -3,7 +3,7 @@ using namespace gpuNN;
 
 void GUIConsole::showMessage(const std::string& message) {
 	m_mutex.lock();
-	std::cout << message << std::endl;
+	std::cout << message;
 	m_mutex.unlock();
 }
 

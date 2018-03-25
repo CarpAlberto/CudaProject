@@ -168,7 +168,7 @@ namespace gpuNN
 		/// Returns a const pointer to a const vector of objects 
 		/// </summary>
 		/// <returns>The const pointer</returns>
-		const int* const getData();
+		const int* getData();
 		/// <summary>
 		/// Overloading operator []
 		/// </summary>

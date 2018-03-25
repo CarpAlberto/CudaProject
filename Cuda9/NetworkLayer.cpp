@@ -6,7 +6,7 @@ void NetworkLayer::Push(Neuron* neuron) {
 	this->m_neurons.push_back(neuron);
 }
 
-Neuron* NetworkLayer::operator[](int index) const{
+Neuron* NetworkLayer::operator[](size_t index) const{
 	return this->m_neurons[index];
 }
 
@@ -22,7 +22,7 @@ NetworkLayer::NetworkLayer(int numOutputs, TransferFunction* transfer) {
 	}
 }
 
-void NetworkLayer::SetValue(int index, double value) {
+void NetworkLayer::SetValue(size_t index, double value) {
 	this->m_neurons[index]->SetOutputValue(value);
 }
 
@@ -37,18 +37,18 @@ vDouble NetworkLayer::toVector() {
 
 PtrMatrix NetworkLayer::toMatrix() {
 	auto m = MatrixFactory::getMatrix(1, this->m_neurons.size());
-	for (auto i = 0; i < this->m_neurons.size(); ++i) {
-		auto value = this->m_neurons[i]->getOutputValue();
-		m->Set(0,i,0, value);
+	for (size_t i = 0; i < this->m_neurons.size(); ++i) {
+		float value = (float)(this->m_neurons[i]->getOutputValue());
+		m->Set(0,i, value);
 	}
 	return m;
 }
 
 PtrMatrix NetworkLayer::toMatrixActivated() {
 	auto m = MatrixFactory::getMatrix(1, this->m_neurons.size());
-	for (auto i = 0; i < this->m_neurons.size(); ++i) {
-		auto value = this->m_neurons[i]->getActivatedValue();
-		m->Set(0, i,0, value);
+	for (size_t i = 0; i < this->m_neurons.size(); ++i) {
+		auto value = (float)(this->m_neurons[i]->getActivatedValue());
+		m->Set(0, i, value);
 	}
 	return m;
 }
@@ -57,7 +57,7 @@ PtrMatrix NetworkLayer::toMatrixDerived() {
 	auto m = MatrixFactory::getMatrix(1, this->m_neurons.size());
 	for (auto i = 0; i < this->m_neurons.size(); ++i) {
 		auto value = this->m_neurons[i]->getDerivedValue();
-		m->Set(0, i,0,(float)value);
+		m->Set(0, i,(float)value);
 	}
 	return m;
 }

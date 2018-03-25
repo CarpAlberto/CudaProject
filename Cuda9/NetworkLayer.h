@@ -29,7 +29,7 @@ namespace gpuNN {
 		/// </summary>
 		/// <param name="index">The index parameter</param>
 		/// <returns></returns>
-		Neuron* operator[](int index) const;
+		Neuron* operator[](size_t index) const;
 		/// <summary>
 		/// The destructor of the layer
 		/// </summary>
@@ -44,7 +44,7 @@ namespace gpuNN {
 		/// </summary>
 		/// <param name="index">The index of the neuron</param>
 		/// <param name="value">The value to be setted</param>
-		void SetValue(int index, double value);
+		void SetValue(size_t index, double value);
 		/// <summary>
 		/// Returns a vector based on a neuron vector
 		/// </summary>

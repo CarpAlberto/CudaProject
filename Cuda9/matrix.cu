@@ -8,18 +8,14 @@ GenericMatrix::GenericMatrix() {
 	m_cols = 0;
 	m_rows = 0;
 	m_data = nullptr;
-	m_channels = 0;
 }
 
 GenericMatrix::GenericMatrix(const GenericMatrix& rhs) {
 	Clone(rhs);
 }
 
-GenericMatrix::GenericMatrix(int height, int width, int channels) {
-	this->m_cols = width;
-	this->m_rows = height;
-	this->m_channels = channels;
-	this->m_data = nullptr;
+GenericMatrix::GenericMatrix(size_t height, size_t width) : m_cols(width),
+					m_rows(height),m_data(nullptr){
 	this->Malloc();
 }
 
@@ -27,7 +23,6 @@ void GenericMatrix::Release() {
 	this->Free();
 	this->m_cols = 0;
 	this->m_rows = 0;
-	this->m_channels = 0;
 	this->m_data = nullptr;
 }
 
@@ -36,23 +31,21 @@ GenericMatrix& GenericMatrix::operator=(const GenericMatrix& rhs)
 	this->Free();
 	this->m_cols = rhs.m_cols;
 	this->m_rows = rhs.m_rows;
-	this->m_channels = rhs.m_channels;
 	this->Malloc();
 	this->Memcpy(const_cast<GenericMatrix&>(rhs));
 	return *this;
 }
 
-void GenericMatrix::SetSize(int rows, int cols, int channels) {
+void GenericMatrix::SetSize(size_t rows, size_t cols) noexcept {
 	this->Free();
 	this->m_cols = cols;
 	this->m_rows = rows;
-	this->m_channels = channels;
 	Malloc();
 	Zeros();
 }
 
-int GenericMatrix::getLength() const {
-	return this->m_cols * this->m_rows * this->m_channels;
+size_t GenericMatrix::getLength() const noexcept {
+	return this->m_cols * this->m_rows;
 }
 
 void GenericMatrix::Zeros() {
@@ -63,38 +56,34 @@ void GenericMatrix::Ones() {
 	SetAll(1.0);
 }
 
-float* GenericMatrix::getData() const {
+float* GenericMatrix::getData() const noexcept {
 	return this->m_data;
 }
 
-float  GenericMatrix::Get(int y, int x, int channel)const {
+float  GenericMatrix::Get(size_t y, size_t x)const {
 	if (this->m_data == nullptr) {
-		if (x >= this->m_cols || y >= this->m_rows || channel >= this->m_channels) {
+		if (x >= this->m_cols || y >= this->m_rows) {
 			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 				("Invalid position");
 			throw new std::exception("Invalid position");
 		}
 	}
-	return this->m_data[RC2IDX(y,x, this->m_cols) + channel * (this->m_rows * this->m_cols)];
+	return this->m_data[RC2IDX(y,x, this->m_cols)];
 }
 
-int GenericMatrix::getCols() const {
+size_t GenericMatrix::getCols() const {
 	return this->m_cols;
 }
 
-int GenericMatrix::getRows() const {
+size_t GenericMatrix::getRows() const {
 	return this->m_rows;
-}
-
-int GenericMatrix::getChannels() const {
-	return this->m_channels;
 }
 
 void GenericMatrix::Print(UIInterface * guiInterface) const {
 	
 	for (auto i = 0; i < this->getRows(); i++) {
 		for (auto j = 0; j < this->getCols(); j++) {
-			double value = this->Get(i, j, 0);
+			double value = this->Get(i, j);
 			guiInterface->Show(value);
 			guiInterface->showMessage(" ");
 		}
@@ -110,25 +99,11 @@ void GenericMatrix::SetRandom() {
 }
 // Cpu Matrix Implementation
 
-CpuMatrix::CpuMatrix(int height, int width, int channels)  
-	: GenericMatrix(height,width,channels) {
-
+CpuMatrix::CpuMatrix(size_t height, size_t width):GenericMatrix(height,width) {
 	this->Malloc();
 }
 
-void CpuMatrix::Set(int y, int x, int channel, float val) {
-	if (this->m_data == nullptr) {
-		Zeros();
-	}
-	if (y >= this->m_rows || x >= this->m_cols || channel >= this->m_channels) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-			("Invalid position");
-		throw new std::exception("invalid");
-	}
-	this->m_data[RC2IDX(y,x,this->m_cols) + channel * (this->m_rows * this->m_cols)] = val;
-}
-
-void CpuMatrix::Set(int y, int x, const VectorFloat& rhs) {
+void CpuMatrix::Set(size_t y, size_t x, float val) {
 	if (this->m_data == nullptr) {
 		Zeros();
 	}
@@ -137,21 +112,7 @@ void CpuMatrix::Set(int y, int x, const VectorFloat& rhs) {
 			("Invalid position");
 		throw new std::exception("invalid");
 	}
-	for (int i = 0; i < this->m_channels; ++i) {
-		Set(y, x, i, rhs.Get(i));
-	}
-}
-
-void CpuMatrix::Set(int pos, int pos_channel, float val) {
-	if (this->m_data == nullptr) {
-		Zeros();
-	}
-	if (pos >= this->m_cols * this->m_rows) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-			("Invalid position");
-		return;
-	}
-	this->m_data[pos + pos_channel * (this->m_rows * this->m_cols)] = val;
+	this->m_data[RC2IDX(y,x,this->m_cols)] = val;
 }
 
 CpuMatrix::CpuMatrix() :
@@ -174,18 +135,20 @@ void CpuMatrix::Malloc() {
 		try
 		{
 			// allocates a vector of two integers
-			this->m_data = (float*)Memory::instance()->allocate(this->m_cols * this->m_rows * this->m_channels *
+			this->m_data = (float*)Memory::instance()->allocate(this->m_cols * this->m_rows  *
 				sizeof(float), Bridge::CPU);
 		}
-		catch (MemoryAllocationException exception) {
+		catch (MemoryAllocationException* exception) {
 			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-				(exception.what());
+				(exception->what());
+			throw exception;
 		}
 		catch (...) {
 			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 				("Unknown Error");
+			return;
 		}
-		memset(this->m_data, 0 ,m_cols * m_rows * m_channels * sizeof(float));
+		memset(this->m_data, 0 ,m_cols * m_rows  * sizeof(float));
 	}
 }
 
@@ -207,7 +170,7 @@ GenericMatrix& CpuMatrix::operator+(const GenericMatrix& rhs) const {
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
-	int length = getLength();
+	auto length = getLength();
 	auto cpuMatrix = new CpuMatrix(rhs);
 	for (int i = 0; i < length; ++i) {
 		cpuMatrix->m_data[i] = rhs.getData()[i] + m_data[i];
@@ -222,26 +185,10 @@ GenericMatrix& CpuMatrix::operator+(float val) const {
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
-	int length = getLength();
-	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows,this->m_cols,this->m_channels);
+	auto length = getLength();
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows,this->m_cols);
 	for (int i = 0; i < length; ++i) {
 		cpuMatrix->m_data[i] =  m_data[i] + val;
-	}
-	return *cpuMatrix;
-}
-
-GenericMatrix& CpuMatrix::operator+(const VectorFloat& rhs) const {
-	if (this->m_data == nullptr) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-			("Invalid arguments");
-		throw new std::exception("Invalid arguments");
-	}
-	int n = this->m_cols * this->m_rows;
-	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
-	for (auto ch = 0; ch < this->m_channels; ch++) {
-		for (auto i = 0; i < n; ++i) {
-			cpuMatrix->m_data[i + n * ch] = this->m_data[i + n * ch] + rhs.Get(ch);
-		}
 	}
 	return *cpuMatrix;
 }
@@ -253,7 +200,7 @@ GenericMatrix& CpuMatrix::operator-(const GenericMatrix& rhs) const {
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
-	int length = getLength();
+	auto length = getLength();
 	CpuMatrix* cpuMatrix = new CpuMatrix(rhs);
 	for (int i = 0; i < length; ++i) {
 		cpuMatrix->m_data[i] = rhs.getData()[i] - m_data[i];
@@ -268,26 +215,10 @@ GenericMatrix& CpuMatrix::operator-(float val) const {
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
-	int length = getLength();
-	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
+	auto length = getLength();
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols);
 	for (int i = 0; i < length; ++i) {
 		cpuMatrix->m_data[i] = m_data[i] - val;
-	}
-	return *cpuMatrix;
-}
-
-GenericMatrix& CpuMatrix::operator-(const VectorFloat& rhs) const {
-	if (this->m_data == nullptr) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-			("Invalid arguments");
-		throw new std::exception("Invalid arguments");
-	}
-	int n = this->m_cols * this->m_rows;
-	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
-	for (auto ch = 0; ch < this->m_channels; ch++) {
-		for (auto i = 0; i < n; ++i) {
-			cpuMatrix->m_data[i + n * ch] = this->m_data[i + n * ch] - rhs.Get(ch);
-		}
 	}
 	return *cpuMatrix;
 }
@@ -297,15 +228,15 @@ GenericMatrix& CpuMatrix::operator*(const GenericMatrix& rhs) const {
 	if (this->m_cols != rhs.getRows()) {
 		throw new std::exception("Invalid arguments");
 	}
-	CpuMatrix* cpuMatrix = new CpuMatrix(this->getRows(),rhs.getCols(),1);
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->getRows(),rhs.getCols());
 	for (int i = 0; i < this->getRows(); i++) {
 		for (auto j = 0; j < rhs.getCols(); j++) {
 			for (auto k = 0; k < rhs.getRows(); k++) {
-				float p = this->Get(i, k, 0) * rhs.Get(k,j,0);
-				float newValue = cpuMatrix->Get(i, j, 0) + p;
-				cpuMatrix->Set(i, j, 0, newValue);
+				float p = this->Get(i, k) * rhs.Get(k,j);
+				float newValue = cpuMatrix->Get(i, j) + p;
+				cpuMatrix->Set(i, j, newValue);
 			}
-			cpuMatrix->Set(i, j, 0,cpuMatrix->Get(i, j, 0));
+			cpuMatrix->Set(i, j,cpuMatrix->Get(i, j));
 		}
 		
 	}
@@ -319,57 +250,27 @@ GenericMatrix& CpuMatrix::operator*(float val) const {
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
-	int length = getLength();
-	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
+	auto length = getLength();
+	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols);
 	for (int i = 0; i < length; ++i) {
 		cpuMatrix->m_data[i] = m_data[i] * val;
 	}
 	return *cpuMatrix;
 }
 
-GenericMatrix& CpuMatrix::operator*(const VectorFloat& rhs) const {
-	if (this->m_data == nullptr) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-			("Invalid arguments");
-		throw new std::exception("Invalid arguments");
-	}
-	int n = this->m_cols * this->m_rows;
-	CpuMatrix* cpuMatrix = new CpuMatrix(this->m_rows, this->m_cols, this->m_channels);
-	for (auto ch = 0; ch < this->m_channels; ch++) {
-		for (auto i = 0; i < n; ++i) {
-			cpuMatrix->m_data[i + n * ch] = this->m_data[i + n * ch] * rhs.Get(ch);
-		}
-	}
-	return *cpuMatrix;
-}
 
 void	CpuMatrix::SetAll(float val) {
 	if (this->m_data == nullptr) {
 		Malloc();
 	}
-	int length = getLength();
+	auto  length = getLength();
 	for (auto iterator = 0; iterator < length; iterator++) {
 		this->m_data[iterator] = val;
 	}
 }
-
-void	CpuMatrix::SetAll(const VectorFloat& rhs)
-{
-	if (this->m_data == nullptr) {
-		Malloc();
-	}
-	int length = getLength();
-	for (auto ch = 0; ch < this->m_channels; ch++) {
-		for (auto i = 0; i < length; ++i) {
-			this->m_data[i + length * ch] = this->m_data[i + length * ch] * rhs.Get(ch);
-		}
-	}
-}
-
 void CpuMatrix::Clone(const GenericMatrix& rhs) {
 	this->m_cols = rhs.getCols();
 	this->m_rows = rhs.getRows();
-	this->m_channels = rhs.getChannels();
 	this->Malloc();
 	this->Memcpy(const_cast<GenericMatrix&>(rhs));
 }
@@ -379,19 +280,21 @@ GenericMatrix& CpuMatrix::Transpose() const {
 	auto rows = this->getRows();
 	auto columns = this->getCols();
 
-	CpuMatrix * matrix = new CpuMatrix(columns,rows,1);
+	CpuMatrix * matrix = new CpuMatrix(columns,rows);
 
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
-   			matrix->Set(j, i, 0, this->Get(i,j,0));
+   			matrix->Set(j, i, this->Get(i,j));
 		}
 	}
 	return *matrix;
 }
 
 CpuMatrix::~CpuMatrix() {
+
 	if(this->m_data != nullptr)
 		Memory::instance()->deallocate(this->m_data, Bridge::CPU);
+
 }
 
 mDouble CpuMatrix::getAsMatrix() {
@@ -400,12 +303,18 @@ mDouble CpuMatrix::getAsMatrix() {
 	for (int i = 0; i < this->m_rows; ++i) {
 		vDouble v;
 		for (int j = 0; j < this->m_cols; ++j) {
-			double value = this->Get(i, j, 0);
+			double value = this->Get(i, j);
 			v.push_back(value);
 		}
 		matrix.push_back(v);
 	}
 	return matrix;
+}
+
+GpuMatrix::~GpuMatrix() {
+
+	if (this->m_data != nullptr)
+		Memory::instance()->deallocate(this->m_data, Bridge::GPU);
 }
 
 
@@ -417,7 +326,7 @@ void GpuMatrix::Malloc()
 		try
 		{
 			// allocates a vector of two integers
-			this->m_data = (float*)Memory::instance()->allocate(this->m_cols * this->m_rows * this->m_channels *
+			this->m_data = (float*)Memory::instance()->allocate(this->m_cols * this->m_rows  *
 				sizeof(float), Bridge::GPU);
 		}
 		catch (MemoryAllocationException exception) {
@@ -428,12 +337,12 @@ void GpuMatrix::Malloc()
 			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 				("Unknown Error");
 		}
-		cudaMemset(this->m_data, 0, m_cols * m_rows * m_channels * sizeof(float));
+		cudaMemset(this->m_data, 0, m_cols * m_rows * sizeof(float));
 	}
 }
 
-GpuMatrix::GpuMatrix(int height, int width, int channels)
-	: GenericMatrix(height, width, channels) {
+GpuMatrix::GpuMatrix(size_t height,size_t width)
+	: GenericMatrix(height, width) {
 
 	this->Malloc();
 }
@@ -451,11 +360,11 @@ void GpuMatrix::Memcpy(GenericMatrix& rhs) {
 	cudaMemcpy(this->m_data, rhs.getData(), rhs.getLength() * sizeof(float),cudaMemcpyKind::cudaMemcpyDeviceToDevice);
 }
 
-void GpuMatrix::Set(int y, int x, int channel, float val) {
+void GpuMatrix::Set(size_t y, size_t x, float val) {
 	if (this->m_data == nullptr) {
 		this->Malloc();
 	}
-	if (y >= this->m_rows || x >= this->m_cols || channel >= this->m_channels) {
+	if (y >= this->m_rows || x >= this->m_cols) {
 		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 			("Invalid position Gpu");
 		throw new std::exception("invalid");
@@ -463,8 +372,7 @@ void GpuMatrix::Set(int y, int x, int channel, float val) {
 	/*Need to store the float value inside a pointer*/
 	float *pData = (float*)malloc(sizeof(float));
 	pData = &val;
-	cudaError status =  cudaMemcpy(this->m_data + RC2IDX(y, x, this->m_cols) + channel *
-		(this->m_rows * this->m_cols), pData, sizeof(float),
+	cudaError status = cudaMemcpy(this->m_data + RC2IDX(y, x, this->m_cols), pData, sizeof(float),
 		cudaMemcpyKind::cudaMemcpyHostToDevice);
 
 	if (status != cudaError::cudaSuccess) {
@@ -472,50 +380,17 @@ void GpuMatrix::Set(int y, int x, int channel, float val) {
 	}
 }
 
-void GpuMatrix::Set(int position, const VectorFloat& rhs) {
-	if (this->m_data == nullptr) {
-		this->Malloc();
-	}
-	if (position >= this->m_cols * this->m_rows) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-			("Invalid position Gpu");
-		throw new std::exception("invalid");
-	}
-	float pData;
-	for (int i = 0; i < this->m_channels; i++) {
-		pData = rhs.Get(i);
-		cudaMemcpy(this->m_data + position + i *
-			(this->m_rows * this->m_cols), &pData, sizeof(float),
-			cudaMemcpyKind::cudaMemcpyHostToDevice);
-	}
-}
 
-void GpuMatrix::Set(int position,int channel, const VectorFloat& rhs) {
-	if (this->m_data == nullptr) {
-		this->Malloc();
-	}
-	if (position >= this->m_cols * this->m_rows) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
-			("Invalid position Gpu");
-		throw new std::exception("invalid");
-	}
-	/*Need to store the float value inside a pointer*/
-	float *pData = (float*)malloc(sizeof(float));
-	cudaMemcpy(this->m_data +  position + channel *
-		(this->m_rows * this->m_cols), pData, sizeof(float), cudaMemcpyKind::cudaMemcpyHostToDevice);
-}
+float GpuMatrix::Get(size_t y, size_t x) const {
 
-float GpuMatrix::Get(int y, int x, int channel) const {
-
-	if (this->m_data == nullptr || y >= this->m_rows || x >= this->m_cols || channel >= this->m_channels) {
+	if (this->m_data == nullptr || y >= this->m_rows || x >= this->m_cols) {
 		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
 			("Invalid position Gpu");
 		throw new std::exception("invalid");
 	}
 	float host_data = 0;
 	auto error = cudaMemcpy(&host_data, this->m_data + 
-		RC2IDX(y, x, this->m_cols) + channel * (this->m_rows * this->m_cols),
-		sizeof(float), cudaMemcpyDeviceToHost);
+		RC2IDX(y, x, this->m_cols),sizeof(float), cudaMemcpyDeviceToHost);
 	if (error != cudaError::cudaSuccess) {
 		throw new std::exception("CudaMemcpy error");
 	}
@@ -530,7 +405,6 @@ GpuMatrix::GpuMatrix(const GenericMatrix& rhs) : GenericMatrix(rhs) {
 void GpuMatrix::Clone(const GenericMatrix& rhs)  {
 	this->m_cols = rhs.getCols();
 	this->m_rows = rhs.getRows();
-	this->m_channels = rhs.getChannels();
 	this->Malloc();
 	this->Memcpy(const_cast<GenericMatrix&>(rhs));
 }
@@ -538,7 +412,6 @@ void GpuMatrix::Clone(const GenericMatrix& rhs)  {
 void GpuMatrix::SetRandom() {
 	if (m_data == nullptr)
 		Malloc();
-	int length = this->m_cols*this->m_rows;
 	curandGenerator_t generator;
 	curandCreateGenerator(&generator, CURAND_RNG_PSEUDO_DEFAULT);
 	curandSetPseudoRandomGeneratorSeed(generator, rand() % 3456);
@@ -553,7 +426,7 @@ GenericMatrix& GpuMatrix::operator+(const GenericMatrix& rhs) const {
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
-	int length = getLength();
+	auto length = getLength();
 	GenericMatrix* gpuMatrix = new GpuMatrix(rhs);
 
 	const size_t block_size = threadsPerBlock;
@@ -562,3 +435,51 @@ GenericMatrix& GpuMatrix::operator+(const GenericMatrix& rhs) const {
 	gpu_add <<< num_blocks, block_size >>> (gpuMatrix->getData(),this->m_data, length);
 	return *gpuMatrix;
  }
+
+GenericMatrix& GpuMatrix::operator*(const GenericMatrix& rhs) const {
+  	
+	GenericMatrix * returnMatrix = new GpuMatrix(this->m_rows, rhs.getCols());
+	int TILE_WIDTH = 32;
+
+	dim3 dimGrid;
+	dim3 dimBlock(TILE_DIM, TILE_DIM,1);
+
+	dimGrid.x = (rhs.getCols() + dimBlock.x - 1) / dimBlock.x;
+	dimGrid.y = (this->m_rows  + dimBlock.y - 1) / dimBlock.y;
+
+	gpu_multiply <<<dimGrid, dimBlock >>> (this->m_data, rhs.getData(), returnMatrix->getData(),
+		this->m_rows,this->m_cols,
+		rhs.getRows(),rhs.getCols(),
+		returnMatrix->getRows(), returnMatrix->getCols());
+
+	return *returnMatrix;
+
+}
+
+GenericMatrix& GpuMatrix::Transpose() const
+{
+	auto rows = this->getRows();
+	auto columns = this->getCols();
+
+	GpuMatrix * matrix = new GpuMatrix(columns, rows);
+	int len = matrix->getRows() * matrix->getCols();
+	const size_t block_size = threadsPerBlock;
+	const size_t num_blocks = (len / block_size) + ((len % block_size) ? 1 : 0);
+	
+	gpu_transpose <<<num_blocks, block_size >>> (this->m_data, matrix->getData(),this->m_cols,matrix->getCols(),len);
+	return *matrix;
+}
+
+mDouble  GpuMatrix::getAsMatrix()
+{
+	mDouble matrix;
+	for (int i = 0; i < this->m_rows; ++i) {
+		vDouble v;
+		for (int j = 0; j < this->m_cols; ++j) {
+			double value = this->Get(i, j);
+			v.push_back(value);
+		}
+		matrix.push_back(v);
+	}
+	return matrix;
+}

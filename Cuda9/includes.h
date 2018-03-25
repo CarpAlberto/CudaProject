@@ -9,6 +9,8 @@
 #include <mutex>
 #include <map>
 #include <chrono>
+#include <atomic>
+#include <initializer_list>
 //#include "include/json.hpp"
 
 #include <cuda_runtime.h>
@@ -27,6 +29,10 @@
 
 
 #define threadsPerBlock 512
+
+#ifndef TILE_DIM 
+	#define TILE_DIM 16
+#endif
 
 #include "enums.h"
 #include <sys/types.h>

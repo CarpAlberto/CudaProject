@@ -24,7 +24,7 @@ namespace gpuNN {
 		/// <param name="rows">The number of rows</param>
 		/// <param name="cols">The number of column</param>
 		/// <param name="channels">The number of channels</param>
-		GenericMatrix(int rows, int cols, int channels=1);
+		GenericMatrix(size_t rows, size_t cols);
 		/// <summary>
 		/// Release the object
 		/// </summary>
@@ -41,7 +41,7 @@ namespace gpuNN {
 		/// <param name="rows">The rows</param>
 		/// <param name="columns">The columns</param>
 		/// <param name="channels">The channels</param>
-		void				   SetSize(int rows, int columns, int channels=1);
+		void				   SetSize(size_t rows, size_t columns) noexcept;
 		/// <summary>
 		/// Sets the zeros on th evalue of the matrix
 		/// </summary>
@@ -54,10 +54,7 @@ namespace gpuNN {
 		/// Returns the length of the matrix
 		/// </summary>
 		/// <returns>The length of the matrix</returns>
-		int					   getLength() const;
-
-		virtual void		   Randu()=0;
-		virtual void		   Randn()=0;
+		size_t					   getLength() const noexcept;
 		/// <summary>
 		/// Perform the matrix allocation
 		/// </summary>
@@ -76,10 +73,14 @@ namespace gpuNN {
 		/// </summary>
 		/// <param name="val">The value to be setted</param>
 		virtual void		   SetAll(float val)=0;
-		virtual void		   SetAll(const VectorFloat& rhs) = 0;
-		virtual void		   Set(int, int, int, float)=0;
-		virtual void		   Set(int, int, const VectorFloat&)=0;
-		virtual void		   Set(int, int, float)=0;
+		/// <summary>
+		/// Set's the value at <param name="row"></param> and
+		/// <param name="column"></param>
+		/// </summary>
+		/// <param name="row">The row index</param>
+		/// <param name="column">The column index</param>
+		/// <param name="value">The value  </param>
+		virtual void		   Set(size_t row, size_t column, float value)=0;
 		/// <summary>
 		/// Gets the value from the given position
 		/// </summary>
@@ -87,12 +88,12 @@ namespace gpuNN {
 		/// <param name="cols">The cols value</param>
 		/// <param name="channels">The channels value</param>
 		/// <returns>The float value</returns>
-		virtual float		   Get(int rows, int cols, int channels = 0)const;
+		virtual float		   Get(size_t rows, size_t cols)const;
 		/// <summary>
 		/// Returns the Raw Data
 		/// </summary>
 		/// <returns></returns>
-		float*				   getData() const;
+		float*				   getData() const noexcept;
 
 		/// <summary>
 		/// Performs the addition between the object and the <code>rhs</code>
@@ -109,14 +110,6 @@ namespace gpuNN {
 		/// <returns>The result of the addition</returns>
 		virtual GenericMatrix& operator+(float val) const = 0;
 		/// <summary>
-		/// Performs the addition between the object and the <code>rhs</code>
-		/// parameters.The caller MUST deallocate the memory.
-		/// </summary>
-		/// <param name="rhs">The rhs parameter</param>
-		/// <returns>The result of the addition</returns>
-		virtual GenericMatrix& operator+(const VectorFloat&) const = 0;
-
-		/// <summary>
 		/// Performs the substraction between the object and the <code>rhs</code>
 		/// parameters.The caller MUST deallocate the memory.
 		/// </summary>
@@ -130,14 +123,6 @@ namespace gpuNN {
 		/// <param name="rhs">The rhs parameter</param>
 		/// <returns>The result of the substraction</returns>
 		virtual GenericMatrix& operator-(float rhs) const = 0;
-		/// <summary>
-		/// Performs the substraction between the object and the <code>rhs</code>
-		/// parameters.The caller MUST deallocate the memory.
-		/// </summary>
-		/// <param name="rhs">The rhs parameter</param>
-		/// <returns>The result of the substraction</returns>
-		virtual GenericMatrix& operator-(const VectorFloat& rhs) const = 0;
-
 		/// <summary>
 		/// Performs the multiplication between the object and the <code>rhs</code>
 		/// parameters.The caller MUST deallocate the memory.
@@ -168,17 +153,12 @@ namespace gpuNN {
 		/// Gets the number of columns
 		/// </summary>
 		/// <returns>The number of columns</returns>
-		int getCols() const ;
+		size_t getCols() const ;
 		/// <summary>
 		/// Gets the number of rows
 		/// </summary>
 		/// <returns>The number of rows</returns>
-		int getRows() const ;
-		/// <summary>
-		/// Returns the number of columns
-		/// </summary>
-		/// <returns>The number of columns</returns>
-		int getChannels() const;
+		size_t getRows() const ;
 		/// <summary>
 		/// Prints the object to the generic interface
 		/// </summary>
@@ -198,41 +178,44 @@ namespace gpuNN {
 		/// <returns>The Matrix of doubles</returns>
 		virtual mDouble getAsMatrix() = 0;
 	protected:
-		int				m_cols;
-		int				m_rows;
-		int				m_channels;
+		/// <summary>
+		/// The columns of the matrix
+		/// </summary>
+		size_t				m_cols;
+		/// <summary>
+		/// The rows of the matrix
+		/// </summary>
+		size_t				m_rows;
+		/// <summary>
+		/// The data of the matrix
+		/// </summary>
 		float*			m_data;
 	};
 	/// <summary>
 	/// Cpu Matrix Managed
 	/// </summary>
-	class CpuMatrix : public GenericMatrix
+	class CpuMatrix
+		: public GenericMatrix
 	{
 		
 		public:
-			CpuMatrix();
-			CpuMatrix(const GenericMatrix& rhs);
-			CpuMatrix(int rows, int columns, int channel = 1);
+			#pragma region Constructors
+				CpuMatrix();
+				CpuMatrix(const GenericMatrix& rhs);
+				CpuMatrix(size_t rows, size_t columns);
+			#pragma endregion
 		public:
 			 void   Malloc() override;
 			 void   Memcpy(GenericMatrix& rhs) override;
 			 void   Free() override;
 			 virtual void	SetAll(float val);
-			 virtual void	SetAll(const VectorFloat& rhs);
-			 void	Set(int, int, int, float);
-			 void	Set(int, int, const VectorFloat&);
-			 void	Set(int, int, float);
-			 virtual void	Randu() {};
-			 virtual void	Randn() {};
+			 void	Set(size_t, size_t, float);
 			 virtual GenericMatrix& operator+(const GenericMatrix&) const;
 			 virtual GenericMatrix& operator+(float val) const;
-			 virtual GenericMatrix& operator+(const VectorFloat&) const;
 			 virtual GenericMatrix& operator-(const GenericMatrix&) const;
 			 virtual GenericMatrix& operator-(float val) const;
-			 virtual GenericMatrix& operator-(const VectorFloat&) const ;
 			 virtual GenericMatrix& operator*(const GenericMatrix&) const;
 			 virtual GenericMatrix& operator*(float val) const;
-			 virtual GenericMatrix& operator*(const VectorFloat&) const;
 			 virtual void Clone(const GenericMatrix&) override;
 			 virtual GenericMatrix& Transpose() const;
 			 virtual ~CpuMatrix();
@@ -245,41 +228,34 @@ namespace gpuNN {
 
 	public:
 		#pragma region Constructors
-		GpuMatrix(int rows, int columns, int channel = 1);
-		GpuMatrix(const GenericMatrix& rhs);
-		GpuMatrix();
-#pragma endregion
+			GpuMatrix(size_t rows, size_t columns);
+			GpuMatrix(const GenericMatrix& rhs);
+			GpuMatrix();
+		#pragma endregion
+
+		#pragma region Destructor
+			~GpuMatrix();
+		#pragma endregion
+
 	public:
-		void Malloc() override;
-		void Free() override;
-		virtual void Clone(const GenericMatrix&) override ;
+		void				   Malloc() override;
+		void				   Free() override;
+		virtual void		   Clone(const GenericMatrix&) override ;
 		virtual void		   Memcpy(GenericMatrix& rhs);
-		virtual float		   Get(int, int, int channel = 0)const override;
-
-		virtual GenericMatrix& operator+(const GenericMatrix&) const;
-		virtual GenericMatrix& operator+(float val) const { return *new GpuMatrix(); }
-		virtual GenericMatrix& operator+(const VectorFloat&) const { return *new GpuMatrix(); };
-
-		virtual GenericMatrix& operator-(const GenericMatrix&) const { return *new GpuMatrix(); }
-		virtual GenericMatrix& operator-(float val) const { return *new GpuMatrix(); }
-		virtual GenericMatrix& operator-(const VectorFloat&) const { return *new GpuMatrix(); };
-
-		virtual GenericMatrix& operator*(const GenericMatrix& rhs) const { return *new GpuMatrix(); };
-		virtual GenericMatrix& operator*(float val) const { return *new GpuMatrix(); };
-		virtual GenericMatrix& operator*(const VectorFloat&) { return *new GpuMatrix(); };
-
-		virtual GenericMatrix& Transpose() const { return *new GpuMatrix(); };
-
+		virtual float		   Get(size_t,size_t)const;
+		virtual GenericMatrix& Transpose() const;
 		virtual void		   SetAll(float val) {};
-		virtual void		   SetAll(const VectorFloat& rhs) {};
-		virtual void		   Set(int, int, int, float);
-		void				   Set(int position, const VectorFloat & rhs);
-		virtual void		   Set(int, int, const VectorFloat&)override;
-		virtual void		   Set(int, int, float) {};
+		virtual void		   Set(size_t, size_t, float);
+		virtual mDouble		   getAsMatrix();
+		virtual void           SetRandom();
 
-		virtual void		   Randu() {};
-		virtual void		   Randn() {};
-		virtual mDouble getAsMatrix() { return mDouble(); };
-		virtual void SetRandom();
+		#pragma region Operators
+			virtual GenericMatrix& operator+(const GenericMatrix&) const;
+			virtual GenericMatrix& operator+(float val) const { return *new GpuMatrix(); }
+			virtual GenericMatrix& operator-(const GenericMatrix&) const { return *new GpuMatrix(); }
+			virtual GenericMatrix& operator-(float val) const { return *new GpuMatrix(); }
+			virtual GenericMatrix& operator*(const GenericMatrix& rhs) const;
+			virtual GenericMatrix& operator*(float val) const { return *new GpuMatrix(); };
+		#pragma endregion
 	};
 }

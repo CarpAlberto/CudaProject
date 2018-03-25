@@ -71,9 +71,6 @@
     <ClInclude Include="enums.h">
       <Filter>enums</Filter>
     </ClInclude>
-    <ClInclude Include="includes.h">
-      <Filter>config</Filter>
-    </ClInclude>
     <ClInclude Include="StackAllocator.h">
       <Filter>memory</Filter>
     </ClInclude>
@@ -158,6 +155,9 @@
     <ClInclude Include="matrix_kernels.h">
       <Filter>kernels</Filter>
     </ClInclude>
+    <ClInclude Include="includes.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -210,6 +210,9 @@
     </ClCompile>
     <ClCompile Include="GUIConsole.cu">
       <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationConfiguration.cpp">
+      <Filter>config</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

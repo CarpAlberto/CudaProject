@@ -41,7 +41,7 @@ namespace gpuNN{
 		/// <summary>
 		/// Custom allocator for cpu
 		/// </summary>
-		StackAllocator cpuAllocator;
+		PoolAllocator cpuAllocator;
 		/// <summary>
 		/// Custom allocator for gpu
 		/// </summary>

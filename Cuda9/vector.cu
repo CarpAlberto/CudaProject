@@ -240,7 +240,7 @@ void VectorInteger::Print(const std::string& rhs) const {
 	std::cout << "]" << std::endl;
 }
 
-const int* const VectorInteger::getData() {
+const int* VectorInteger::getData() {
 	return this->m_data;
 }
 

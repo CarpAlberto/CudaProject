@@ -1,6 +1,7 @@
 #pragma once
 #include "includes.h"
 #include "matrix.h"
+
 namespace gpuNN {
 
 	class MatrixFactory : NonCopyableObject,
@@ -13,7 +14,7 @@ namespace gpuNN {
 		/// <param name="rows">The rows number</param>
 		/// <param name="columns">The column numbers</param>
 		/// <returns>The matrix</returns>
-		static GenericMatrix* getMatrix(int rows, int columns);
+		static GenericMatrix* getMatrix(size_t rows, size_t columns);
 		/// <summary>
 		/// Returns an matrix based on the the rhs parameter
 		/// </summary>

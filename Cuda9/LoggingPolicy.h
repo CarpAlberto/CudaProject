@@ -35,10 +35,13 @@ namespace gpuNN {
 	{
 		std::unique_ptr< std::ofstream > out_stream;
 	public:
-		FileLoggingPolicy() : out_stream(new std::ofstream) {}
-		void open_ostream(const std::string& name)override;
-		void close_ostream()override;
-		void write(const std::string& msg)override;
+		FileLoggingPolicy() : out_stream(new std::ofstream) 
+		{
+
+		}
+		void open_ostream(const std::string& name) override;
+		void close_ostream() override;
+		void write(const std::string& msg) override;
 		~FileLoggingPolicy();
 	};
 }

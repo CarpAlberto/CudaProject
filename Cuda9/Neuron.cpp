@@ -38,6 +38,7 @@ void Neuron::Derive() {
 }
 
 double Neuron::getActivatedValue() const {
+
 	return this->m_activatedValue;
 }
 

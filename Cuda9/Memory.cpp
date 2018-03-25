@@ -40,6 +40,8 @@ void Memory::PrintMemoryUsage() {
 
 	std::cout << "---Cpu Memory usage---" << std::endl;
 	std::cout << this->cpuAllocator.getTotalMemory() << " Bytes " << std::endl;
+
+	//std::cout << this->gpuAllocator.() << " Bytes " << std::endl;
 }
 
 void Memory::PrintLayoutMemory() {

@@ -6,6 +6,6 @@ public:
 	NonMoveableObject() = default;
 	~NonMoveableObject() = default;
 public:
-	NonMoveableObject(const NonMoveableObject&) = delete;
-	NonMoveableObject& operator=(const NonMoveableObject&) = delete;
+	NonMoveableObject(const NonMoveableObject&&) = delete;
+	NonMoveableObject& operator=(const NonMoveableObject&&) = delete;
 };

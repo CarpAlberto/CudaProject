@@ -6,7 +6,7 @@ ApplicationContext::ApplicationContext()
 {
 	m_gui_interface		= std::make_shared<GUIConsole>();
 	applicationLogging  = std::make_shared<FileLogging>("application.log",SeverityType::DEBUG);
-	configProperties	= std::make_shared<StringConfiguration>("config.cfg");
+	configProperties	= std::make_shared<ApplicationConfiguration>("config.cfg");
 }
 
 ApplicationContext::~ApplicationContext()
@@ -34,7 +34,7 @@ std::shared_ptr<FileLogging> ApplicationContext::getLog() const
 	return this->applicationLogging;
 }
 
-std::shared_ptr<StringConfiguration> ApplicationContext::getConfiguration() const {
+std::shared_ptr<ApplicationConfiguration> ApplicationContext::getConfiguration() const {
 
 	return this->configProperties;
 }

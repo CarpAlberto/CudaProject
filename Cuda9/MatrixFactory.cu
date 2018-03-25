@@ -2,10 +2,10 @@
 
 
 
-GenericMatrix* MatrixFactory::getMatrix(int rows, int columns) {
+GenericMatrix* MatrixFactory::getMatrix(size_t rows, size_t columns) {
 
-	auto configuration = ApplicationContext::instance()->getConfiguration();
-	auto mode = configuration->Value("GeneralSettings", "MODE");
+	ApplicationConfiguration* configuration = ApplicationContext::instance()->getConfiguration().get();
+	auto mode = configuration->getMode();
 	
 	if (mode == "GPU"){
 		return new GpuMatrix(rows, columns);
@@ -15,9 +15,9 @@ GenericMatrix* MatrixFactory::getMatrix(int rows, int columns) {
 	}
 }
 
-GenericMatrix* getMatrix(const GenericMatrix& rhs) {
+GenericMatrix* MatrixFactory::getMatrix(const GenericMatrix& rhs) {
 	auto configuration = ApplicationContext::instance()->getConfiguration();
-	auto mode = configuration->Value("GeneralSettings", "MODE");
+	auto mode = configuration->getMode();
 
 	if (mode == "GPU") {
 		return new GpuMatrix(rhs);

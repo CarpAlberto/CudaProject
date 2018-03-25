@@ -14,6 +14,7 @@ NeuralNetwork::NeuralNetwork(Topology& topology,
 	this->m_bias			 = bias;
 	this->m_learningRate	 = learningRate;
 	this->m_momentum		 = momentum;
+
 	this->m_TransferFunction = FunctionFactory::instance()->getTransferFunction(transferType);
 	this->m_ErrorFunction	 = FunctionFactory::instance()->getErrorFunction(errorType);
 
@@ -63,9 +64,8 @@ void NeuralNetwork::FeedForward() {
 		}
 	  GenericMatrix& multipliedMatrix = (*neuronMatrix) * (*weightsMatrix);
 	  for (auto index = 0; index < multipliedMatrix.getCols(); index++) {
-			this->setNeuronValue(i + 1, index, multipliedMatrix.Get(0, index, 0));
+			this->setNeuronValue(i + 1, index, multipliedMatrix.Get(0, index));
 	  }
-
 	  delete neuronMatrix;
 	  delete &multipliedMatrix;
 	}   
@@ -149,58 +149,62 @@ void NeuralNetwork::BackPropagation() {
 	auto derived = this->m_layers[outputLayerIndex]->toMatrixDerived();
 
 	/*The gradients will be stored*/
-	GenericMatrix* gradients = new CpuMatrix(1, this->m_layers[outputLayerIndex]->Size(), 1);
+	GenericMatrix* gradients = MatrixFactory::getMatrix(1, this->m_layers[outputLayerIndex]->Size());
 
-
-	for (auto i = 0; i < this->m_errors.size(); i++) {		
+	size_t i = 0;
+	for (auto error : this->m_errors) {		
+	
 		/*Get the derived value*/
-		auto value = derived->Get(0, i, 0);
-		auto error = this->m_errors[i];
+		auto value = derived->Get(0, i);
 		auto product = value * error;
-		gradients->Set(0, i, 0, product);
-
+		gradients->Set((size_t)0, i, product);
+		i++;
 	}
 	auto lastHiddenLayerIndex  = outputLayerIndex - 1;
 	auto weightsOutputToHidden = this->m_weights[outputLayerIndex - 1];
 
 	GenericMatrix& gradientsTransposed		 = gradients->Transpose();
 	GenericMatrix& lastIndexLayerActivated   = *this->m_layers[lastHiddenLayerIndex]->toMatrixActivated();
+
 	GenericMatrix& deltaOutputToHiddenBefore = (gradientsTransposed * lastIndexLayerActivated);
 	GenericMatrix& deltaOutputToHidden		 = deltaOutputToHiddenBefore.Transpose();
-	GenericMatrix* newWeightsOutputToHidden  = new CpuMatrix(deltaOutputToHidden.getRows(),
-										deltaOutputToHidden.getCols(), 1);
+
+	GenericMatrix* newWeightsOutputToHidden  = MatrixFactory::getMatrix(deltaOutputToHidden.getRows(),
+										deltaOutputToHidden.getCols());
 
 	for (auto i = 0; i < deltaOutputToHidden.getRows(); i++) {
 		for (auto j = 0; j < deltaOutputToHidden.getCols(); j++) {
-			auto originalWeight = weightsOutputToHidden->Get(i, j, 0);
-			auto deltaWeight    =   deltaOutputToHidden.Get(i, j, 0);
+			auto originalWeight = weightsOutputToHidden->Get(i, j);
+			auto deltaWeight    =   deltaOutputToHidden.Get(i, j);
 
-			originalWeight = this->m_momentum * originalWeight;
-			deltaWeight = this->m_learningRate * deltaWeight;
-			newWeightsOutputToHidden->Set(i, j, 0,(originalWeight - deltaWeight));
+			originalWeight = (float)(this->m_momentum * originalWeight);
+			deltaWeight = (float)(this->m_learningRate * deltaWeight);
+			newWeightsOutputToHidden->Set(i, j,(originalWeight - deltaWeight));
 		}
 	}
 	newWeights.push_back(newWeightsOutputToHidden);
 
 	//copy the gradients
-	GenericMatrix* gradient = new CpuMatrix(*gradients);
+	GenericMatrix* gradient = MatrixFactory::getMatrix(*gradients);
 
 	/*Loop from (output,input] */
 	for (size_t i = outputLayerIndex - 1; i > 0; i--) {
+		
 		/*Compute the delta weights*/
 		GenericMatrix* activatedHidden	= this->m_layers[i].get()->toMatrixActivated();
-		GenericMatrix* derivedGradients = new CpuMatrix(1, this->m_layers[i]->Size(), 1);
+		GenericMatrix* derivedGradients = MatrixFactory::getMatrix(1, this->m_layers[i]->Size());
+
 		GenericMatrix* weightMatrix = this->m_weights[i];
 		GenericMatrix* originalWeights = this->m_weights[i - 1];
 
 		for (auto r = 0; r < weightMatrix->getRows(); r++) {
 			double sum = 0;
 			for (auto c = 0; c < weightMatrix->getCols(); c++) {
-				double product = gradient->Get(0,c, 0) * weightMatrix->Get(r, c, 0);
+				double product = gradient->Get(0,c) * weightMatrix->Get(r, c);
 				sum += product;
 			}
-			float g = sum * activatedHidden->Get(0, r, 0);
-			derivedGradients->Set(0, r, 0, g);
+			float g = (float)(sum * activatedHidden->Get(0, r));
+			derivedGradients->Set(0, r,g);
 		}
 		GenericMatrix * leftNeurons = nullptr;
 		if (i - 1 == 0) {
@@ -212,19 +216,20 @@ void NeuralNetwork::BackPropagation() {
 		GenericMatrix& deriveGradientsTranspose = (*derivedGradients).Transpose();
 		GenericMatrix& deltaWeightsNotTransposed = (deriveGradientsTranspose * (*leftNeurons));
 		GenericMatrix& deltaWeights = deltaWeightsNotTransposed.Transpose();
-		GenericMatrix* newWeightsHidden = new CpuMatrix(deltaWeights.getRows(),deltaWeights.getCols(),1);
+		GenericMatrix* newWeightsHidden = MatrixFactory::getMatrix(deltaWeights.getRows(),deltaWeights.getCols());
 
 		for (auto r = 0; r < newWeightsHidden->getRows(); r++) {
 			for (auto c = 0; c < newWeightsHidden->getCols(); c++) {
-				double w = originalWeights->Get(r, c, 0);
-				double d = deltaWeights.Get(r, c, 0);
-				double error = w - d;
-				newWeightsHidden->Set(r, c, 0, error);
+				double w = originalWeights->Get(r, c);
+				double d = deltaWeights.Get(r, c);
+				auto error = (float)(w - d);
+				newWeightsHidden->Set(r, c, error);
 			}
 		}
 		newWeights.push_back(newWeightsHidden);
+		
 		delete gradient;
-		gradient = new CpuMatrix(*derivedGradients);
+		gradient = MatrixFactory::getMatrix(*derivedGradients);
 		delete leftNeurons;
 		delete derivedGradients;
 		delete &deriveGradientsTranspose;
@@ -238,7 +243,7 @@ void NeuralNetwork::BackPropagation() {
 	this->m_weights.clear();
 	std::reverse(newWeights.begin(), newWeights.end());
 	for (int i = 0; i < newWeights.size(); i++) {
-		this->m_weights.push_back(new CpuMatrix(*newWeights[i]));
+		this->m_weights.push_back(MatrixFactory::getMatrix(*newWeights[i]));
 
 	}
 	delete &gradientsTransposed;
@@ -252,11 +257,10 @@ void NeuralNetwork::BackPropagation() {
 }
 
 void NeuralNetwork::PrintOutput() {
-	int indexOfOutputLayer = this->m_layers.size() - 1;
-
+	size_t indexOfOutputLayer = this->m_layers.size() - 1;
 	GenericMatrix *outputValues = this->m_layers.at(indexOfOutputLayer)->toMatrixActivated();
 	for (int c = 0; c < outputValues->getCols(); c++) {
-		std::cout << outputValues->Get(0, c, 0) << "\t";
+		std::cout << outputValues->Get(0, c) << "\t";
 	}
 	delete outputValues;
 	std::cout << std::endl;
