@@ -63,6 +63,36 @@
     <Filter Include="bridge">
       <UniqueIdentifier>{b7515227-c061-484a-afc3-4d9cc3761882}</UniqueIdentifier>
     </Filter>
+    <Filter Include="assets\parser-library">
+      <UniqueIdentifier>{ac109cad-daa7-4afa-8714-929ce3286c54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\word-to-vec">
+      <UniqueIdentifier>{ab1f4474-0f5b-4b6c-b008-3822b90432a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\word-to-vec\utf8cpp">
+      <UniqueIdentifier>{95dcbccc-4d40-4a52-855b-535845d8bc87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\word-to-vec\utf8cpp\utf">
+      <UniqueIdentifier>{2213eae6-4351-4b42-95ed-b6fdc49cf938}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="assets\word-to-vec\flatbuffers">
+      <UniqueIdentifier>{07115492-53db-4cd0-b0be-d439b9d54f33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ml\analyzer">
+      <UniqueIdentifier>{f93c10e3-7461-4d16-8827-68ac928a5d7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ml\analyzer\interfaces">
+      <UniqueIdentifier>{5e0f7901-6ac9-4200-95b2-74dac2d00090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ml\neural_network\interfaces">
+      <UniqueIdentifier>{b440ab6c-d304-4400-91cc-2aca53ca22b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ml\analyzer\models">
+      <UniqueIdentifier>{a908cb99-36ba-4566-a38a-26ba6db61638}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="application-manager">
+      <UniqueIdentifier>{b11b4683-5594-4592-a0ec-06dd3697db49}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vector.h">
@@ -158,6 +188,60 @@
     <ClInclude Include="includes.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\parser-library\nt-headers.h">
+      <Filter>assets\parser-library</Filter>
+    </ClInclude>
+    <ClInclude Include="include\parser-library\parse.h">
+      <Filter>assets\parser-library</Filter>
+    </ClInclude>
+    <ClInclude Include="include\parser-library\to_string.h">
+      <Filter>assets\parser-library</Filter>
+    </ClInclude>
+    <ClInclude Include="include\word-to-vec\utf8cpp\utf8\checked.h">
+      <Filter>assets\word-to-vec\utf8cpp\utf</Filter>
+    </ClInclude>
+    <ClInclude Include="include\word-to-vec\utf8cpp\utf8\core.h">
+      <Filter>assets\word-to-vec\utf8cpp\utf</Filter>
+    </ClInclude>
+    <ClInclude Include="include\word-to-vec\utf8cpp\utf8\unchecked.h">
+      <Filter>assets\word-to-vec\utf8cpp\utf</Filter>
+    </ClInclude>
+    <ClInclude Include="include\word-to-vec\utf8cpp\utf8.h">
+      <Filter>assets\word-to-vec\utf8cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\word-to-vec\model_generated.h">
+      <Filter>assets\word-to-vec</Filter>
+    </ClInclude>
+    <ClInclude Include="include\word-to-vec\v.h">
+      <Filter>assets\word-to-vec</Filter>
+    </ClInclude>
+    <ClInclude Include="include\word-to-vec\word2vec.h">
+      <Filter>assets\word-to-vec</Filter>
+    </ClInclude>
+    <ClInclude Include="include\word-to-vec\flatbuffers\flatbuffers.h">
+      <Filter>assets\word-to-vec\flatbuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="IAnalyzer.h">
+      <Filter>ml\analyzer\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="INeuralNetwork.h">
+      <Filter>ml\neural_network\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="MalwareAnalyzer.h">
+      <Filter>ml\analyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="IWordProcessing.h">
+      <Filter>ml\analyzer\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="SequenceModel.h">
+      <Filter>ml\analyzer\models</Filter>
+    </ClInclude>
+    <ClInclude Include="HuffmanWordProcessor.h">
+      <Filter>ml\analyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationManager.h">
+      <Filter>application-manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -213,6 +297,24 @@
     </ClCompile>
     <ClCompile Include="ApplicationConfiguration.cpp">
       <Filter>config</Filter>
+    </ClCompile>
+    <ClCompile Include="include\buffer.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
+    <ClCompile Include="include\parse.cpp">
+      <Filter>assets</Filter>
+    </ClCompile>
+    <ClCompile Include="MalwareAnalyzer.cpp">
+      <Filter>ml\analyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="SequenceModel.cpp">
+      <Filter>ml\analyzer\models</Filter>
+    </ClCompile>
+    <ClCompile Include="HuffmanWordProcessor.cpp">
+      <Filter>ml\analyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationManager.cpp">
+      <Filter>application-manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

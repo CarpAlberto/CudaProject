@@ -268,6 +268,7 @@ void	CpuMatrix::SetAll(float val) {
 		this->m_data[iterator] = val;
 	}
 }
+
 void CpuMatrix::Clone(const GenericMatrix& rhs) {
 	this->m_cols = rhs.getCols();
 	this->m_rows = rhs.getRows();

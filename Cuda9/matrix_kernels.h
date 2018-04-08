@@ -17,5 +17,8 @@ __global__ void gpu_multiply(float* A, float* B, float* C,
 	int rowsb, int colsb,
 	int rowsc, int colsc);
 
+/// <summary>
+/// Perform the transpose of given matrix
+/// </summary>
 __global__ void gpu_transpose(const float* src, float* dst, int colssrc, int colsdst, int n);
 

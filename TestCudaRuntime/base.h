@@ -1,5 +1,6 @@
 #pragma once
-#include <string.h>
+#include <string>
+#include <cstdio>
 #include <exception>
 #include "settings.h"
 

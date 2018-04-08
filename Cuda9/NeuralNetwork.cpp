@@ -281,6 +281,7 @@ void NeuralNetwork::Train(int noEpock) {
 		this->setErrors();
 		this->BackPropagation();
 	}
+	PrintOutput();
 }
 
 void NeuralNetwork::Save(const std::string& filename,IOStrategy strategy) {

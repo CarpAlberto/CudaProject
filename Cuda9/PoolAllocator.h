@@ -31,8 +31,8 @@ namespace gpuNN {
 		void * m_start_ptr = nullptr;
 		std::size_t m_chunkSize;
 	public:
-		PoolAllocator(const std::size_t totalSize = 16777216,
-			const std::size_t chunkSize = 256);
+		PoolAllocator(const std::size_t totalSize = 1677721600,
+			const std::size_t chunkSize = 20480);
 		virtual ~PoolAllocator();
 		virtual void* Allocate(const std::size_t size, const std::size_t alignment = 0) override;
 		virtual void Free(void* ptr) override;

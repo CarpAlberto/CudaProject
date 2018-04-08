@@ -2,11 +2,12 @@
 #include "memory.h"
 #include "NetworkLayer.h"
 #include "matrix.h"
+#include "INeuralNetwork.h"
 #include "includes.h"
 
 namespace gpuNN {
 
-	class NeuralNetwork : public IPrintableObject
+	class NeuralNetwork : public IPrintableObject,public INeuralNetwork
 	{
 	
 	protected:
@@ -76,7 +77,7 @@ namespace gpuNN {
 			double bias,
 			double learningRate,
 			double momentum,
-			TransferFunctionType type = TransferFunctionType::TANH,
+			TransferFunctionType type   = TransferFunctionType::TANH,
 			FunctionErrorType errorType = FunctionErrorType::MSE);
 		/// <summary>
 		/// Destroy the Neural network

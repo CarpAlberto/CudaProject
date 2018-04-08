@@ -11,6 +11,8 @@
 #include <chrono>
 #include <atomic>
 #include <initializer_list>
+#include "include\parser-library\parse.h"
+#include "include/word-to-vec/word2vec.h"
 //#include "include/json.hpp"
 
 #include <cuda_runtime.h>
@@ -58,6 +60,7 @@
 /*Forward declaration*/
 using namespace gpuNN;
 using namespace std::chrono;
+using namespace peparse;
 
 
 enum class ErrorSurce;
@@ -68,12 +71,30 @@ typedef unsigned char byte;
 
 #define RC2IDX(R,C,COLS) (((R)*(COLS))+(C))
 
+#ifndef DUMP_FIELD
+#define DUMP_FIELD(x)                                                      \
+  std::cout << "" #x << ": 0x";                                            \
+  std::cout << to_string<std::uint32_t>(                                   \
+                   static_cast<std::uint32_t>(p->peHeader.nt.x), std::hex) \
+            << endl;
+#endif
+
+#ifndef DUMP_DEC_FIELD
+#define DUMP_DEC_FIELD(x)                                                  \
+  std::cout << "" #x << ": ";                                              \
+  std::cout << to_string<uint32_t>(                                        \
+                   static_cast<std::uint32_t>(p->peHeader.nt.x), std::dec) \
+            << endl;
+
+#endif
+
 /// <summary>
 /// Typedef the vectore of integers for toplogy
 /// </summary>
 typedef std::vector<size_t>			   Topology;
 typedef std::vector<double>			   vDouble;
 typedef std::vector<vDouble>		   mDouble;
+typedef std::vector<std::string>       vStrings ;
 
 
 //using json = nlohmann::json;
