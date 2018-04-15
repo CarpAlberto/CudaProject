@@ -55,5 +55,13 @@ namespace gpuNN {
 		BINARY
 	};
 
-	
+	enum class NeuronTypeData {
+		DATA,
+		ACTIVATED_DATA,
+		DERIVED_DATA
+	};
+	typedef enum {
+		RowMajor,
+		ColumnMajor
+	} StoringOrder;
 }

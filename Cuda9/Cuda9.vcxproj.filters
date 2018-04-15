@@ -10,6 +10,18 @@
     <CudaCompile Include="matrix_kernels.cu">
       <Filter>kernels</Filter>
     </CudaCompile>
+    <CudaCompile Include="ml.cu">
+      <Filter>kernels</Filter>
+    </CudaCompile>
+    <CudaCompile Include="NetworkLayer.cu">
+      <Filter>ml\neural_network</Filter>
+    </CudaCompile>
+    <CudaCompile Include="OptimizedNeuralNetwork.cu">
+      <Filter>ml\neural_network\gpu_optimized</Filter>
+    </CudaCompile>
+    <CudaCompile Include="OptimizedLayer.cu">
+      <Filter>ml\neural_network\gpu_optimized</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="config">
@@ -92,6 +104,9 @@
     </Filter>
     <Filter Include="application-manager">
       <UniqueIdentifier>{b11b4683-5594-4592-a0ec-06dd3697db49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ml\neural_network\gpu_optimized">
+      <UniqueIdentifier>{454f46e2-c101-4b1e-9f79-13c2bb3c3f9a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +257,21 @@
     <ClInclude Include="ApplicationManager.h">
       <Filter>application-manager</Filter>
     </ClInclude>
+    <ClInclude Include="ml.h">
+      <Filter>kernels</Filter>
+    </ClInclude>
+    <ClInclude Include="cuda_macro.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="template_data.h">
+      <Filter>data_structure</Filter>
+    </ClInclude>
+    <ClInclude Include="OptimizedNeuralNetwork.h">
+      <Filter>ml\neural_network\gpu_optimized</Filter>
+    </ClInclude>
+    <ClInclude Include="OptimizedLayer.h">
+      <Filter>ml\neural_network\gpu_optimized</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -265,13 +295,7 @@
     <ClCompile Include="Memory.cpp">
       <Filter>memory</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkLayer.cpp">
-      <Filter>ml\neural_network</Filter>
-    </ClCompile>
     <ClCompile Include="Neuron.cpp">
-      <Filter>ml\neural_network</Filter>
-    </ClCompile>
-    <ClCompile Include="NeuralNetwork.cpp">
       <Filter>ml\neural_network</Filter>
     </ClCompile>
     <ClCompile Include="TanhTransferFunction.cpp">
@@ -316,6 +340,10 @@
     <ClCompile Include="ApplicationManager.cpp">
       <Filter>application-manager</Filter>
     </ClCompile>
+    <ClCompile Include="NeuralNetwork.cu">
+      <Filter>ml\neural_network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config.cfg">

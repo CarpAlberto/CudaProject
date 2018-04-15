@@ -1,6 +1,7 @@
 #include "matrix_kernels.h"
 
 #define TILE_DIM 16
+
 __global__ void gpu_add(float* first, float* second, size_t sizeFirst)
 {
 	int threadId = threadIdx.x + blockIdx.x * blockDim.x;

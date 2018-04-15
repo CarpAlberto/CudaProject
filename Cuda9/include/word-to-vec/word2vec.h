@@ -375,7 +375,7 @@ struct Word2Vec
 		fbb.Finish(dict);
 
 		std::ofstream out(file, std::ofstream::out | std::ofstream::binary);
-		out.write((const char *)fbb.GetBufferPointer(), fbb.GetSize());
+		out.write((const char *)fbb.GetBufferData(), fbb.GetSize());
 		return 0;
 	}
 

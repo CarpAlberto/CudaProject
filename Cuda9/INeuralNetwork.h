@@ -20,6 +20,12 @@ public:
 	/// <param name="target">The target ANN</param>
 	virtual void SetCurrentTarget(const vDouble& target) = 0;
 
+	/// <summary>
+	/// Save the configuration of the network in the filename
+	/// </summary>
+	/// <param name="filename"></param>
+	virtual void Save(const std::string& filename, IOStrategy strategy)=0;
+
 
 
 };

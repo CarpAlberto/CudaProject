@@ -54,7 +54,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;curand.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"
@@ -62,10 +62,16 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
+      <CodeGeneration>compute_30,sm_30</CodeGeneration>
+      <GenerateRelocatableDeviceCode>false</GenerateRelocatableDeviceCode>
     </CudaCompile>
     <Lib>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <CudaLink>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>curand.lib</AdditionalLibraryDirectories>
+    </CudaLink>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -92,6 +98,9 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <CudaCompile Include="matrix.cu" />
+    <CudaCompile Include="ml.cu" />
+    <CudaCompile Include="NetworkLayer.cu" />
+    <CudaCompile Include="OptimizedNeuralNetwork.cu" />
     <CudaCompile Include="vector.cu" />
   </ItemGroup>
   <ItemGroup>
@@ -100,10 +109,14 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="ApplicationLogger.h" />
     <ClInclude Include="ApplicationManager.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="cuda_macro.h" />
     <ClInclude Include="enums.h" />
     <ClInclude Include="ErrorFunction.h" />
     <ClInclude Include="GpuAllocator.h" />
     <ClInclude Include="GUIConsole.h" />
+    <ClInclude Include="OptimizedLayer.h" />
+    <ClInclude Include="OptimizedNeuralNetwork.h" />
+    <ClInclude Include="template_data.h" />
     <ClInclude Include="HuffmanWordProcessor.h" />
     <ClInclude Include="IAnalyzer.h" />
     <ClInclude Include="includes.h" />
@@ -124,6 +137,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="MalwareAnalyzer.h" />
     <ClInclude Include="MatrixFactory.h" />
     <ClInclude Include="matrix_kernels.h" />
+    <ClInclude Include="ml.h" />
     <ClInclude Include="MSEErrorFunction.h" />
     <ClInclude Include="NetworkLayer.h" />
     <ClInclude Include="LoggingPolicy.h" />
@@ -164,11 +178,14 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="MemoryAllocationException.cu" />
     <ClCompile Include="MSEErrorFunction.cpp" />
-    <ClCompile Include="NetworkLayer.cpp" />
-    <ClCompile Include="NeuralNetwork.cpp" />
+    <ClCompile Include="NeuralNetwork.cu" />
     <ClCompile Include="Neuron.cpp" />
+    <CudaCompile Include="OptimizedLayer.cu">
+      <FileType>Document</FileType>
+    </CudaCompile>
     <ClCompile Include="PoolAllocator.cpp" />
     <ClCompile Include="SequenceModel.cpp" />
+    <ClCompile Include="Source.cpp" />
     <ClCompile Include="StackAllocator.cpp" />
     <ClCompile Include="TanhTransferFunction.cpp" />
     <ClCompile Include="FunctionFactory.cpp" />

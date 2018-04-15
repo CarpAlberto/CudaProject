@@ -40,3 +40,8 @@ std::string Utils::Trim(std::string const& source, char const* delims) {
 	return result;
 
 }
+
+bool Utils::isAscii(char ch)
+{
+	return std::isalpha(static_cast<unsigned char>(ch));
+}

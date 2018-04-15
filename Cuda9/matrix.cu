@@ -345,7 +345,13 @@ void GpuMatrix::Malloc()
 GpuMatrix::GpuMatrix(size_t height,size_t width)
 	: GenericMatrix(height, width) {
 
+	auto start = std::chrono::system_clock::now();
 	this->Malloc();
+	auto end = std::chrono::system_clock::now();
+
+	duration<double> time_span = duration_cast<duration<double>>(end - start);
+
+	Memory::instance()->LastSessionTime += time_span.count();
 }
 
 GpuMatrix::GpuMatrix() : GenericMatrix() {
@@ -410,7 +416,8 @@ void GpuMatrix::Clone(const GenericMatrix& rhs)  {
 	this->Memcpy(const_cast<GenericMatrix&>(rhs));
 }
 
-void GpuMatrix::SetRandom() {
+void GpuMatrix::SetRandom() 
+{
 	if (m_data == nullptr)
 		Malloc();
 	curandGenerator_t generator;
@@ -440,8 +447,6 @@ GenericMatrix& GpuMatrix::operator+(const GenericMatrix& rhs) const {
 GenericMatrix& GpuMatrix::operator*(const GenericMatrix& rhs) const {
   	
 	GenericMatrix * returnMatrix = new GpuMatrix(this->m_rows, rhs.getCols());
-	int TILE_WIDTH = 32;
-
 	dim3 dimGrid;
 	dim3 dimBlock(TILE_DIM, TILE_DIM,1);
 
@@ -463,6 +468,7 @@ GenericMatrix& GpuMatrix::Transpose() const
 	auto columns = this->getCols();
 
 	GpuMatrix * matrix = new GpuMatrix(columns, rows);
+	
 	int len = matrix->getRows() * matrix->getCols();
 	const size_t block_size = threadsPerBlock;
 	const size_t num_blocks = (len / block_size) + ((len % block_size) ? 1 : 0);
@@ -483,4 +489,11 @@ mDouble  GpuMatrix::getAsMatrix()
 		matrix.push_back(v);
 	}
 	return matrix;
+}
+
+GpuMatrix::GpuMatrix(float* data, size_t size,size_t rows,size_t cols)
+{
+	this->m_data = data;
+	this->m_rows = rows;
+	this->m_cols = cols;
 }

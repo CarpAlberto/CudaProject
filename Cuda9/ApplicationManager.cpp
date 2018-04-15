@@ -6,9 +6,13 @@ ApplicationManager::ApplicationManager()
 {
 	this->analyzer = new MalwareAnalyzer();
 
-	this->analyzer->BuildFeatures("TestProject.exe", this->neuralNetwork);
+	this->analyzer->BuildFeatures("xmrig-amd.exe", this->neuralNetwork);
 
 	this->analyzer->Analyze(this->neuralNetwork);
+
+	this->neuralNetwork->Save("trained.txt", IOStrategy::ASCII);
+
+
 
 }
 

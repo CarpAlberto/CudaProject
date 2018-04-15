@@ -391,7 +391,7 @@ class FlatBufferBuilder {
   uoffset_t GetSize() const { return buf_.size(); }
 
   // Get the serialized buffer (after you call Finish()).
-  uint8_t *GetBufferPointer() const { return buf_.data(); }
+  uint8_t *GetBufferData() const { return buf_.data(); }
 
   void ForceDefaults(bool fd) { force_defaults_ = fd; }
 

@@ -13,22 +13,26 @@
 #include <initializer_list>
 #include "include\parser-library\parse.h"
 #include "include/word-to-vec/word2vec.h"
-//#include "include/json.hpp"
-
 #include <cuda_runtime.h>
 #include <device_launch_parameters.h>
 #include <immintrin.h>
 #include <curand.h>
+#include <cctype> 
+#include <clocale>
+#include <chrono>
+#include <ctime>
 
-/*Cuda imports*/
+//#define OPTIMIZED_GPU
 
+/*
 #ifndef __CUDACC_RTC__ 
 #define __CUDACC_RTC__
 #endif 
 #ifndef __CUDACC__
 #define __CUDACC__
 #endif
-
+*/
+#define throwUns throw new std::exception("Unsuported operation");
 
 #define threadsPerBlock 512
 
@@ -36,6 +40,13 @@
 	#define TILE_DIM 16
 #endif
 
+#define cudaCheckError() {                                          \
+ cudaError_t e=cudaGetLastError();                                 \
+ if(e!=cudaSuccess) {                                              \
+   printf("Cuda failure %s:%d: '%s'\n",__FILE__,__LINE__,cudaGetErrorString(e));           \
+   exit(0); \
+ }                                                                 \
+}
 #include "enums.h"
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -95,11 +106,8 @@ typedef std::vector<size_t>			   Topology;
 typedef std::vector<double>			   vDouble;
 typedef std::vector<vDouble>		   mDouble;
 typedef std::vector<std::string>       vStrings ;
-
-
-//using json = nlohmann::json;
-
-
+typedef float cudafloat;
+#define ASSERT(cond) if(!cond) {throw new std::exception("unsuported");}
 
 
 

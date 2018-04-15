@@ -1,9 +1,9 @@
 #pragma once
+#include "includes.h"
 #include "memory.h"
 #include "NetworkLayer.h"
-#include "matrix.h"
 #include "INeuralNetwork.h"
-#include "includes.h"
+
 
 namespace gpuNN {
 
@@ -13,8 +13,12 @@ namespace gpuNN {
 	protected:
 		/// <summary>
 		/// Internals layers
-		/// </summary>
-		std::vector<std::shared_ptr<NetworkLayer>> m_layers;
+		/// </summary> 
+		#ifndef OPTIMIZED_GPU
+			std::vector<std::shared_ptr<NetworkLayer>> m_layers;
+		#else
+			std::vector<std::shared_ptr<OptimizedGpuNetworkLayer>> m_layers;
+		#endif
 		/// <summary>
 		/// The weights of neurons
 		/// </summary>
@@ -95,6 +99,11 @@ namespace gpuNN {
 		/// <returns></returns>
 		PtrMatrix getNeuronAsMatrix(size_t index) const;
 		/// <summary>
+		/// Returns neurons as anm array of data
+		/// </summary>
+		/// <returns></returns>
+		cudaObject* getNeuronAsData(size_t index)const;
+		/// <summary>
 		/// Returns a matrix from derived value stored in neurons
 		/// <param name="index">The index of the layers</param>
 		/// </summary>
@@ -168,7 +177,7 @@ namespace gpuNN {
 		/// </summary>
 		void Save(const std::string&,IOStrategy strategy);
 
-
 	};
+
 }
 

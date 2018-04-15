@@ -229,6 +229,7 @@ namespace gpuNN {
 	public:
 		#pragma region Constructors
 			GpuMatrix(size_t rows, size_t columns);
+			GpuMatrix(float* data,size_t size, size_t rows, size_t cols);
 			GpuMatrix(const GenericMatrix& rhs);
 			GpuMatrix();
 		#pragma endregion

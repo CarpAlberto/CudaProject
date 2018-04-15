@@ -4,6 +4,8 @@
 
 namespace gpuNN {
 
+	class cudaObject;
+
 	class MatrixFactory : NonCopyableObject,
 						  NonMoveableObject
 	{
@@ -15,6 +17,14 @@ namespace gpuNN {
 		/// <param name="columns">The column numbers</param>
 		/// <returns>The matrix</returns>
 		static GenericMatrix* getMatrix(size_t rows, size_t columns);
+
+		/// <summary>
+		/// Returns the matrix
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <param name="size"></param>
+		/// <returns></returns>
+		static GenericMatrix* getMatrix(cudaObject* obj, size_t rows, size_t cols, NeuronTypeData);
 		/// <summary>
 		/// Returns an matrix based on the the rhs parameter
 		/// </summary>

@@ -39,6 +39,12 @@ namespace gpuNN {
 			std::uniform_real_distribution<> dis(-0.3 , 1);
 			return dis(gen);
 		}
+		/// <summary>
+		/// Returns if the character is ASCII false otherwise
+		/// </summary>
+		/// <param name="ch">The character</param>
+		/// <returns></returns>
+		static bool isAscii(char ch);
 	};
 }
 
