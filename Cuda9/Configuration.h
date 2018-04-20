@@ -37,6 +37,39 @@ namespace gpuNN
 		/// </summary>
 		/// <returns>The size of the bloack size</returns>
 		size_t getThreadBlockSize() const;
+		/// <summary>
+		/// Returns trus if the directory mode is enabled
+		/// </summary>
+		/// <returns></returns>
+		bool isDirectoryModeEnabled();
+		/// <summary>
+		/// Enables the generation features based on sources
+		/// </summary>
+		/// <returns></returns>
+		bool isFilenameModeEnabled();
+		/// <summary>
+		/// Returns the direcotry benings folder
+		/// </summary>
+		/// <returns></returns>
+		std::string getDirectoryBenigns();
+		/// <summary>
+		/// Returns the malware directory
+		/// </summary>
+		/// <returns></returns>
+		std::string getDirectoryMalware();
+
+		/// <summary>
+		/// Returns the filename in
+		/// </summary>
+		/// <returns></returns>
+		std::string getFilenameIn();
+		/// <summary>
+		/// Returns the filename out
+		/// </summary>
+		/// <returns></returns>
+		std::string getFilenameOut();
+
+
 	};
 
 	template<typename Object>

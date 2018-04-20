@@ -384,7 +384,8 @@ namespace gpuNN
 		
 	}
 
-	__global__ void cuda_calculate_errors(float* rms, float* rmsF, int patternsNo, float numberPatternsNeurons)
+	__global__ void cuda_calculate_errors(float* rms, float* rmsF, int patternsNo,
+		float numberPatternsNeurons)
 	{
 		
 		extern __shared__ cudafloat shared_rms[];
@@ -407,4 +408,6 @@ namespace gpuNN
 			}
 		}
 	}
+
+
 }

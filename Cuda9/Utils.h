@@ -1,5 +1,6 @@
 #pragma once
 #include "includes.h"
+#include <sstream>
 namespace gpuNN {
 	class Utils
 	{
@@ -45,6 +46,13 @@ namespace gpuNN {
 		/// <param name="ch">The character</param>
 		/// <returns></returns>
 		static bool isAscii(char ch);
+		/// <summary>
+		/// Splits the string and returns the vector of the tokens
+		/// </summary>
+		/// <param name="rhs">The strings to be splitted</param>
+		/// <param name="delim">The delimiter</param>
+		/// <returns></returns>
+		std::vector<std::string> Split(std::string rhs, char delim);
 	};
 }
 

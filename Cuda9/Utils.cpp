@@ -45,3 +45,15 @@ bool Utils::isAscii(char ch)
 {
 	return std::isalpha(static_cast<unsigned char>(ch));
 }
+
+std::vector<std::string> Utils::Split(std::string s, char delim)
+{
+	std::vector<std::string> tokens;
+	std::string token;
+	std::istringstream tokenStream(s);
+	while (std::getline(tokenStream, token, delim))
+	{
+		tokens.push_back(token);
+	}
+	return tokens;
+}

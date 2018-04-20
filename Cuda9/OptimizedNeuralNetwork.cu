@@ -81,11 +81,13 @@ OptimizedNeuralNetwork::OptimizedNeuralNetwork(IntCpuArray& sizeLayers, RealHost
 	d_lastDeltaWithoutLMlayers = lastDeltaWithoutLMlayers;
 
 	int sizeRMSvector = (mlayers[outputLayer].numberConnection > CUDA_MAX_THREADS_PER_BLOCK)
-		? OptimizedLayer::patterns * mlayers[outputLayer].numberNeurons : OptimizedLayer::patterns;
+		? OptimizedLayer::patterns * mlayers[outputLayer].numberNeurons :
+		OptimizedLayer::patterns;
 	d_rms.Resize(sizeRMSvector);
 	mlayers[outputLayer].floatDestinationOutputs = vOutputs.Data();
 	mlayers[outputLayer].floatRootMeanSquare = d_rms.Data();
-	mlayers[outputLayer].sharedMemFire += mlayers[outputLayer].numberNeurons * sizeof(cudafloat);
+	mlayers[outputLayer].sharedMemFire += mlayers[outputLayer].numberNeurons * 
+		sizeof(float);
 
 	CpuArray<cudafloat> h_bestRMS(1);
 	h_bestRMS[0] = 1.0;
@@ -211,7 +213,6 @@ void OptimizedNeuralNetwork::Save(const std::string& filename, IOStrategy strate
 	}
 	os << std::endl;
 
-
 	for (int l = 0; l < numLayers; l++) 
 	{
 		auto weights = this->GetWeights(l);
@@ -224,6 +225,5 @@ void OptimizedNeuralNetwork::Save(const std::string& filename, IOStrategy strate
 			os << this->initialLearningRate << std::endl;
 		}
 	}
-
 	os.close();
 }
