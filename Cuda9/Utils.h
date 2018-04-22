@@ -52,7 +52,14 @@ namespace gpuNN {
 		/// <param name="rhs">The strings to be splitted</param>
 		/// <param name="delim">The delimiter</param>
 		/// <returns></returns>
-		std::vector<std::string> Split(std::string rhs, char delim);
+		static std::vector<std::string> Split(std::string rhs, char delim);
+
+		/// <summary>
+		/// Reads the directory content and put it in the array
+		/// </summary>
+		/// <param name="directory">The directory where the data should be fetched</param>
+		/// <param name="array">The array where the data will be stored</param>
+		static void ReadDirectory(const std::string directory, std::vector<std::string>& array);
 	};
 }
 

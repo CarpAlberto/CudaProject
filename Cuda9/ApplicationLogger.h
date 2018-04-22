@@ -231,7 +231,7 @@ namespace gpuNN {
 			case SeverityType::WARNING:
 				log_stream << "WRN: ";
 				break;
-			case SeverityType::ERROR:
+			case SeverityType::CUDA_ERROR:
 				log_stream << "ERR: ";
 				break;
 		};

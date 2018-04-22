@@ -26,6 +26,11 @@ public:
 	/// <param name="filename"></param>
 	virtual void Save(const std::string& filename, IOStrategy strategy)=0;
 
-
+	/// <summary>
+	/// Loads the neural network from the database
+	/// </summary>
+	/// <param name="filename"></param>
+	/// <param name="strategy"></param>
+	virtual void Load(const std::string& filename, IOStrategy strategy)=0;
 
 };

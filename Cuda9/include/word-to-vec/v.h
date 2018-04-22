@@ -19,7 +19,8 @@ namespace v {
 	};
 
 	template <class Vector1, class Vector2> inline float dot(const Vector1&x, const Vector2& y) { 
-		size_t m = x.size(); const float *xd = x.data(), *yd = y.data();
+		int m = x.size(); 
+		const float *xd = x.data(), *yd = y.data();
 		float sum = 0.0;
 		while (--m >= 0) sum += (*xd++) * (*yd++);
 		return sum;

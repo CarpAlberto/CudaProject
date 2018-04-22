@@ -1,5 +1,7 @@
+#ifdef HUFFMAN
 #pragma once
 #include "IWordProcessing.h"
+#include "SequenceModel.h"
 
 namespace gpuNN {
 
@@ -7,10 +9,12 @@ namespace gpuNN {
 		public IWordProcessing
 	{
 	public:
-		virtual SequenceModel BuildModel(const std::string& filename);
-		virtual SequenceModel BuildModel(vStrings& words);
+		virtual ISequenceModel& BuildModel(const std::string& filename);
+		virtual ISequenceModel& BuildModel(vStrings& words);
 		HuffmanWordProcessor();
 		~HuffmanWordProcessor();
 	};
 }
 
+
+#endif

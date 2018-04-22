@@ -272,6 +272,15 @@
     <ClInclude Include="OptimizedLayer.h">
       <Filter>ml\neural_network\gpu_optimized</Filter>
     </ClInclude>
+    <ClInclude Include="FileLenghtEncoding.h">
+      <Filter>ml\analyzer</Filter>
+    </ClInclude>
+    <ClInclude Include="ISequenceModel.h">
+      <Filter>ml\analyzer\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="StringModel.h">
+      <Filter>ml\analyzer\models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -344,6 +353,12 @@
       <Filter>ml\neural_network</Filter>
     </ClCompile>
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="FileLenghtEncoding.cpp">
+      <Filter>ml\analyzer</Filter>
+    </ClCompile>
+    <ClCompile Include="StringModel.cpp">
+      <Filter>ml\analyzer\models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="config.cfg">

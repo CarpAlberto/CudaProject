@@ -90,6 +90,7 @@ struct Word2Vec
 		Word(const Word&) = delete;
 		const Word& operator = (const Word&) = delete;
 	};
+
 	typedef std::shared_ptr<Word> WordP;
 	
 	struct Sentence
@@ -98,6 +99,7 @@ struct Word2Vec
 		std::vector<String> tokens_;
 		std::vector<Tag> tags_;
 	};
+
 	typedef std::shared_ptr<Sentence> SentenceP;
 
 	std::vector<Vector> syn0_, syn1_;
@@ -142,7 +144,8 @@ struct Word2Vec
 
 		for (auto& sentence: sentences) {
 			++count;
-			if (count % 10000 == 0) progress("word", vocab);
+			if (count % 10000 == 0) 
+				progress("word", vocab);
 
 			String last_token;
 			for (auto& token: sentence->tokens_) {
@@ -539,13 +542,15 @@ private:
 		int count = 0;
 		int len = sentence.words_.size();
 		int reduced_window = rand() % window_;
-		for (int i=0; i<len; ++i) {
+		for (int i=0; i<len; ++i)
+		{
 			const Word& current = *sentence.words_[i];
 			size_t codelen = current.codes_.size();
 
 			int j = std::max(0, i - window_ + reduced_window);
 			int k = std::min(len, i + window_ + 1 - reduced_window);
-			for (; j < k; ++j) {
+			for (; j < k; ++j) 
+			{
 				const Word *word = sentence.words_[j];
 				if (j == i || word->codes_.empty()) 
 					continue;
@@ -575,33 +580,33 @@ private:
 				}
 
 				//negative sampling
-#if 0
-				if (negative_ > 0) {
-					for (int d = 0; d < negative_ + 1; ++d) {
-						int label = (d == 0? 1: 0);
-						int target = 0;
-						if (d == 0) target = i;
-						else {
-							target = unigram_[rand() % unigram_.size()];
-							if (target == 0) target = rand() % (vocab_.size() - 1) + 1;
-							if (target == i) continue;
-						}
+				#if 0
+								if (negative_ > 0) {
+									for (int d = 0; d < negative_ + 1; ++d) {
+										int label = (d == 0? 1: 0);
+										int target = 0;
+										if (d == 0) target = i;
+										else {
+											target = unigram_[rand() % unigram_.size()];
+											if (target == 0) target = rand() % (vocab_.size() - 1) + 1;
+											if (target == i) continue;
+										}
 
-						auto& l2 = syn1neg_[target];
-						float f = v::dot(l1, l2), g = 0;
-						if (f > max_exp) g = (label - 1) * alpha;
-						else if (f < -max_exp) g = (label - 0) * alpha;
-						else {
-							int fi = int((f + max_exp) * (max_size / max_exp / 2.0));
-							g = (label - table[fi]) * alpha;
-						}
+										auto& l2 = syn1neg_[target];
+										float f = v::dot(l1, l2), g = 0;
+										if (f > max_exp) g = (label - 1) * alpha;
+										else if (f < -max_exp) g = (label - 0) * alpha;
+										else {
+											int fi = int((f + max_exp) * (max_size / max_exp / 2.0));
+											g = (label - table[fi]) * alpha;
+										}
 
-						v::saxpy(work, g, l2);
-						v::saxpy(l2, g, l1);
+										v::saxpy(work, g, l2);
+										v::saxpy(l2, g, l1);
 						
-					}
-				}
-#endif
+									}
+								}
+				#endif
 
 //				syn0_[word_index] += work;
 				v::saxpy(l1, 1.0, work);

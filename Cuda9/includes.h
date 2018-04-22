@@ -21,6 +21,13 @@
 #include <clocale>
 #include <chrono>
 #include <ctime>
+#include <windows.h>
+
+
+// Undef the max and use std::max
+#ifdef max
+	#undef max
+#endif
 
 //#define OPTIMIZED_GPU
 

@@ -112,10 +112,13 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="cuda_macro.h" />
     <ClInclude Include="enums.h" />
     <ClInclude Include="ErrorFunction.h" />
+    <ClInclude Include="FileLenghtEncoding.h" />
     <ClInclude Include="GpuAllocator.h" />
     <ClInclude Include="GUIConsole.h" />
+    <ClInclude Include="ISequenceModel.h" />
     <ClInclude Include="OptimizedLayer.h" />
     <ClInclude Include="OptimizedNeuralNetwork.h" />
+    <ClInclude Include="StringModel.h" />
     <ClInclude Include="template_data.h" />
     <ClInclude Include="HuffmanWordProcessor.h" />
     <ClInclude Include="IAnalyzer.h" />
@@ -164,6 +167,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="ApplicationConfiguration.cpp" />
     <ClCompile Include="ApplicationContext.cu" />
     <ClCompile Include="ApplicationManager.cpp" />
+    <ClCompile Include="FileLenghtEncoding.cpp" />
     <ClCompile Include="GpuAllocator.cu" />
     <ClCompile Include="GUIConsole.cu" />
     <ClCompile Include="HuffmanWordProcessor.cpp" />
@@ -187,6 +191,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="SequenceModel.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="StackAllocator.cpp" />
+    <ClCompile Include="StringModel.cpp" />
     <ClCompile Include="TanhTransferFunction.cpp" />
     <ClCompile Include="FunctionFactory.cpp" />
     <ClCompile Include="Utils.cpp" />

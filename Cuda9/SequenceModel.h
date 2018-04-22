@@ -1,9 +1,10 @@
 #pragma once
 #include "includes.h"
 #include "vector.h"
+#include "ISequenceModel.h"
 namespace gpuNN {
 
-	class SequenceModel
+	class SequenceModel : ISequenceModel
 	{
 	protected:
 		const int chunkArray = 200;

@@ -26,4 +26,11 @@ public:
 	/// <param name="filename">The given filename</param>
 	/// <param name="out">The out filename`</param>
 	virtual void BuildFeatures(const std::string& filename, const std::string& out)=0;
+
+	/// <summary>
+	/// Builds the features from the database.
+	/// </summary>
+	/// <param name="directory"></param>
+	/// <param name="database"></param>
+	virtual void BuildFeaturesFromDirectory(const std::string& directory, const std::string& database) = 0;
 };

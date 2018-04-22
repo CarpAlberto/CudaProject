@@ -69,7 +69,15 @@ namespace gpuNN
 		/// <returns></returns>
 		std::string getFilenameOut();
 
+		bool isStringLengthEncoding();
 
+		std::string getDirectoryBase();
+
+		std::string getDatabaseOut();
+
+		std::string getTrainBenignsDirectory();
+
+		bool isTrainingModeEnabled();
 	};
 
 	template<typename Object>

@@ -1,6 +1,7 @@
 #include "Utils.h"
-
+#include <Windows.h>
 using namespace gpuNN;
+using namespace std;
 
 std::size_t Utils::CalculatePadding(const std::size_t baseAddress, const std::size_t alignment) {
 	const std::size_t multiplier = (baseAddress / alignment) + 1;
@@ -56,4 +57,18 @@ std::vector<std::string> Utils::Split(std::string s, char delim)
 		tokens.push_back(token);
 	}
 	return tokens;
+}
+void Utils::ReadDirectory(const std::string directory, std::vector<std::string>& array)
+{
+	std::string pattern(directory);
+	pattern.append("\\*");
+	WIN32_FIND_DATA data;
+	HANDLE hFind;
+	if ((hFind = FindFirstFile(pattern.c_str(), &data)) != INVALID_HANDLE_VALUE) {
+		do {
+			array.push_back(data.cFileName);
+		} while (FindNextFile(hFind, &data) != 0);
+		FindClose(hFind);
+	}
+
 }

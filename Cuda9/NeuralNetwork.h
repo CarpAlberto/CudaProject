@@ -177,6 +177,7 @@ namespace gpuNN {
 		/// </summary>
 		void Save(const std::string&,IOStrategy strategy);
 
+		void Load(const std::string& filename, IOStrategy strategy) {}
 	};
 
 }

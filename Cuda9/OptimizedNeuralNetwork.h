@@ -22,13 +22,14 @@ namespace gpuNN {
 		int patternsBlockSize;
 		cudafloat numberPatternsNeurons;
 		int epoch;
-		GpuArray<int>		 d_numberWeightsLayer;
-		GpuArray<cudafloat*>  d_weightsLayers;
-		GpuArray<cudafloat *> d_bestWeightsLayers;
-		GpuArray<cudafloat *> d_learnRatesLayers;
-		GpuArray<cudafloat *> d_lastDeltaLayers;
+		GpuArray<int>			 d_numberWeightsLayer;
+		GpuArray<cudafloat*>	 d_weightsLayers;
+		GpuArray<cudafloat *>	 d_bestWeightsLayers;
+		GpuArray<cudafloat *>	 d_learnRatesLayers;
+		GpuArray<cudafloat *>	 d_lastDeltaLayers;
 		GpuArray<cudafloat *>    d_lastDeltaWithoutLMlayers;
 		CpuArray<OptimizedLayer> mlayers;
+		float minRms = 0.00001;
 
 	public:
 		OptimizedNeuralNetwork(IntCpuArray& layers, RealHostMatrix& inputs,
@@ -70,5 +71,7 @@ namespace gpuNN {
 		RealCpuArray GetWeights(int layer) const;
 
 		virtual void Save(const std::string& filename, IOStrategy strategy);
+
+		virtual void Load(const std::string& filename, IOStrategy strategy);
 	};
 }

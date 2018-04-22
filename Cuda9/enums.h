@@ -30,7 +30,7 @@ namespace gpuNN {
 	enum class SeverityType {
 		DEBUG,
 		WARNING,
-		ERROR
+		CUDA_ERROR
 	};
 	/// <summary>
 	/// Transfer Functions

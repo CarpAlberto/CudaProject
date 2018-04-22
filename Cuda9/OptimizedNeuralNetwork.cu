@@ -133,6 +133,13 @@ void OptimizedNeuralNetwork::Train(int noEpochs)
 		for (int l = numLayers - 1; l >= 0; l--) {
 			mlayers[l].BuildWeights(streamKernels, patternsBlockSize, rms, momentum, u, d, maxStepSize);
 		}
+		float gRms = this->GetRMS();
+		std::cout << "Epock : " << this->GetEpoch() << "  ";
+		std::cout << "RMS : " << gRms << std::endl;
+		
+		if (gRms < this->minRms) {
+			break;
+		}
 		epoch++;
 	}
 }
@@ -226,4 +233,13 @@ void OptimizedNeuralNetwork::Save(const std::string& filename, IOStrategy strate
 		}
 	}
 	os.close();
+}
+
+void OptimizedNeuralNetwork::Load(const std::string& filename, IOStrategy strategy)
+{
+	std::ifstream is(filename);
+
+	if (strategy != IOStrategy::ASCII) {
+		throw new std::exception("Unsuported strategy save");
+	}
 }

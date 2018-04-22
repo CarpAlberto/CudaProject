@@ -13,11 +13,11 @@ void VectorInteger::malloc() {
 			this->m_data = (int*)Memory::instance()->allocate(2 * sizeof(int), Bridge::CPU);
 		}
 		catch (MemoryAllocationException exception) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 				(exception.what());
 		}
 		catch (...) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 				("Unknown Error");
 		}
 		memset(this->m_data, 0, 2 * sizeof(int));
@@ -388,7 +388,7 @@ VectorFloat VectorFloat::operator*(float rhs) const {
 
 VectorFloat VectorFloat::operator/(float rhs) const {
 	if (rhs == 0) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Determinator is zero");
 	}
 	VectorFloat tmp;
@@ -401,7 +401,7 @@ VectorFloat VectorFloat::operator/(float rhs) const {
 
 VectorFloat VectorFloat::operator%(float rhs) const {
 	if (rhs == 0) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Determinator is zero");
 		exit(0);
 	}
@@ -456,7 +456,7 @@ VectorFloat& VectorFloat::operator*=(const float rhs) {
 
 VectorFloat& VectorFloat::operator/=(const float rhs) {
 	if (rhs == 0) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Determinator is zero");
 		exit(0);
 	}
@@ -468,7 +468,7 @@ VectorFloat& VectorFloat::operator/=(const float rhs) {
 
 VectorFloat& VectorFloat::operator%=(const float rhs) {
 	if (rhs == 0) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Determinator is zero");
 		exit(0);
 	}
@@ -508,11 +508,11 @@ void VectorFloat::malloc() {
 			this->m_data = (float*)Memory::instance()->allocate(3 * sizeof(int), Bridge::CPU);
 		}
 		catch (MemoryAllocationException exception) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 				(exception.what());
 		}
 		catch (...) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 				("Unknown Error");
 		}
 		memset(this->m_data, 0, 3 * sizeof(int));

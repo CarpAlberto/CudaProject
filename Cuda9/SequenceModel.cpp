@@ -52,12 +52,14 @@ SequenceModel::SequenceModel(vStrings& vArray)
 	size_t count = 0;
 	std::vector<SentenceP> sentences;
 	SentenceP sentence(new Sentence);
-	for (auto& s : vArray) {
+	for (auto& s : vArray) 
+	{
 		if (s.empty())
 			break;
 		++count;
 		sentence->tokens_.push_back(std::move(s));
-		if (count == this->chunkArray) {
+		if (count == this->chunkArray) 
+		{
 			count = 0;
 			sentence->words_.reserve(sentence->tokens_.size());
 			sentences.push_back(std::move(sentence));
@@ -67,4 +69,7 @@ SequenceModel::SequenceModel(vStrings& vArray)
 	if (!sentence->tokens_.empty())
 		sentences.push_back(std::move(sentence));
 	this->internalModel.build_vocab(sentences);
+	this->internalModel.train(sentences, 4);
+
+	this->internalModel.save_text("output.txt");
 }

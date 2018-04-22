@@ -56,4 +56,41 @@ namespace gpuNN {
 		return baseConfiguration.Value("Filename",
 			"FILENAME_VIRUSES");
 	}
+
+	std::string ApplicationConfiguration::getDirectoryBase()
+	{
+		return baseConfiguration.Value("Directory",
+			"DIRECTORY_BASE");
+	}
+	std::string ApplicationConfiguration::getDatabaseOut()
+	{
+		return baseConfiguration.Value("Directory",
+			"DATABASE_OUT");
+	}
+
+	bool ApplicationConfiguration::isStringLengthEncoding()
+	{
+		auto bValue =  baseConfiguration.Value("GeneralSettings",
+			"ENCODING_ALGORITHMS");
+		if (bValue == "FILE_LENGTH")
+			return true;
+		else
+			return false;
+	}
+
+	std::string ApplicationConfiguration::getTrainBenignsDirectory()
+	{
+		return baseConfiguration.Value("Directory",
+			"DIRECTORY_TRAIN_BENIGNS");
+	}
+
+	bool ApplicationConfiguration::isTrainingModeEnabled()
+	{
+		auto bValue = baseConfiguration.Value("GeneralSettings",
+			"ENABLE_TRAINING");
+		if (bValue == "TRUE")
+			return true;
+		else
+			return false;
+	}
 }

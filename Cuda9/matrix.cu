@@ -63,7 +63,7 @@ float* GenericMatrix::getData() const noexcept {
 float  GenericMatrix::Get(size_t y, size_t x)const {
 	if (this->m_data == nullptr) {
 		if (x >= this->m_cols || y >= this->m_rows) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 				("Invalid position");
 			throw new std::exception("Invalid position");
 		}
@@ -108,7 +108,7 @@ void CpuMatrix::Set(size_t y, size_t x, float val) {
 		Zeros();
 	}
 	if (y >= this->m_rows || x >= this->m_cols) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Invalid position");
 		throw new std::exception("invalid");
 	}
@@ -139,12 +139,12 @@ void CpuMatrix::Malloc() {
 				sizeof(float), Bridge::CPU);
 		}
 		catch (MemoryAllocationException* exception) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 				(exception->what());
 			throw exception;
 		}
 		catch (...) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 				("Unknown Error");
 			return;
 		}
@@ -166,7 +166,7 @@ void CpuMatrix::Free() {
 GenericMatrix& CpuMatrix::operator+(const GenericMatrix& rhs) const {
 
 	if (this->m_data == nullptr || rhs.getData() == nullptr || getLength() != rhs.getLength()) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
@@ -181,7 +181,7 @@ GenericMatrix& CpuMatrix::operator+(const GenericMatrix& rhs) const {
 GenericMatrix& CpuMatrix::operator+(float val) const {
 
 	if (this->m_data == nullptr) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
@@ -196,7 +196,7 @@ GenericMatrix& CpuMatrix::operator+(float val) const {
 GenericMatrix& CpuMatrix::operator-(const GenericMatrix& rhs) const {
 
 	if (this->m_data == nullptr || rhs.getData() == nullptr || getLength() != rhs.getLength()) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
@@ -211,7 +211,7 @@ GenericMatrix& CpuMatrix::operator-(const GenericMatrix& rhs) const {
 GenericMatrix& CpuMatrix::operator-(float val) const {
 
 	if (this->m_data == nullptr) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
@@ -246,7 +246,7 @@ GenericMatrix& CpuMatrix::operator*(const GenericMatrix& rhs) const {
 GenericMatrix& CpuMatrix::operator*(float val) const {
 
 	if (this->m_data == nullptr) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}
@@ -331,11 +331,11 @@ void GpuMatrix::Malloc()
 				sizeof(float), Bridge::GPU);
 		}
 		catch (MemoryAllocationException exception) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 				(exception.what());
 		}
 		catch (...) {
-			ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+			ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 				("Unknown Error");
 		}
 		cudaMemset(this->m_data, 0, m_cols * m_rows * sizeof(float));
@@ -372,7 +372,7 @@ void GpuMatrix::Set(size_t y, size_t x, float val) {
 		this->Malloc();
 	}
 	if (y >= this->m_rows || x >= this->m_cols) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Invalid position Gpu");
 		throw new std::exception("invalid");
 	}
@@ -391,7 +391,7 @@ void GpuMatrix::Set(size_t y, size_t x, float val) {
 float GpuMatrix::Get(size_t y, size_t x) const {
 
 	if (this->m_data == nullptr || y >= this->m_rows || x >= this->m_cols) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Invalid position Gpu");
 		throw new std::exception("invalid");
 	}
@@ -430,7 +430,7 @@ void GpuMatrix::SetRandom()
 GenericMatrix& GpuMatrix::operator+(const GenericMatrix& rhs) const {
 
 	if (this->m_data == nullptr || rhs.getData() == nullptr || getLength() != rhs.getLength()) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Invalid arguments");
 		throw new std::exception("Invalid arguments");
 	}

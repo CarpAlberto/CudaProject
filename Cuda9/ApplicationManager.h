@@ -26,12 +26,18 @@ namespace gpuNN{
 	protected:
 		void ParseInternal(char** argv, int argc);
 		void ParseConfig();
+		void ParseTrain(char** argv, int argc);
 		void ParseGenerateFeaturesItem(char** argv, int argc,int argStart);
 		void ParseGenerateFeaturesFilename(char** argv, int argc, int argStart);
+		void ParseDirectory(const std::string& directory);
 	public:
 		ApplicationManager();
 		~ApplicationManager();
-
+		/// <summary>
+		/// Returns the application context
+		/// </summary>
+		/// <returns></returns>
+		ApplicationContext* getContext();
 	public:
 		/// <summary>
 		/// Parse the given arguments and executes the commands.
@@ -41,5 +47,7 @@ namespace gpuNN{
 		/// <param name="argv">The name of the arguments</param>
 		/// <param name="argc">The cound of arguments</param>
 		void Parse(char** argv, int argc);
+
+		void TrainFromDirectory();
 	};
 }

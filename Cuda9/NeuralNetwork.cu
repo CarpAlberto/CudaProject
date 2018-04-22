@@ -206,7 +206,7 @@ vDouble NeuralNetwork::getTotalErrors() const {
 void NeuralNetwork::setErrors() {
 
 	if (this->m_target.size() == 0) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("No target for this neural network");
 		throw new std::exception("No target for this neural network");
 	}
@@ -218,7 +218,7 @@ void NeuralNetwork::setErrors() {
 	#endif
 	
 	if (this->m_target.size() != outputSize) {
-		ApplicationContext::instance()->getLog().get()->print<SeverityType::ERROR>
+		ApplicationContext::instance()->getLog().get()->print<SeverityType::CUDA_ERROR>
 			("Target size is not the sime as layer size");
 		throw new std::exception("Target size is not the sime as layer size");
 	}
@@ -397,10 +397,10 @@ void NeuralNetwork::PrintTarget() {
 void NeuralNetwork::Train(int noEpock) {
 
 	for (auto i = 0; i < noEpock; i++) {
-
 		this->FeedForward();
 		this->setErrors();
 		this->BackPropagation();
+		std::cout << "Epock " << i << std::endl;
 	}
 	PrintOutput();
 }
