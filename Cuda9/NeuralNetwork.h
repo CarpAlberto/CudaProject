@@ -178,6 +178,8 @@ namespace gpuNN {
 		void Save(const std::string&,IOStrategy strategy);
 
 		void Load(const std::string& filename, IOStrategy strategy) {}
+
+		void NeuralNetwork::SetCurrentInput(const RealHostMatrix& input);
 	};
 
 }

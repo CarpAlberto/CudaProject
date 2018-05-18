@@ -3,26 +3,6 @@
 
 namespace gpuNN
 {
-	__device__ __forceinline__ void cuda_sum(volatile float * s) {
-		
-		if (BLOCK_SIZE >= 64) {
-			s[threadIdx.x] += s[threadIdx.x + 32];
-			s[threadIdx.x] += s[threadIdx.x + 16];
-			s[threadIdx.x] += s[threadIdx.x + 8];
-			s[threadIdx.x] += s[threadIdx.x + 4];
-			s[threadIdx.x] += s[threadIdx.x + 2];
-			s[threadIdx.x] += s[threadIdx.x + 1];
-		}
-	}
-
-	__device__ __forceinline__ void cuda_sum_before(float * s) {
-		
-		if (BLOCK_SIZE >= 128) {
-			if (threadIdx.x < 64)
-				s[threadIdx.x] += s[threadIdx.x + 64];
-			__syncthreads();
-		}
-	}
 
 	__device__ void cuda_sum_weights(int connection, float * inputs, float * weights)
 	{
@@ -219,7 +199,7 @@ namespace gpuNN
 				int n = blockIdx.x * neurons + neuron;
 				cudafloat Fh = outputs[n];
 				cudafloat lgn = lg[threadId];
-				localGradient[n] = lgn * sigmoid_derivate(Fh);
+				localGradient[n] = lgn * CUDA_SIGMOID_DERIVATE(Fh);
 			}
 		} 
 	}
@@ -331,83 +311,174 @@ namespace gpuNN
 		}
 	}
 
-	__global__ void cuda_correct_weights(float * rmsF, float * inputs, float * localGradient, float * weights,
+
+	void cuda_activate_layerWrapper(cudaStream_t stream, dim3 & gridSize, int blockSize,
+		float * inputs, float * weights, int mOffset, float * outputs, int numInputs) {
+
+		switch (blockSize) {
+		case 1:
+			cuda_activate_layerTemplate<1> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 2:
+			cuda_activate_layerTemplate<2> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 4:
+			cuda_activate_layerTemplate<4> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 8:
+			cuda_activate_layerTemplate<8> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 16:
+			cuda_activate_layerTemplate<16> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 32:
+			cuda_activate_layerTemplate<32> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 64:
+			cuda_activate_layerTemplate<64> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 128:
+			cuda_activate_layerTemplate<128> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 256:
+			cuda_activate_layerTemplate<256> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 512:
+			cuda_activate_layerTemplate<512> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 1024:
+			cuda_activate_layerTemplate<1024> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		case 2048:
+			cuda_activate_layerTemplate<2048> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >(inputs, weights, mOffset, outputs, numInputs);
+			break;
+		}
+	}
+
+	void cuda_Calculate_errorsWrapper(cudaStream_t stream, int blockSize,
+		float* rms, float* rmsF, int patternsNo,
+		float numberPatternsNeurons)
+	{
+		switch (blockSize) {
+		case 1024:
+			cuda_calculate_errors<1024> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+		case 512:
+			cuda_calculate_errors<512> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+
+		case 256:
+			cuda_calculate_errors<256> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+
+		case 128:
+			cuda_calculate_errors<128> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+
+		case 64:
+			cuda_calculate_errors<64> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+
+		case 32:
+			cuda_calculate_errors<32> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+
+		case 16:
+			cuda_calculate_errors<16> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+
+		case 8:
+			cuda_calculate_errors<8> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+
+		case 4:
+			cuda_calculate_errors<4> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+
+		case 2:
+			cuda_calculate_errors<2> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+
+		case 1:
+			cuda_calculate_errors<1> << <1, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rms, rmsF, patternsNo, numberPatternsNeurons);
+			break;
+		}
+	}
+
+	void cuda_correct_weights_Wrapper(cudaStream_t stream, dim3 & gridSize, int blockSize,
+		float * rmsF, float * inputs, float * localGradient, float * weights,
 		float * learningRate, float * lastDeltaWithoutLearningMomentum, float * lastDelta,
 		float maxStepSize, float u, float d, float momentum, int numberPatterns)
 	{
-		
-		extern __shared__ cudafloat deltas[];
-		int blockSize = BLOCK_SIZE;
-		deltas[threadIdx.x] = 0.0;
+		switch (blockSize) {
 
-		for (int p = threadIdx.x; p < numberPatterns; p += blockDim.x)
-		{
-			float delta = localGradient[p * gridDim.y + blockIdx.y];
-			if (blockIdx.x > 0)
-				delta *= inputs[p * (gridDim.x - 1) + (blockIdx.x - 1)];
+			case 1024:
+			cuda_correct_weights<1024> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rmsF, inputs, localGradient, weights, learningRate,
+					lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+			break;
+			case 512:
+			cuda_correct_weights<512> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rmsF, inputs, localGradient, weights, learningRate,
+					lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+			break;
+			case 256:
+			cuda_correct_weights<256> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rmsF, inputs, localGradient, weights, learningRate,
+					lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+			break;
+			case 128:
+				cuda_correct_weights<128> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >
+					(rmsF, inputs, localGradient, weights, learningRate,
+						lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+				break;
+			case 64:
+				cuda_correct_weights<64> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >
+					(rmsF, inputs, localGradient, weights, learningRate,
+						lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+				break;
+			case 32:
+				cuda_correct_weights<32> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >
+					(rmsF, inputs, localGradient, weights, learningRate,
+						lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+				break;
+			case 16:
+				cuda_correct_weights<16> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >
+					(rmsF, inputs, localGradient, weights, learningRate,
+						lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+					break;
+			case 8:
+			   cuda_correct_weights<8> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >
+				(rmsF, inputs, localGradient, weights, learningRate,
+					lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+			break;
 
-			deltas[threadIdx.x] += delta;
-		}
-		__syncthreads();
-
-		cuda_sum_before(deltas);
-
-		if (threadIdx.x < 32) {
-			cuda_sum(deltas);
-			if (threadIdx.x == 0) {
-				int connection = blockIdx.y * gridDim.x + blockIdx.x;
-
-				float delta = deltas[0] / numberPatterns;
-				float learnRate = learningRate[connection];
-
-				float factor = same(lastDeltaWithoutLearningMomentum[connection], delta) ? u : d;
-				learnRate *= factor;
-				if (learnRate > maxStepSize) 
-					learnRate = maxStepSize;
-				learningRate[connection] = learnRate;
-
-				lastDeltaWithoutLearningMomentum[connection] = delta;
-
-				delta += momentum * lastDelta[connection];
-				lastDelta[connection] = delta;
-
-				float w = weights[connection] + (learnRate * delta);
-				if (!isfinite(w)) {
-					lastDelta[connection] = 0.0;
-					lastDeltaWithoutLearningMomentum[connection] = 0.0;
-				}
-				else {
-					weights[connection] = w;
-				}
-			}
-		} 
-		
-	}
-
-	__global__ void cuda_calculate_errors(float* rms, float* rmsF, int patternsNo,
-		float numberPatternsNeurons)
-	{
-		
-		extern __shared__ cudafloat shared_rms[];
-		shared_rms[threadIdx.x] = 0.0;
-
-		for (int p = threadIdx.x; p < patternsNo; p += blockDim.x)
-			shared_rms[threadIdx.x] += rms[p];
-		__syncthreads();
-
-		cuda_sum_before(shared_rms);
-
-		if (threadIdx.x < 32) {
-			cuda_sum(shared_rms);
-
-			if (threadIdx.x == 0) {
-				cudafloat fRMS = sqrtf(shared_rms[0] / numberPatternsNeurons) / 2.0;
-				if (!isfinite(fRMS))
-					fRMS = numberPatternsNeurons;
-				*rmsF = fRMS;
-			}
+			case 4:
+				cuda_correct_weights<4> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> >
+					(rmsF, inputs, localGradient, weights, learningRate,
+						lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+				break;
+			case 2:
+				cuda_correct_weights<2> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >> > 
+					(rmsF, inputs, localGradient, weights, learningRate,
+						lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d, momentum, numberPatterns);
+				break;
+			case 1:
+				cuda_correct_weights<1> << <gridSize, blockSize, blockSize * sizeof(cudafloat), stream >>>
+					(rmsF,inputs, localGradient, weights, learningRate, 
+						lastDeltaWithoutLearningMomentum, lastDelta, maxStepSize, u, d,momentum, numberPatterns);
+				break;
 		}
 	}
-
-
 }

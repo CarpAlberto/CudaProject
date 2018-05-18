@@ -27,6 +27,8 @@ namespace gpuNN {
 		/// <param name="database">The given database</param>
 		virtual void OnFinish(const std::string& database);
 
+		vDouble MatchAgainst(const vStrings& words);
+
 		FileLenghtEncoding();
 		~FileLenghtEncoding();
 	protected:

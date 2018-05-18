@@ -57,7 +57,6 @@ namespace gpuNN
 		/// </summary>
 		/// <returns></returns>
 		std::string getDirectoryMalware();
-
 		/// <summary>
 		/// Returns the filename in
 		/// </summary>
@@ -77,7 +76,30 @@ namespace gpuNN
 
 		std::string getTrainBenignsDirectory();
 
+		/// <summary>
+		/// True if the mode is enabled
+		/// </summary>
+		/// <returns></returns>
 		bool isTrainingModeEnabled();
+
+		bool isGenerateDataMode();
+		/// <summary>
+		/// Returns the root mean square min.The ANN
+		/// stops if the RMS fails
+		/// </summary>
+		/// <returns></returns>
+		float getRootMeanSquareMin();
+		/// <summary>
+		/// Returns the max numbers of epocks
+		/// </summary>
+		/// <returns></returns>
+		int getEpocksLimit();
+
+		std::string getTrainDirectory();
+
+		std::string getTestDirectory();
+
+		bool isTestMode();
 	};
 
 	template<typename Object>

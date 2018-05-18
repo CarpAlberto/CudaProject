@@ -1,4 +1,6 @@
 #pragma once
+#include "includes.h"
+#include "template_data.h"
 
 class INeuralNetwork {
 
@@ -13,6 +15,8 @@ public:
 	/// Sets the curent input
 	/// </summary>
 	virtual void SetCurrentInput(const vDouble& input) = 0;
+
+	virtual void SetCurrentInput(const RealHostMatrix& input) = 0;
 
 	/// <summary>
 	/// Sets the target of the ANN
@@ -31,6 +35,6 @@ public:
 	/// </summary>
 	/// <param name="filename"></param>
 	/// <param name="strategy"></param>
-	virtual void Load(const std::string& filename, IOStrategy strategy)=0;
+	//virtual void Load(const std::string& filename, IOStrategy strategy)=0;
 
 };

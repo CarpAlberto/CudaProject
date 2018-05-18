@@ -373,6 +373,11 @@ void NeuralNetwork::BackPropagation() {
 #endif
 }
 
+void NeuralNetwork::SetCurrentInput(const RealHostMatrix& input)
+{
+	assert(0);
+}
+
 void NeuralNetwork::PrintOutput() 
 {
 #ifndef OPTIMIZED_GPU

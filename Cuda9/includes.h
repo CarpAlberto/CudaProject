@@ -75,16 +75,18 @@
 #include "UI.h"
 #include "matrix_kernels.h"
 
-/*Forward declaration*/
+
+#pragma region Forward_Declaration
+
 using namespace gpuNN;
 using namespace std::chrono;
 using namespace peparse;
-
-
 enum class ErrorSurce;
 enum class CpuError;
 enum class SeverityType;
 typedef unsigned char byte;
+
+#pragma endregion
 
 
 #define RC2IDX(R,C,COLS) (((R)*(COLS))+(C))
@@ -106,6 +108,11 @@ typedef unsigned char byte;
 
 #endif
 
+#ifndef ASSERT
+#define ASSERT(cond) \
+		if(!cond) {throw new std::exception("unsuported");}
+#endif
+
 /// <summary>
 /// Typedef the vectore of integers for toplogy
 /// </summary>
@@ -114,7 +121,7 @@ typedef std::vector<double>			   vDouble;
 typedef std::vector<vDouble>		   mDouble;
 typedef std::vector<std::string>       vStrings ;
 typedef float cudafloat;
-#define ASSERT(cond) if(!cond) {throw new std::exception("unsuported");}
+
 
 
 

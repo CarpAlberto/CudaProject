@@ -60,6 +60,17 @@ namespace gpuNN {
 		/// <param name="directory">The directory where the data should be fetched</param>
 		/// <param name="array">The array where the data will be stored</param>
 		static void ReadDirectory(const std::string directory, std::vector<std::string>& array);
+
+		/// <summary>
+		/// Returns the number of lines of a given stream 
+		/// </summary>
+		/// <returns></returns>
+		static size_t getNumberLines(std::ifstream& stream);
+
+		static double randBetween(double M, double N)
+		{
+			return M + (rand() / (RAND_MAX / (N - M)));
+		}
 	};
 }
 

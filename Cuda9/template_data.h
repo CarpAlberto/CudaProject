@@ -437,6 +437,11 @@ namespace gpuNN
 		Type operator()(size_t row, size_t column) const {
 			return this->Data()[Index(row, column)];
 		}
+
+		void Print()
+		{
+			
+		}
 	};
 
 	template <class Type> class DeviceMatrix : public BaseMatrix < Type > {

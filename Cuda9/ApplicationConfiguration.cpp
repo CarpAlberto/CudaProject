@@ -1,5 +1,6 @@
 #pragma once
 #include "ApplicationContext.h"
+#include <string>
 
 namespace gpuNN {
 
@@ -84,13 +85,51 @@ namespace gpuNN {
 			"DIRECTORY_TRAIN_BENIGNS");
 	}
 
-	bool ApplicationConfiguration::isTrainingModeEnabled()
-	{
+	bool ApplicationConfiguration::isTrainingModeEnabled(){
 		auto bValue = baseConfiguration.Value("GeneralSettings",
-			"ENABLE_TRAINING");
+			"TRAIN_MODE");
 		if (bValue == "TRUE")
 			return true;
 		else
 			return false;
+	}
+	bool ApplicationConfiguration::isGenerateDataMode(){
+		auto bValue = baseConfiguration.Value("GeneralSettings",
+			"GENERATE_DATA_MODE");
+		if (bValue == "TRUE")
+			return true;
+		else
+			return false;
+	}
+	bool ApplicationConfiguration::isTestMode()
+	{
+		auto bValue = baseConfiguration.Value("GeneralSettings",
+			"TEST_MODE");
+		if (bValue == "TRUE")
+			return true;
+		else
+			return false;
+	}
+	float ApplicationConfiguration::getRootMeanSquareMin(){
+		auto bValue = baseConfiguration.Value("NeuralNetworkParameters",
+			"RootMeanSquareMin");
+		return stof(bValue);
+	}
+
+	int ApplicationConfiguration::getEpocksLimit()
+	{
+		auto bValue = baseConfiguration.Value("NeuralNetworkParameters",
+			"EpocksLimis");
+		return stoi(bValue);
+	}
+
+	std::string ApplicationConfiguration::getTrainDirectory(){
+		return baseConfiguration.Value("Directory",
+			"DIRECTORY_TRAIN");
+	}
+
+	std::string ApplicationConfiguration::getTestDirectory(){
+		return baseConfiguration.Value("Directory",
+			"DIRECTORY_TEST");
 	}
 }

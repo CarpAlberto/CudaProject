@@ -2,6 +2,8 @@
 #include "MalwareAnalyzer.h"
 #include "NeuralNetwork.h"
 #include "ApplicationContext.h"
+#include "includes.h"
+#include "OptimizedNeuralNetwork.h"
 
 namespace gpuNN{
 
@@ -48,6 +50,8 @@ namespace gpuNN{
 		/// <param name="argc">The cound of arguments</param>
 		void Parse(char** argv, int argc);
 
-		void TrainFromDirectory();
+		void TrainFromDirectory(bool viruses);
+
+		void LoadFromFile(const std::string& filename);
 	};
 }

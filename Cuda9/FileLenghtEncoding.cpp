@@ -60,7 +60,8 @@ namespace gpuNN
 
 		std::ofstream os(database);
 		for (auto & word : this->arrayFrequency) {
-			os << word.first << " " << word.second << std::endl;
+			if(word.second > 3)
+				os << word.first << " " << word.second << std::endl;
 		}
 		os.close();
 	}
@@ -83,5 +84,22 @@ namespace gpuNN
 		}
 		ISequenceModel& model = *new StringModel(wordsBooleans);
 		return model;
+	}
+
+	vDouble FileLenghtEncoding::MatchAgainst(const vStrings& words)
+	{
+		 vDouble v(arrayFrequency.size(),0);
+		 int index = 0;
+		 for (auto&it : words) {
+			 auto Iterator = std::find_if(this->arrayFrequency.begin(), this->arrayFrequency.end(),
+				 [&it](const std::pair<std::string, int>& rhs){
+				 return it == rhs.first;
+			 });
+			 if(Iterator != this->arrayFrequency.end()){
+				 size_t index = Iterator - this->arrayFrequency.begin();
+				 v[index] = 1;
+			 }
+		 }
+		 return v;
 	}
 }

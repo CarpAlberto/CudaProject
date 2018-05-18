@@ -1,4 +1,6 @@
 #include "Utils.h"
+#include <iostream>
+#include <fstream>
 #include <Windows.h>
 using namespace gpuNN;
 using namespace std;
@@ -71,4 +73,16 @@ void Utils::ReadDirectory(const std::string directory, std::vector<std::string>&
 		FindClose(hFind);
 	}
 
+}
+
+size_t Utils::getNumberLines(std::ifstream& stream)
+{
+	string line;
+	size_t i = 0;
+	while (std::getline(stream,line)) {
+		i++;
+	}
+	stream.clear();
+	stream.seekg(0, ios::beg);
+	return i;
 }

@@ -30,10 +30,11 @@ namespace gpuNN {
 		GpuArray<cudafloat *>    d_lastDeltaWithoutLMlayers;
 		CpuArray<OptimizedLayer> mlayers;
 		float minRms = 0.00001;
+		IntCpuArray sizeLayers;
 
 	public:
 		OptimizedNeuralNetwork(IntCpuArray& layers, RealHostMatrix& inputs,
-			RealHostMatrix & desiredOutputs, float initialLearningRate);
+			RealHostMatrix & desiredOutputs, float initialLearningRate,float minRms);
 
 		OptimizedNeuralNetwork() = default;
 
@@ -53,6 +54,8 @@ namespace gpuNN {
 
 		void SetCurrentInput(const vDouble& input) {};
 
+		void SetCurrentInput(const RealHostMatrix& input);
+
 		void SetCurrentTarget(const vDouble& target) {};
 
 		int GetNumberInputs() const;
@@ -63,6 +66,8 @@ namespace gpuNN {
 
 		int GetNumberNeurons(int layer) const;
 
+		void UpdateOutput(const RealHostMatrix& output);
+
 		/// <summary>
 		/// Returns the weights associated with the given layer
 		/// </summary>
@@ -70,8 +75,15 @@ namespace gpuNN {
 		/// <returns>The associated weights</returns>
 		RealCpuArray GetWeights(int layer) const;
 
+		void SetWeights(RealCpuArray data, int index);
+
 		virtual void Save(const std::string& filename, IOStrategy strategy);
 
-		virtual void Load(const std::string& filename, IOStrategy strategy);
+		virtual OptimizedNeuralNetwork Load(const std::string& filename, IOStrategy strategy);
+
+		HostMatrix<cudafloat> GetOutputs(HostMatrix<cudafloat> & inputs);
+
+	protected:
+		void FeedForward();
 	};
 }

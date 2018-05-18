@@ -108,6 +108,12 @@
     <Filter Include="ml\neural_network\gpu_optimized">
       <UniqueIdentifier>{454f46e2-c101-4b1e-9f79-13c2bb3c3f9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ml\test">
+      <UniqueIdentifier>{14a95394-c165-4289-939f-a3234463d1f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ml\genetic">
+      <UniqueIdentifier>{1c46c243-016f-47ad-bd87-9c2f04562b8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vector.h">
@@ -281,6 +287,15 @@
     <ClInclude Include="StringModel.h">
       <Filter>ml\analyzer\models</Filter>
     </ClInclude>
+    <ClInclude Include="ITest.h">
+      <Filter>ml\analyzer\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="NeuralNetworkTest.h">
+      <Filter>ml\test</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneticAlgorithm.h">
+      <Filter>ml\genetic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -358,6 +373,12 @@
     </ClCompile>
     <ClCompile Include="StringModel.cpp">
       <Filter>ml\analyzer\models</Filter>
+    </ClCompile>
+    <ClCompile Include="NeuralNetworkTest.cpp">
+      <Filter>ml\test</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneticAlgorithm.cpp">
+      <Filter>ml\genetic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -95,6 +95,9 @@ namespace gpuNN {
 			cudafloat initialLearningRate, float * layerInputs, 
 			bool isOutputLayer);
 
+		void UpdateInput(int neurons, int inputs, int nextLayerNeurons,
+			cudafloat initialLearningRate, float * layerInputs,bool outputLayer);
+
 		/// <summary>
 		/// Build the gradients values
 		/// </summary>
