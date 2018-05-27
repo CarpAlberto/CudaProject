@@ -32,7 +32,7 @@ namespace gpuNN {
 		/// Handles the Finish event
 		/// </summary>
 		/// <param name="filename">The filename where the database will be stored</param>
-		virtual void OnFinish(const std::string& filename) = 0;
+		virtual void OnFinish(const std::string& filename,int size) = 0;
 
 		/// <summary>
 		/// Match a given list against a list of words

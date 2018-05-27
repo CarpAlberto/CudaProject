@@ -66,6 +66,7 @@ void ApplicationManager::ParseConfig(){
 	auto directoryTrainBenings = trainDirectory + "\\" + config->getDirectoryBenigns();
 	auto directoryTrainMalware = trainDirectory + "\\" + config->getDirectoryMalware();
 	auto database = directory + config->getDatabaseOut();
+	auto databaseInstructions = directory + config->getDatabaseInstruction();
 	auto directoryTest = directory + config->getTestDirectory();
 	auto directoryTestBenigns = directoryTest + "\\" + config->getDirectoryBenigns();
 	auto directoryTestMalware = directoryTest + "\\" + config->getDirectoryMalware();
@@ -75,8 +76,8 @@ void ApplicationManager::ParseConfig(){
 	if (isStringLengthEncodedEnabled){
 		// Directory Mode
 		if (isDirectoryMode){
-			this->analyzer->BuildFeaturesFromDirectory(directoryTrainBenings, database);
-			this->analyzer->BuildFeaturesFromDirectory(directoryTrainMalware, database);
+			this->analyzer->BuildFeaturesFromDirectory(directoryTrainBenings, database, databaseInstructions);
+			this->analyzer->BuildFeaturesFromDirectory(directoryTrainMalware, database, databaseInstructions);
 		}
 		// Training Mode
 		if (isTrainingMode) {

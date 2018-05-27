@@ -114,6 +114,9 @@
     <Filter Include="ml\genetic">
       <UniqueIdentifier>{1c46c243-016f-47ad-bd87-9c2f04562b8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="assets\x86-64-decoder">
+      <UniqueIdentifier>{dd699095-a1b9-4d5b-824d-3b94443130be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vector.h">
@@ -296,6 +299,30 @@
     <ClInclude Include="GeneticAlgorithm.h">
       <Filter>ml\genetic</Filter>
     </ClInclude>
+    <ClInclude Include="include\x86-64-decoder\decode.h">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\x86-64-decoder\extern.h">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\x86-64-decoder\input.h">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\x86-64-decoder\itab.h">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\x86-64-decoder\syn.h">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\x86-64-decoder\types.h">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\x86-64-decoder\udint.h">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClInclude>
+    <ClInclude Include="include\udis86.h">
+      <Filter>assets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StackAllocator.cpp">
@@ -380,10 +407,39 @@
     <ClCompile Include="GeneticAlgorithm.cpp">
       <Filter>ml\genetic</Filter>
     </ClCompile>
+    <ClCompile Include="include\x86-64-decoder\itab.cpp">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="include\x86-64-decoder\input.cpp">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="include\x86-64-decoder\decode.cpp">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="include\x86-64-decoder\syn.cpp">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="include\x86-64-decoder\udis86.cpp">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="include\x86-64-decoder\syn-intel.cpp">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClCompile>
+    <ClCompile Include="include\x86-64-decoder\syn-att.cpp">
+      <Filter>assets\x86-64-decoder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="config.cfg">
       <Filter>io</Filter>
     </None>
+    <None Include="include\x86-64-decoder\Makefile.am">
+      <Filter>assets\x86-64-decoder</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="results.txt">
+      <Filter>io</Filter>
+    </Text>
   </ItemGroup>
 </Project>

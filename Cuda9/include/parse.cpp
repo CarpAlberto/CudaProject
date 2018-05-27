@@ -46,6 +46,7 @@ struct importent {
   VA addr;
   string symbolName;
   string moduleName;
+  std::uint32_t startOffset;
 };
 
 struct exportent {
@@ -1260,7 +1261,7 @@ bool getImports(parsed_pe *p) {
         } else {
           return false;
         }
-
+		std::uint32_t startOffset;
         if (ord == 0) {
           // import by name
           string symName;
@@ -1273,6 +1274,7 @@ bool getImports(parsed_pe *p) {
           std::uint32_t nameOffset =
               static_cast<std::uint32_t>(valVA - symNameSec.sectionBase) +
               sizeof(::uint16_t);
+		  startOffset = nameOffset;
           do {
             std::uint8_t chr;
             if (!readByte(symNameSec.sectionData, nameOffset, chr)) {
@@ -1302,6 +1304,7 @@ bool getImports(parsed_pe *p) {
 
           ent.symbolName = symName;
           ent.moduleName = modName;
+		  ent.startOffset = startOffset;
           p->internal->imports.push_back(ent);
         } else {
           string symName =
@@ -1740,8 +1743,8 @@ void DestructParsedPE(parsed_pe *p) {
 
 // iterate over the imports by VA and string
 void IterImpVAString(parsed_pe *pe, iterVAStr cb, void *cbd) {
-  list<importent> &l = pe->internal->imports;
-
+  
+	list<importent> &l = pe->internal->imports;
   for (importent i : l) {
     if (cb(cbd, i.addr, i.moduleName, i.symbolName) != 0) {
       break;
@@ -1782,7 +1785,15 @@ void IterSymbols(parsed_pe *pe, iterSymbol cb, void *cbd) {
 
   return;
 }
-
+std::string ReadImport(parsed_pe *pe, uint32_t data)
+{
+	list<importent> &l = pe->internal->imports;
+	for (importent i : l) {
+		if (i.addr == data)
+			return i.symbolName;
+	}
+	return "";
+}
 // iterate over the exports by VA
 void IterExpVA(parsed_pe *pe, iterExp cb, void *cbd) {
   list<exportent> &l = pe->internal->exports;
@@ -1821,7 +1832,42 @@ bool ReadByteAtVA(parsed_pe *pe, VA v, ::uint8_t &b) {
   auto off = static_cast<std::uint32_t>(v - s.sectionBase);
   return readByte(s.sectionData, off, b);
 }
+bool ReadByteAtVAAndRData(parsed_pe *pe, VA v, ::uint8_t &b)
+{
+	parsed_pe_internal *pint = pe->internal;
+	section ss;
+	for (section s : pint->secs) {
+		if (s.sectionName == ".rdata") {
+			ss = s;
+			break;
+		}
+	}
+	return readByte(ss.sectionData, v, b);
+}
 
+bool ReadByteAtVAAndText(parsed_pe *pe, VA v, ::uint8_t &b)
+{
+	parsed_pe_internal *pint = pe->internal;
+	section ss;
+	for (section s : pint->secs) {
+		if (s.sectionName == ".text") {
+			ss = s;
+			break;
+		}
+	}
+	return readByte(ss.sectionData, v, b);
+}
+
+bool ReadByteAtVAAndEntryPoint(parsed_pe *pe, VA v, ::uint8_t &b)
+{
+	parsed_pe_internal *pint = pe->internal;
+	section ss;
+
+	if (!getSecForVA(pe->internal->secs, v, ss)) {
+		return false;
+	}
+	return readByte(ss.sectionData, v, b);
+}
 bool GetEntryPoint(parsed_pe *pe, VA &v) {
 
   if (pe != nullptr) {

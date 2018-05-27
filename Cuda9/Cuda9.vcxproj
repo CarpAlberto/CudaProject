@@ -80,6 +80,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ShowIncludes>true</ShowIncludes>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -116,6 +117,14 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="GeneticAlgorithm.h" />
     <ClInclude Include="GpuAllocator.h" />
     <ClInclude Include="GUIConsole.h" />
+    <ClInclude Include="include\udis86.h" />
+    <ClInclude Include="include\x86-64-decoder\decode.h" />
+    <ClInclude Include="include\x86-64-decoder\extern.h" />
+    <ClInclude Include="include\x86-64-decoder\input.h" />
+    <ClInclude Include="include\x86-64-decoder\itab.h" />
+    <ClInclude Include="include\x86-64-decoder\syn.h" />
+    <ClInclude Include="include\x86-64-decoder\types.h" />
+    <ClInclude Include="include\x86-64-decoder\udint.h" />
     <ClInclude Include="ISequenceModel.h" />
     <ClInclude Include="ITest.h" />
     <ClInclude Include="NeuralNetworkTest.h" />
@@ -177,6 +186,13 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClCompile Include="HuffmanWordProcessor.cpp" />
     <ClCompile Include="include\buffer.cpp" />
     <ClCompile Include="include\parse.cpp" />
+    <ClCompile Include="include\x86-64-decoder\decode.cpp" />
+    <ClCompile Include="include\x86-64-decoder\input.cpp" />
+    <ClCompile Include="include\x86-64-decoder\itab.cpp" />
+    <ClCompile Include="include\x86-64-decoder\syn-att.cpp" />
+    <ClCompile Include="include\x86-64-decoder\syn-intel.cpp" />
+    <ClCompile Include="include\x86-64-decoder\syn.cpp" />
+    <ClCompile Include="include\x86-64-decoder\udis86.cpp" />
     <ClCompile Include="LoggingPolicy.cpp" />
     <ClCompile Include="MalwareAnalyzer.cpp" />
     <ClCompile Include="MatrixFactory.cu" />
@@ -203,6 +219,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="config.cfg" />
+    <None Include="include\x86-64-decoder\Makefile.am" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="results.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

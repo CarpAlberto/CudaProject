@@ -132,4 +132,10 @@ namespace gpuNN {
 		return baseConfiguration.Value("Directory",
 			"DIRECTORY_TEST");
 	}
+
+	std::string ApplicationConfiguration::getDatabaseInstruction()
+	{
+		return baseConfiguration.Value("Directory",
+			"INSTR_DATABASE_OUT");
+	}
 }

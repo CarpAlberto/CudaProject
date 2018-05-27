@@ -210,4 +210,13 @@ bool ReadByteAtVA(parsed_pe *pe, VA v, std::uint8_t &b);
 
 // get entry point into PE
 bool GetEntryPoint(parsed_pe *pe, VA &v);
+
+
+bool ReadByteAtVAAndRData(parsed_pe *pe, VA v, ::uint8_t &b);
+
+std::string ReadImport(parsed_pe *pe, uint32_t offset);
+
+bool ReadByteAtVAAndText(parsed_pe *pe, VA v, ::uint8_t &b);
+
+bool ReadByteAtVAAndEntryPoint(parsed_pe *pe, VA v, ::uint8_t &b);
 } // namespace peparse

@@ -46,6 +46,7 @@ template <> struct Cvt<std::u16string> {
 	}
 };
 #else // gcc has no <codecvt>
+
 #include "utf8cpp/utf8.h"
 template <> struct Cvt<std::u16string> {
 	static std::string to_utf8(const std::u16string& in) {

@@ -50,13 +50,14 @@ void GeneticAlgorithm::run()
 				if (rand() % 1000 < 25){
 					std::cout << "Mutation on " << j << std::endl;
 					if(j == 0)
-						Pop.members.at(i).parameters.at(j) = (int)Utils::randBetween(15, 25);
+						Pop.members.at(i).parameters.at(j) = (int)Utils::randBetween(40, 60);
 					if (j == 1)
 						Pop.members.at(i).parameters.at(j) = Utils::randBetween(0.006, 0.15);
 					if (j == 2)
 						Pop.members.at(i).parameters.at(j) = Utils::randBetween(0.0016, 0.0022);
 				}
 			}
+			std::cout << "Iteration : " << i << std::endl;
 		}
 		std::cout << "Generation : " << Generation << " Highest Fitness : " << Parents.at(0).Fitness
 			<< " With Sequence : " << Parents.at(0).toString() << std::endl;

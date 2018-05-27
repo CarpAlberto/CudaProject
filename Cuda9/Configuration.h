@@ -100,6 +100,9 @@ namespace gpuNN
 		std::string getTestDirectory();
 
 		bool isTestMode();
+
+		std::string getDatabaseInstruction(); //INSTR_DATABASE_OUT
+
 	};
 
 	template<typename Object>

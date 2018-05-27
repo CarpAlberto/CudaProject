@@ -274,7 +274,7 @@ protected:
   Vector();
 
   const uint8_t *Data() const {
-    return reinterpret_cast<const uint8_t *>(&length_ + 1);
+    return reinterpret_cast<const ::uint8_t *>(&length_ + 1);
   }
 
   uoffset_t length_;
@@ -421,7 +421,7 @@ class FlatBufferBuilder {
     AssertScalarT<T>();
     T litle_endian_element = EndianScalar(element);
     Align(sizeof(T));
-    PushBytes(reinterpret_cast<uint8_t *>(&litle_endian_element), sizeof(T));
+    PushBytes(reinterpret_cast<::uint8_t *>(&litle_endian_element), sizeof(T));
     return GetSize();
   }
 
@@ -638,14 +638,14 @@ class FlatBufferBuilder {
 // Helper to get a typed pointer to the root object contained in the buffer.
 template<typename T> const T *GetRoot(const void *buf) {
   EndianCheck();
-  return reinterpret_cast<const T *>(reinterpret_cast<const uint8_t *>(buf) +
+  return reinterpret_cast<const T *>(reinterpret_cast<const ::uint8_t *>(buf) +
     EndianScalar(*reinterpret_cast<const uoffset_t *>(buf)));
 }
 
 // Helper class to verify the integrity of a FlatBuffer
 class Verifier {
  public:
-  Verifier(const uint8_t *buf, size_t buf_len)
+  Verifier(const ::uint8_t *buf, size_t buf_len)
     : buf_(buf), end_(buf + buf_len)
     {}
 
@@ -668,24 +668,24 @@ class Verifier {
 
   // Verify a pointer (may be NULL) of any vector type.
   template<typename T> bool Verify(const Vector<T> *vec) const {
-    const uint8_t *end;
+    const ::uint8_t *end;
     return !vec ||
-           VerifyVector(reinterpret_cast<const uint8_t *>(vec), sizeof(T),
+           VerifyVector(reinterpret_cast<const ::uint8_t *>(vec), sizeof(T),
                         &end);
   }
 
   // Verify a pointer (may be NULL) to string.
   bool Verify(const String *str) const {
-    const uint8_t *end;
+    const ::uint8_t *end;
     return !str ||
-           (VerifyVector(reinterpret_cast<const uint8_t *>(str), 1, &end) &&
+           (VerifyVector(reinterpret_cast<const ::uint8_t *>(str), 1, &end) &&
             Verify(end, 1) &&  // Must have terminator
             *end == '\0');  // Terminating byte must be 0.
   }
 
   // Common code between vectors and strings.
-  bool VerifyVector(const uint8_t *vec, size_t elem_size,
-                    const uint8_t **end) const {
+  bool VerifyVector(const ::uint8_t *vec, size_t elem_size,
+                    const ::uint8_t **end) const {
     // Check we can read the size field.
     if (!Verify<uoffset_t>(vec)) return false;
     // Check the whole array. If this is a string, the byte past the array

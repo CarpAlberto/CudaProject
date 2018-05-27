@@ -35,7 +35,7 @@ public:
 	/// <param name="directory"></param>
 	/// <param name="database"></param>
 	virtual void BuildFeaturesFromDirectory(const std::string& directory, 
-		const std::string& database) = 0;
+		const std::string& database, const std::string& database2) = 0;
 
 	virtual void BuildDataFromDirectory(const std::string& directory,
 		const std::string& file_out)=0;

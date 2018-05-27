@@ -16,10 +16,11 @@ int main(int argc,char* argv[])
 	//manager.LoadFromFile("database.txt");
 	//manager.Parse(argv, argc);
 
+	
 	Population Pop;
 
 	Objective obj;
-	obj.parametersInput = { 15,0.15f,0.002f }; // NeuronsLayer  RMS Threeshold
+	obj.parametersInput = { 50 ,0.15f,0.002f }; // NeuronsLayer  RMS Threeshold
 	obj.parametersOutput = { 0.9f }; // Accuracy
 	srand(static_cast <unsigned> (time(0)));
 
@@ -27,9 +28,9 @@ int main(int argc,char* argv[])
 	for (int i = 0; i < Pop.members.size(); i++) {
 		Pop.members.at(i).parameters.resize(obj.parametersInput.size());
 
-		Pop.members.at(i).parameters.at(0) = (int)Utils::randBetween(15, 25);
-		Pop.members.at(i).parameters.at(1) = Utils::randBetween(0.006, 0.15);
-		Pop.members.at(i).parameters.at(2) = Utils::randBetween(0.0016,0.0022);
+		Pop.members.at(i).parameters.at(0) = (int)Utils::randBetween(45,65);
+		Pop.members.at(i).parameters.at(1) = Utils::randBetween(0.001, 0.3);
+		Pop.members.at(i).parameters.at(2) = Utils::randBetween(0.0014,0.005);
 		Pop.members.at(i).Fitness = 0;
 	}
 
@@ -37,6 +38,5 @@ int main(int argc,char* argv[])
 
 	GeneticAlgorithm alg(Pop,obj,malware);
 	alg.run();
-
 
 }

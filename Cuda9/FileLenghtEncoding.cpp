@@ -8,7 +8,6 @@ namespace gpuNN
 	FileLenghtEncoding::FileLenghtEncoding()
 	{
 		//load
-		Load(this->directoryBase + "/" + this->database);
 	}
 
 	FileLenghtEncoding::~FileLenghtEncoding()
@@ -33,8 +32,14 @@ namespace gpuNN
 		}
 	}
 
-	void FileLenghtEncoding::Load(const std::string& filename)
+	void FileLenghtEncoding::Load(bool Instr)
 	{
+		if (m_Initialized == true)
+			return;
+		std::string filename = this->directoryBase + "/" + this->database;
+		if(Instr)
+			filename = this->directoryBase + "/" + this->databaseInstruction;
+		m_Initialized = true;
 		std::ifstream is(filename);
 		std::string line;
 		while (std::getline(is, line))
@@ -50,7 +55,7 @@ namespace gpuNN
 		}
 	}
 
-	void FileLenghtEncoding::OnFinish(const std::string& database)
+	void FileLenghtEncoding::OnFinish(const std::string& database,int size)
 	{	
 
 		std::sort(this->arrayFrequency.begin(), this->arrayFrequency.end(), 
@@ -60,8 +65,10 @@ namespace gpuNN
 
 		std::ofstream os(database);
 		for (auto & word : this->arrayFrequency) {
-			if(word.second > 3)
+			if (word.second > size)
+			{
 				os << word.first << " " << word.second << std::endl;
+			}
 		}
 		os.close();
 	}
